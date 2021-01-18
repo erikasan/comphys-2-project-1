@@ -115,7 +115,7 @@ The gradient with respect to particle k is then:
   +  \left[\prod_i\phi(\mathbf{r}_i)\right]
   \exp{\left(\sum_{j<m}u(r_{jm})\right)}\sum_{l\ne k}\nabla_k u(r_{kl})
 \end{align*}
-where we used the chain rule for gradients and the fact that only $\phi(\mathbf{r}_k)$ and $\exp(\sum_{l\ne k}u(r_{kl}))$ are functions of $\mathbf{r}_k$.
+where we used the product rule for gradients and the fact that only $\phi(\mathbf{r}_k)$ and $\exp(\sum_{l\ne k}u(r_{kl}))$ are functions of $\mathbf{r}_k$.
 \\
 The second derivative divided by the trial wave function is then given by 
 \begin{align*}
@@ -142,7 +142,7 @@ The second derivative divided by the trial wave function is then given by
    &\qquad
    + \sum_{l\ne k}\nabla_k^2 u(r_{kl})
 \end{align*}
-where we used the chain rule for divergences and gradients. The expressions for the gradient of $u(r_{ik})$ can be reexpressed using the chain rule.
+where we used the product rule for divergences and gradients. The expressions for the gradient of $u(r_{ik})$ can be reexpressed using the chain rule.
 We have that, by the chain rule
 \begin{align*}
     \frac{\partial u(r_{ki})}{\partial x_k}\mathbf{\hat{x}_k}=\frac{\partial r_{ki}}{\partial x_k}\frac{\partial u(r_{ki})}{\partial r_{ki}}\mathbf{\hat{x}_k}=u'(r_{ki})\frac{x_k-x_i}{r_{ki}}\mathbf{\hat{x}_k}
