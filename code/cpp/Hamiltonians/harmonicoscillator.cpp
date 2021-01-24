@@ -13,6 +13,18 @@ HarmonicOscillator::HarmonicOscillator(System* system, double omega) :
     assert(omega > 0);
     m_omega  = omega;
 }
+double HarmonicOscillator::computeLocalKineticEnergy(std::vector<Particle*> particles){
+  double kineticEnergy   = -0.5*m_system->getWaveFunction()->computeDoubleDerivative(particles);
+  return kineticEnergy;
+}
+double HarmonicOscillator::computeLocalPotentialEnergy(std::vector<Particle*> particles){
+  double potentialEnergy =0;
+  for (int i=0; i< m_system->getNumberOfParticles();i++){
+    potentialEnergy+=particles[i]->getRadiussquared();
+  }
+  potentialEnergy*=0.5*m_omega*m_omega;
+  return potentialEnergy;
+}
 
 double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) {
     /* Here, you need to compute the kinetic and potential energies. Note that
@@ -24,8 +36,5 @@ double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) 
      * getWaveFunction method in the m_system object in the super-class, i.e.
      * m_system->getWaveFunction()...
      */
-
-    double potentialEnergy = 0;
-    double kineticEnergy   = 0;
-    return kineticEnergy + potentialEnergy;
+    return computeLocalPotentialEnergy(particles) + computeLocalKineticEnergy(particles);
 }

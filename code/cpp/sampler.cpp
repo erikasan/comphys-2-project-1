@@ -24,14 +24,23 @@ void Sampler::sample(bool acceptedStep) {
     // Make sure the sampling variable(s) are initialized at the first step.
     if (m_stepNumber == 0) {
         m_cumulativeEnergy = 0;
+        m_cumulkinetic=0;
+        m_cumulpotential=0;
     }
 
     /* Here you should sample all the interesting things you want to measure.
      * Note that there are (way) more than the single one here currently.
      */
+     double localPotentialEnergy= m_system->getHamiltonian()->
+                         computeLocalPotentialEnergy(m_system->getParticles());
+    double localKineticEnergy= m_system->getHamiltonian()->
+                        computeLocalKineticEnergy(m_system->getParticles());
+
     double localEnergy = m_system->getHamiltonian()->
                          computeLocalEnergy(m_system->getParticles());
     m_cumulativeEnergy  += localEnergy;
+    m_cumulkinetic+=localKineticEnergy;
+    m_cumulpotential+=localPotentialEnergy;
     m_stepNumber++;
 }
 
@@ -58,6 +67,8 @@ void Sampler::printOutputToTerminal() {
     cout << endl;
     cout << "  -- Results -- " << endl;
     cout << " Energy : " << m_energy << endl;
+    cout << "Kinetic Energy: " << m_kineticenergy <<endl;
+    cout << "Potential Energy: " << m_potentialenergy <<endl;
     cout << endl;
 }
 
@@ -65,5 +76,8 @@ void Sampler::computeAverages() {
     /* Compute the averages of the sampled quantities. You need to think
      * thoroughly through what is written here currently; is this correct?
      */
-    m_energy = m_cumulativeEnergy / m_system->getNumberOfMetropolisSteps();
+    double steps =m_system->getNumberOfMetropolisSteps()*(1-m_system->getEquilibrationFraction());
+    m_energy = m_cumulativeEnergy / steps;
+    m_kineticenergy= m_cumulkinetic / steps;
+    m_potentialenergy= m_cumulpotential / steps;
 }

@@ -6,7 +6,7 @@
 #include "Hamiltonians/hamiltonian.h"
 #include "InitialStates/initialstate.h"
 #include "Math/random.h"
-
+#include <iostream>
 
 System::System() {
     m_random = new Random(); // Initialize System with a random value
@@ -22,16 +22,33 @@ bool System::metropolisStep() {
      * accepted by the Metropolis test (compare the wave function evaluated
      * at this new position with the one at the old position).
      */
-
+     double wf_old=m_waveFunction->evaluate(m_particles);
      //Pick random Particle
+     int particle_id = m_random -> nextInt(m_numberOfParticles-1);
+     //keep old positions
+     //std::cout << "test nr 1\n";
+     std::vector<double> position= m_particles[particle_id]->getPosition();
+     for (int i=0; i<m_numberOfDimensions;i++){
+       m_particles[particle_id]->adjustPosition(2*(m_random->nextDouble()-0.5)*m_stepLength,i);
+     }
+     //std::cout << m_particles[particle_id]->getPosition()[0] << "\n";
+     double wf_new=m_waveFunction->evaluate(m_particles);
      //Change position randomly
-     //Perform Metropolis test
-
+     if ((wf_new*wf_new)/(wf_old*wf_old)> m_random->nextDouble() ){
+       //std::cout<< "WF_old: " << wf_old << "WF_new: " << wf_new <<"\n";
+       return true;
+     }//Perform Metropolis test
+     else{
+       //std::cout << "not accepted\n";
+       //std::cout << "new X:" << m_particles[particle_id]->getPosition()[0]<<"\n";
+       m_particles[particle_id]->setPosition(position);
+       //std::cout << "old X:" << m_particles[particle_id]->getPosition()[0]<<"\n";
+     }
     return false;
 }
 
 void System::runMetropolisSteps(int numberOfMetropolisSteps) {
-    m_particles                 = m_initialState->getParticles(); //Get the number of particles
+    m_particles                 = m_initialState->getParticles();
     m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
@@ -45,7 +62,9 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
          * for a while. You may handle this using the fraction of steps which
          * are equilibration steps; m_equilibrationFraction.
          */
-        m_sampler->sample(acceptedStep);
+        if (i > (int)(m_equilibrationFraction*numberOfMetropolisSteps)){
+          m_sampler->sample(acceptedStep);
+        }
     }
     m_sampler->computeAverages();
     m_sampler->printOutputToTerminal();
