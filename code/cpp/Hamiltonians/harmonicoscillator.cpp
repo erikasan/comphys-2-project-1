@@ -15,14 +15,14 @@ HarmonicOscillator::HarmonicOscillator(System* system, double omega) :
 }
 double HarmonicOscillator::computeLocalKineticEnergy(std::vector<Particle*> particles){
   double kineticEnergy   = -0.5*m_system->getWaveFunction()->computeDoubleDerivative(particles);
-  return kineticEnergy*m_omega;
+  return kineticEnergy;
 }
 double HarmonicOscillator::computeLocalPotentialEnergy(std::vector<Particle*> particles){
   double potentialEnergy =0;
   for (int i=0; i< m_system->getNumberOfParticles();i++){
     potentialEnergy+=particles[i]->getRadiussquared();
   }
-  potentialEnergy*=0.5*m_omega;
+  potentialEnergy*=0.5*m_omega*m_omega;
   return potentialEnergy;
 }
 

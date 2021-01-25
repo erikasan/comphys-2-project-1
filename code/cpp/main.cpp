@@ -19,8 +19,8 @@ int main() {
     int numberOfDimensions  = 3;
     int numberOfParticles   = 1;
     int numberOfSteps       = (int) 1e6;
-    double omega            = 10;          // Oscillator frequency.
-    double alpha            = 0.5;          // Variational parameter.
+    double omega            = 20;          // Oscillator frequency.
+    double alpha            = omega/2;          // Variational parameter.
     double stepLength       = 0.1;          // Metropolis step length.
     double equilibration    = 0.1;          // Amount of the total steps used
     // for equilibration.
