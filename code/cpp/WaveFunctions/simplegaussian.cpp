@@ -30,14 +30,7 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      return exp(-alpha*total_radius);
 }
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles, int particle_id) {
-    /* You need to implement a Gaussian wave function here. The positions of
-     * the particles are accessible through the particle[i].getPosition()
-     * function.
-     *
-     * For the actual expression, use exp(-alpha * r^2), with alpha being the
-     * (only) variational parameter.
-     */
-     //std::cout << "doing fast" <<std::endl;
+    //As the Wave function is seperable, evaluates only the part belonging to particle "particle_id"
      double alpha=m_parameters[0];
      double radius=particles[particle_id]->getRadiussquared();
      return exp(-alpha*radius);
