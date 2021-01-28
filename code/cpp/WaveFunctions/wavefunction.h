@@ -8,8 +8,8 @@ public:
     int     getNumberOfParameters() { return m_numberOfParameters; }
     std::vector<double> getParameters() { return m_parameters; }
     virtual double evaluate(std::vector<class Particle*> particles) = 0;
+    virtual double evaluate(std::vector<class Particle*> particles, int particle_id) {(void)particle_id;return evaluate(particles);};
     virtual double computeDoubleDerivative(std::vector<class Particle*> particles) = 0;
-
 protected:
     int     m_numberOfParameters = 0;
     std::vector<double> m_parameters = std::vector<double>();

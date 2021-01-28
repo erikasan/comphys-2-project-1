@@ -49,9 +49,10 @@ void Sampler::printOutputToTerminal() {
     int     nd = m_system->getNumberOfDimensions();
     int     ms = m_system->getNumberOfMetropolisSteps();
     int     p  = m_system->getWaveFunction()->getNumberOfParameters();
+    int     dur= m_system->getDuration()/(1000);
+
     double  ef = m_system->getEquilibrationFraction();
     std::vector<double> pa = m_system->getWaveFunction()->getParameters();
-
     cout << endl;
     cout << "  -- System info -- " << endl;
     cout << " Number of particles  : " << np << endl;
@@ -69,6 +70,7 @@ void Sampler::printOutputToTerminal() {
     cout << " Energy : " << m_energy << endl;
     cout << "Kinetic Energy: " << m_kineticenergy <<endl;
     cout << "Potential Energy: " << m_potentialenergy <<endl;
+    cout << "Duration: " << dur << " ms" << endl;
     cout << endl;
 }
 

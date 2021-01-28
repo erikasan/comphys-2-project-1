@@ -7,7 +7,9 @@
 #include "InitialStates/initialstate.h"
 #include "Math/random.h"
 #include <iostream>
+#include <chrono>
 
+using namespace std::chrono;
 System::System() {
     m_random = new Random(); // Initialize System with a random value
 }
@@ -22,27 +24,22 @@ bool System::metropolisStep() {
      * accepted by the Metropolis test (compare the wave function evaluated
      * at this new position with the one at the old position).
      */
-     double wf_old=m_waveFunction->evaluate(m_particles);
+
      //Pick random Particle
      int particle_id = m_random -> nextInt(m_numberOfParticles-1);
-     //keep old positions
-     //std::cout << "test nr 1\n";
+     double wf_old=m_waveFunction->evaluate(m_particles,particle_id);
+     //keep old position
      std::vector<double> position= m_particles[particle_id]->getPosition();
      for (int i=0; i<m_numberOfDimensions;i++){
        m_particles[particle_id]->adjustPosition(2*(m_random->nextDouble()-0.5)*m_stepLength,i);
      }
-     //std::cout << m_particles[particle_id]->getPosition()[0] << "\n";
-     double wf_new=m_waveFunction->evaluate(m_particles);
+     double wf_new=m_waveFunction->evaluate(m_particles,particle_id);
      //Change position randomly
      if ((wf_new*wf_new)/(wf_old*wf_old)> m_random->nextDouble() ){
-       //std::cout<< "WF_old: " << wf_old << "WF_new: " << wf_new <<"\n";
        return true;
      }//Perform Metropolis test
      else{
-       //std::cout << "not accepted\n";
-       //std::cout << "new X:" << m_particles[particle_id]->getPosition()[0]<<"\n";
        m_particles[particle_id]->setPosition(position);
-       //std::cout << "old X:" << m_particles[particle_id]->getPosition()[0]<<"\n";
      }
     return false;
 }
@@ -52,7 +49,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
     m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
-
+    auto start = high_resolution_clock::now();
     for (int i=0; i < numberOfMetropolisSteps; i++) {
         bool acceptedStep = metropolisStep();
 
@@ -66,6 +63,9 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
           m_sampler->sample(acceptedStep);
         }
     }
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    m_duration=duration.count();
     m_sampler->computeAverages();
     m_sampler->printOutputToTerminal();
 }
