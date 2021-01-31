@@ -18,6 +18,11 @@ double HarmonicOscillator::computeLocalKineticEnergy(std::vector<Particle*> part
   return kineticEnergy;
 }
 
+double HarmonicOscillator::computeLocalKineticEnergyNumerically(std::vector<Particle*> particles) {
+  double kineticEnergy = -0.5*m_system->getWaveFunction()->computeDoubleDerivativeNumerically(particles);
+  return kineticEnergy;
+}
+
 double HarmonicOscillator::computeLocalPotentialEnergy(std::vector<Particle*> particles) {
   double potentialEnergy = 0;
   for (int i = 0; i < m_system->getNumberOfParticles(); i++){
@@ -38,4 +43,8 @@ double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) 
      * m_system->getWaveFunction()...
      */
     return computeLocalPotentialEnergy(particles) + computeLocalKineticEnergy(particles);
+}
+
+double HarmonicOscillator::computeLocalEnergyNumerically(std::vector<Particle*> particles) {
+    return computeLocalPotentialEnergy(particles) + computeLocalKineticEnergyNumerically(particles);
 }
