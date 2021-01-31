@@ -5,8 +5,8 @@
 #include "../system.h"
 #include "../particle.h"
 #include <iostream>
-SimpleGaussian::SimpleGaussian(System* system, double alpha) :
-        WaveFunction(system) {
+
+SimpleGaussian::SimpleGaussian(System* system, double alpha) : WaveFunction(system) {
     assert(alpha >= 0);
     m_numberOfParameters = 1;
     m_parameters.reserve(1);
@@ -21,18 +21,18 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      * For the actual expression, use exp(-alpha * r^2), with alpha being the
      * (only) variational parameter.
      */
-     double alpha=m_parameters[0];
-     double total_radius=0;
+     double alpha = m_parameters[0];
+     double total_radius = 0;
 
-     for(Particle *particle: particles){
-       total_radius+=particle->getRadiussquared();
+     for(Particle *particle : particles){
+       total_radius += particle->getRadiussquared();
      }
      return exp(-alpha*total_radius);
 }
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles, int particle_id) {
     //As the Wave function is seperable, evaluates only the part belonging to particle "particle_id"
-     double alpha=m_parameters[0];
-     double radius=particles[particle_id]->getRadiussquared();
+     double alpha = m_parameters[0];
+     double radius = particles[particle_id]->getRadiussquared();
      return exp(-alpha*radius);
 }
 
@@ -45,13 +45,13 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
      * This quantity is needed to compute the (local) energy (consider the
      * Schrödinger equation to see how the two are related).
      */
-     double dobdev=0;
-     double total_radius=0;
-     double alpha=m_parameters[0];
-     for(Particle *particle: particles){
-       total_radius+=particle->getRadiussquared();
+     double dobdev = 0; // Not needed?
+     double total_radius = 0;
+     double alpha = m_parameters[0];
+     for(Particle *particle : particles){
+       total_radius += particle->getRadiussquared();
      }
-     int num_part=m_system->getNumberOfParticles();
-     int num_dim=m_system->getNumberOfDimensions();
-     return (-2*num_part*num_dim*alpha+4*alpha*alpha*total_radius);
+     int num_part = m_system->getNumberOfParticles();
+     int num_dim = m_system->getNumberOfDimensions();
+     return (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius);
 }

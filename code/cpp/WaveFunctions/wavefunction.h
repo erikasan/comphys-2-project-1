@@ -5,7 +5,7 @@
 class WaveFunction {
 public:
     WaveFunction(class System* system);
-    int     getNumberOfParameters() { return m_numberOfParameters; }
+    int getNumberOfParameters() { return m_numberOfParameters; }
     std::vector<double> getParameters() { return m_parameters; }
     virtual double evaluate(std::vector<class Particle*> particles) = 0;
 
@@ -14,8 +14,9 @@ public:
     (only timing) for Metropolis)*/
     virtual double evaluate(std::vector<class Particle*> particles, int particle_id) {(void)particle_id;return evaluate(particles);};
     virtual double computeDoubleDerivative(std::vector<class Particle*> particles) = 0;
+
 protected:
-    int     m_numberOfParameters = 0;
+    int m_numberOfParameters = 0;
     std::vector<double> m_parameters = std::vector<double>();
     class System* m_system = nullptr;
 };
