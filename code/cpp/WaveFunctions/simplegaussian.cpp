@@ -103,7 +103,7 @@ double SimpleGaussian::computeDoubleDerivativeNumerically(std::vector<class Part
       tmpParticlePointers[i]->adjustPosition(h, j);
     }
     doubleDerivative /= SimpleGaussian::evaluate(tmpParticlePointers, i);
-    doubleDerivative -= 2;
+    doubleDerivative -= 6;
   }
   doubleDerivative /= h*h;
   return doubleDerivative;
