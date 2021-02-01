@@ -93,7 +93,7 @@ double SimpleGaussian::computeDoubleDerivativeNumerically(std::vector<class Part
   }
 
   // Calculate the double derivative, see Drafts folder on github for derivation of formula
-  double doubleDerivative = 0, double term = 0;
+  double doubleDerivative = 0, term = 0;
   for (int i = 0; i < numParticles; i++){
     for (int j = 0; j < numDimensions; j++){
       tmpParticlePointers[i]->adjustPosition(h, j);
