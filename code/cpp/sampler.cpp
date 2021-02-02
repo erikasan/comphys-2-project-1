@@ -20,6 +20,28 @@ Sampler::Sampler(System* system) {
 void Sampler::setNumberOfMetropolisSteps(int steps) {
     m_numberOfMetropolisSteps = steps;
 }
+void Sampler::sample_numerically(bool acceptedStep){
+  // Make sure the sampling variable(s) are initialized at the first step.
+  if (m_stepNumber == 0) {
+      m_cumulativeEnergy = 0;
+      m_cumulkinetic=0;
+      m_cumulpotential=0;
+  }
+
+  /* Here you should sample all the interesting things you want to measure.
+   * Note that there are (way) more than the single one here currently.
+   */
+   double localPotentialEnergy= m_system->getHamiltonian()->
+                       computeLocalPotentialEnergy(m_system->getParticles());
+  double localKineticEnergy= m_system->getHamiltonian()->
+                      computeLocalKineticEnergyNumerically(m_system->getParticles());
+  double localEnergy = m_system->getHamiltonian()->
+                       computeLocalEnergyNumerically(m_system->getParticles());
+  m_cumulativeEnergy  += localEnergy;
+  m_cumulkinetic+=localKineticEnergy;
+  m_cumulpotential+=localPotentialEnergy;
+  m_stepNumber++;
+}
 
 void Sampler::sample(bool acceptedStep) {
     // Make sure the sampling variable(s) are initialized at the first step.

@@ -5,6 +5,7 @@ public:
     Sampler(class System* system);
     void setNumberOfMetropolisSteps(int steps);
     void sample(bool acceptedStep);
+    void sample_numerically(bool acceptedStep);
     void printOutputToFile();
     void printOutputToTerminal();
     void computeAverages();

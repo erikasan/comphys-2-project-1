@@ -5,7 +5,7 @@
 #include "../system.h"
 #include "../particle.h"
 #include <iostream>
-
+using namespace std;
 SimpleGaussian::SimpleGaussian(System* system, double alpha) : WaveFunction(system) {
     assert(alpha >= 0);
     m_numberOfParameters = 1;
@@ -67,7 +67,7 @@ double SimpleGaussian::computeDoubleDerivativeNumerically(std::vector<class Part
   int numParticles  = m_system->getNumberOfParticles();
   int numDimensions = m_system->getNumberOfDimensions();
 
-  double h       = 1e-4; // Maybe move this somewhere else?
+  double h       = 1e-5; // Maybe move this somewhere else?
   double minus2h = -2*h;
 
   std::vector<class Particle>  tmpParticles;
@@ -96,13 +96,25 @@ double SimpleGaussian::computeDoubleDerivativeNumerically(std::vector<class Part
   double doubleDerivative = 0, term = 0;
   for (int i = 0; i < numParticles; i++){
     for (int j = 0; j < numDimensions; j++){
+      particles[i]->adjustPosition(h, j);
+      term += SimpleGaussian::evaluate(particles, i);
+      particles[i]->adjustPosition(minus2h, j);
+      term += SimpleGaussian::evaluate(particles, i);
+      //cout << "breaker2 "<< tmpParticlePointers[i]->getPosition().size() << endl; error?
+      particles[i]->adjustPosition(h, j);
+      /*
       tmpParticlePointers[i]->adjustPosition(h, j);
       term += SimpleGaussian::evaluate(tmpParticlePointers, i);
       tmpParticlePointers[i]->adjustPosition(minus2h, j);
+      cout << "breaker1 "<< j << endl;
       term += SimpleGaussian::evaluate(tmpParticlePointers, i);
+      //cout << "breaker2 "<< tmpParticlePointers[i]->getPosition().size() << endl; error?
       tmpParticlePointers[i]->adjustPosition(h, j);
     }
     term /= SimpleGaussian::evaluate(tmpParticlePointers, i);
+      */
+    }
+    term /= SimpleGaussian::evaluate(particles, i);
     term -= 6;
     doubleDerivative += term;
     term = 0;

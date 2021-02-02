@@ -8,8 +8,9 @@
 #include "Math/random.h"
 #include <iostream>
 #include <chrono>
-
+#include <string>
 using namespace std::chrono;
+using namespace std;
 System::System() {
     m_random = new Random(); // Initialize System with a random value
 }
@@ -44,7 +45,7 @@ bool System::metropolisStep() {
     return false;
 }
 
-void System::runMetropolisSteps(int numberOfMetropolisSteps) {
+void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output,string sample_type) {
     m_particles                 = m_initialState->getParticles();
     m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
@@ -60,15 +61,23 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
          * are equilibration steps; m_equilibrationFraction.
          */
         if (i > (int)(m_equilibrationFraction*numberOfMetropolisSteps)){
-          m_sampler->sample(acceptedStep);
+          if (sample_type.compare("numerically")==0){
+            m_sampler->sample_numerically(acceptedStep);
+
+          }
+          else{
+            m_sampler->sample(acceptedStep);
+          }
         }
     }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     m_duration=duration.count();
     m_sampler->computeAverages();
-    m_sampler->printOutputToTerminal();
-    m_sampler->printOutputToFile();
+    if (desire_output){
+      m_sampler->printOutputToTerminal();
+      m_sampler->printOutputToFile();
+    }
 }
 
 void System::setNumberOfParticles(int numberOfParticles) {

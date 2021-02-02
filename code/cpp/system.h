@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
-#include <Math/random.h>
-
+#include "Math/random.h"
+#include <string>
 class System {
 public:
     System();
     System(int seed);
     bool metropolisStep             ();
-    void runMetropolisSteps         (int numberOfMetropolisSteps);
+    void runMetropolisSteps         (int numberOfMetropolisSteps, bool desire_output, std::string sample_type);
     void setNumberOfParticles       (int numberOfParticles);
     void setNumberOfDimensions      (int numberOfDimensions);
     void setStepLength              (double stepLength);

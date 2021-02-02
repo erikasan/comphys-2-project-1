@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include "system.h"
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
@@ -8,12 +8,12 @@
 #include "InitialStates/initialstate.h"
 #include "InitialStates/randomuniform.h"
 #include "Math/random.h"
-
+#include <string>
 using namespace std;
 
 int main(int argc, char *argv[]) {
     // Seed for the random number generator
-    int seed = 2020;
+    int seed = 020;
 
     int numberOfDimensions  = 3;
     int numberOfParticles   = 10;
@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     double alpha            = omega*0.5-5;          // Variational parameter.
     double stepLength       = 0.1;          // Metropolis step length.
     double equilibration    = 0.1;          // Amount of the total steps used
+
     try{
         numberOfDimensions=atoi(argv[1]);
         numberOfParticles   = atoi(argv[2]);
@@ -35,13 +36,14 @@ int main(int argc, char *argv[]) {
     {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
     }
-
+    string sample_type="numerically";
     System* system = new System(seed);
     system->setHamiltonian              (new HarmonicOscillator(system, omega));
     system->setWaveFunction             (new SimpleGaussian(system, alpha));
     system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction    (equilibration);
     system->setStepLength               (stepLength);
-    system->runMetropolisSteps          (numberOfSteps);
+    system->runMetropolisSteps          (numberOfSteps,true,sample_type);
     return 0;
 }
+*/
