@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <vector>
 #include "sampler.h"
@@ -72,6 +73,22 @@ void Sampler::printOutputToTerminal() {
     cout << "Potential Energy: " << m_potentialenergy <<endl;
     cout << "Duration: " << dur << " ms" << endl;
     cout << endl;
+}
+void Sampler::printOutputToFile(){
+  int     np = m_system->getNumberOfParticles();
+  int     nd = m_system->getNumberOfDimensions();
+  int     ms = m_system->getNumberOfMetropolisSteps();
+  int     dur= m_system->getDuration()/(1000);
+  double  omega=0; // UNFINISHED
+  double  ef = m_system->getEquilibrationFraction();
+  std::vector<double> pa = m_system->getWaveFunction()->getParameters();
+  std::ofstream myfile;
+  myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+  myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ms*ef<<",";
+  myfile <<pa.at(0)<<","<<omega<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<dur<<endl;
+  myfile.close();
+  std::cout << "written to file...?"<<endl;
+  return;
 }
 
 void Sampler::computeAverages() {

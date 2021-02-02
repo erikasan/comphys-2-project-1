@@ -68,6 +68,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
     m_duration=duration.count();
     m_sampler->computeAverages();
     m_sampler->printOutputToTerminal();
+    m_sampler->printOutputToFile();
 }
 
 void System::setNumberOfParticles(int numberOfParticles) {
