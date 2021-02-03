@@ -46,7 +46,7 @@ file(
   GLOB SOURCES_Test "InitialStates/*.cpp"
   GLOB SOURCES_Test "Math/*.cpp"
   GLOB SOURCES_Test "WaveFunctions/*.cpp"
-  GLOB SOURCES "main/unit_testing.cpp"
+  GLOB SOURCES_Test "main/unit_testing.cpp"
 )
 
 # Create executable called "vmc"
