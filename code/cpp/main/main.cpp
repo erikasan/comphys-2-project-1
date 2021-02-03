@@ -1,4 +1,4 @@
-/*#include <iostream>
+#include <iostream>
 #include "system.h"
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
@@ -46,4 +46,3 @@ int main(int argc, char *argv[]) {
     system->runMetropolisSteps          (numberOfSteps,true,sample_type);
     return 0;
 }
-*/

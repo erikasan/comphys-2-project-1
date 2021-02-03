@@ -33,13 +33,22 @@ include_directories(
 
 # Add sources from all directories
 file(
+    GLOB SOURCES "main/main.cpp"
     GLOB SOURCES "*.cpp"
     GLOB SOURCES "Hamiltonians/*.cpp"
     GLOB SOURCES "InitialStates/*.cpp"
     GLOB SOURCES "Math/*.cpp"
     GLOB SOURCES "WaveFunctions/*.cpp"
 )
-
+file(
+  GLOB SOURCES_Test "*.cpp"
+  GLOB SOURCES_Test "Hamiltonians/*.cpp"
+  GLOB SOURCES_Test "InitialStates/*.cpp"
+  GLOB SOURCES_Test "Math/*.cpp"
+  GLOB SOURCES_Test "WaveFunctions/*.cpp"
+  GLOB SOURCES "main/unit_testing.cpp"
+)
 
 # Create executable called "vmc"
 add_executable(vmc ${SOURCES})
+add_executable(test ${SOURCES_Test})
