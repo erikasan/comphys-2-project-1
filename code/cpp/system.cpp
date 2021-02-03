@@ -97,7 +97,9 @@ void System::setEquilibrationFraction(double equilibrationFraction) {
     assert(equilibrationFraction >= 0);
     m_equilibrationFraction = equilibrationFraction;
 }
-
+void System::setOmega(double omega){
+  m_omega=omega;
+}
 void System::setHamiltonian(Hamiltonian* hamiltonian) {
     m_hamiltonian = hamiltonian;
 }

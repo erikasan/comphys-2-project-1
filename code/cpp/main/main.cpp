@@ -36,8 +36,9 @@ int main(int argc, char *argv[]) {
     {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
     }
-    string sample_type="numerically";
+    string sample_type="0";
     System* system = new System(seed);
+    system->setOmega(omega);
     system->setHamiltonian              (new HarmonicOscillator(system, omega));
     system->setWaveFunction             (new SimpleGaussian(system, alpha));
     system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));

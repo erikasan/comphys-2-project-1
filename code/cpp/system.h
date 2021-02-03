@@ -25,7 +25,8 @@ public:
     int getNumberOfMetropolisSteps()    { return m_numberOfMetropolisSteps; }
     int getDuration()                   { return m_duration;}
     double getEquilibrationFraction()   { return m_equilibrationFraction; }
-
+    double getOmega()                   { return m_omega;}
+    void setOmega                   (double omega);
 private:
     int                             m_numberOfParticles = 0;
     int                             m_numberOfDimensions = 0;
@@ -33,6 +34,7 @@ private:
     double                          m_equilibrationFraction = 0.0;
     double                          m_stepLength = 0.1;
     int                             m_duration=0;
+    double                          m_omega=0.0;
     class WaveFunction*             m_waveFunction = nullptr;
     class Hamiltonian*              m_hamiltonian = nullptr;
     class InitialState*             m_initialState = nullptr;

@@ -35,8 +35,7 @@ void Sampler::sample_numerically(bool acceptedStep){
                        computeLocalPotentialEnergy(m_system->getParticles());
   double localKineticEnergy= m_system->getHamiltonian()->
                       computeLocalKineticEnergyNumerically(m_system->getParticles());
-  double localEnergy = m_system->getHamiltonian()->
-                       computeLocalEnergyNumerically(m_system->getParticles());
+  double localEnergy = localKineticEnergy+localPotentialEnergy;
   m_cumulativeEnergy  += localEnergy;
   m_cumulkinetic+=localKineticEnergy;
   m_cumulpotential+=localPotentialEnergy;
@@ -59,8 +58,7 @@ void Sampler::sample(bool acceptedStep) {
     double localKineticEnergy= m_system->getHamiltonian()->
                         computeLocalKineticEnergy(m_system->getParticles());
 
-    double localEnergy = m_system->getHamiltonian()->
-                         computeLocalEnergy(m_system->getParticles());
+    double localEnergy = localPotentialEnergy+localKineticEnergy;
     m_cumulativeEnergy  += localEnergy;
     m_cumulkinetic+=localKineticEnergy;
     m_cumulpotential+=localPotentialEnergy;
@@ -101,13 +99,13 @@ void Sampler::printOutputToFile(){
   int     nd = m_system->getNumberOfDimensions();
   int     ms = m_system->getNumberOfMetropolisSteps();
   int     dur= m_system->getDuration()/(1000);
-  double  omega=0; // UNFINISHED
+  double  omeg=m_system->getOmega(); // UNFINISHED
   double  ef = m_system->getEquilibrationFraction();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream myfile;
   myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
   myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ms*ef<<",";
-  myfile <<pa.at(0)<<","<<omega<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<dur<<endl;
+  myfile <<pa.at(0)<<","<<omeg<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<dur<<endl;
   myfile.close();
   std::cout << "written to file...?"<<endl;
   return;

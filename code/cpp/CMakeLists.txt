@@ -40,7 +40,7 @@ file(
     GLOB SOURCES "WaveFunctions/*.cpp"
 )
 add_library(mylib STATIC ${SOURCES})
-# Create executable called "vmc"
+# Create executables called "vmc" and "test"
 add_executable(vmc main/main.cpp)
 add_executable(test main/unit_testing.cpp)
 target_link_libraries(test mylib)
