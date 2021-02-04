@@ -20,7 +20,12 @@ void Sampler::setNumberOfMetropolisSteps(int steps) {
     m_numberOfMetropolisSteps = steps;
 }
 
+
 void Sampler::sample(bool acceptedStep) {
+    // NOTE: acceptedStep is never actually used in this function,
+    //       which means that the energies are sampled regardless
+    //       of acceptedStep being true or not.
+    
     // Make sure the sampling variable(s) are initialized at the first step.
     if (m_stepNumber == 0) {
         m_cumulativeEnergy = 0;
