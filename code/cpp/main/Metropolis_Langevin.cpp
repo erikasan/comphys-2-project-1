@@ -19,10 +19,11 @@ int main(int argc, char *argv[]) {
     int numberOfParticles   = 10;
     int numberOfSteps       = (int) 1e6;
     double omega            = 20;          // Oscillator frequency.
-    double alpha            = omega*0.5-5;          // Variational parameter.
+    double alpha            = omega*0.5;          // Variational parameter.
     double stepLength       = 0.1;          // Metropolis step length.
     double equilibration    = 0.1;          // Amount of the total steps used
 
+    if (argc>1){
     try{
         numberOfDimensions=atoi(argv[1]);
         numberOfParticles   = atoi(argv[2]);
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]) {
     catch (int e)
     {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
+    }
     }
     System* system = new System(seed);
     system->setOmega(omega);

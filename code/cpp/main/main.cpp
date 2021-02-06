@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     double alpha            = omega*0.5-5;          // Variational parameter.
     double stepLength       = 0.1;          // Metropolis step length.
     double equilibration    = 0.1;          // Amount of the total steps used
-
+    if (argc>1){
     try{
         numberOfDimensions=atoi(argv[1]);
         numberOfParticles   = atoi(argv[2]);
@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
     catch (int e)
     {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
+    }
     }
     string sample_type="0";
     System* system = new System(seed);
