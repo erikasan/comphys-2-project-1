@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 # Check if the user has specified a build type via the command line, e.g., (in the
 # build-directory)
 #
-#   $cmake .. -DCMAKE_BUILD_TYPE=Release
+#set(CMAKE_BUILD_TYPE Release)
 #
 # if not, set Debug as the default build type.
 if(NOT CMAKE_BUILD_TYPE)
@@ -43,5 +43,7 @@ add_library(mylib STATIC ${SOURCES})
 # Create executables called "vmc" and "test"
 add_executable(vmc main/main.cpp)
 add_executable(test main/unit_testing.cpp)
+add_executable(metropolis_langevin main/Metropolis_Langevin.cpp)
 target_link_libraries(test mylib)
 target_link_libraries(vmc mylib)
+target_link_libraries(metropolis_langevin mylib)

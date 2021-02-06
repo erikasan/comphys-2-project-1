@@ -35,7 +35,28 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles, int part
      double radius = particles[particle_id]->getRadiussquared();
      return exp(-alpha*radius);
 }
-
+std::vector<double> SimpleGaussian::quantumForce(std::vector<class Particle*> particles){
+  std::vector<double> qForce = std::vector<double>();
+  double alpha = m_parameters[0];
+  qForce.reserve(m_system->getNumberOfDimensions()*m_system->getNumberOfParticles());
+  for(int i=0; i< m_system->getNumberOfParticles(); i++){
+    std::vector<double> particle_position=particles[i]->getPosition();
+    for (int j=0; j < m_system->getNumberOfDimensions(); j++) {
+        qForce.push_back(-4*alpha*particle_position[j]);
+    }
+  }
+  return qForce;
+}
+std::vector<double> SimpleGaussian::quantumForce(std::vector<class Particle*> particles, int particle_id){
+     double alpha = m_parameters[0];
+     std::vector<double> qForce = std::vector<double>();
+     qForce.reserve(m_system->getNumberOfDimensions());
+     std::vector<double> particle_position=particles[particle_id]->getPosition();
+     for (int j=0; j < m_system->getNumberOfDimensions(); j++) {
+         qForce.push_back(-4*alpha*particle_position[j]);
+     }
+     return qForce;
+}
 double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
     /* All wave functions need to implement this function, so you need to
      * find the double derivative analytically. Note that by double derivative,

@@ -24,21 +24,23 @@ void Sampler::sample_numerically(bool acceptedStep){
   // Make sure the sampling variable(s) are initialized at the first step.
   if (m_stepNumber == 0) {
       m_cumulativeEnergy = 0;
-      m_cumulkinetic=0;
-      m_cumulpotential=0;
+      m_cumulkinetic     = 0;
+      m_cumulpotential   = 0;
   }
 
   /* Here you should sample all the interesting things you want to measure.
    * Note that there are (way) more than the single one here currently.
    */
-   double localPotentialEnergy= m_system->getHamiltonian()->
-                       computeLocalPotentialEnergy(m_system->getParticles());
-  double localKineticEnergy= m_system->getHamiltonian()->
-                      computeLocalKineticEnergyNumerically(m_system->getParticles());
+  double localPotentialEnergy = m_system->getHamiltonian()->
+                      computeLocalPotentialEnergy(m_system->getParticles());
+
+  double localKineticEnergy = m_system->getHamiltonian()->
+                      computeLocalKineticEnergy(m_system->getParticles());
   double localEnergy = localKineticEnergy+localPotentialEnergy;
+
   m_cumulativeEnergy  += localEnergy;
-  m_cumulkinetic+=localKineticEnergy;
-  m_cumulpotential+=localPotentialEnergy;
+  m_cumulkinetic      += localKineticEnergy;
+  m_cumulpotential    += localPotentialEnergy;
   m_stepNumber++;
 }
 
@@ -66,13 +68,13 @@ void Sampler::sample(bool acceptedStep) {
 }
 
 void Sampler::printOutputToTerminal() {
-    int     np = m_system->getNumberOfParticles();
-    int     nd = m_system->getNumberOfDimensions();
-    int     ms = m_system->getNumberOfMetropolisSteps();
-    int     p  = m_system->getWaveFunction()->getNumberOfParameters();
-    int     dur= m_system->getDuration()/(1000);
+    int    np = m_system->getNumberOfParticles();
+    int    nd = m_system->getNumberOfDimensions();
+    int    ms = m_system->getNumberOfMetropolisSteps();
+    int    p  = m_system->getWaveFunction()->getNumberOfParameters();
+    int    dur= m_system->getDuration()/(1000);
+    double ef = m_system->getEquilibrationFraction();
 
-    double  ef = m_system->getEquilibrationFraction();
     std::vector<double> pa = m_system->getWaveFunction()->getParameters();
     cout << endl;
     cout << "  -- System info -- " << endl;
@@ -95,12 +97,13 @@ void Sampler::printOutputToTerminal() {
     cout << endl;
 }
 void Sampler::printOutputToFile(){
-  int     np = m_system->getNumberOfParticles();
-  int     nd = m_system->getNumberOfDimensions();
-  int     ms = m_system->getNumberOfMetropolisSteps();
-  int     dur= m_system->getDuration()/(1000);
+  int np  = m_system->getNumberOfParticles();
+  int nd  = m_system->getNumberOfDimensions();
+  int ms  = m_system->getNumberOfMetropolisSteps();
+  int p   = m_system->getWaveFunction()->getNumberOfParameters();
+  int dur = m_system->getDuration()/(1000);
   double  omeg=m_system->getOmega(); // UNFINISHED
-  double  ef = m_system->getEquilibrationFraction();
+  double ef = m_system->getEquilibrationFraction();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream myfile;
   myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
@@ -112,11 +115,9 @@ void Sampler::printOutputToFile(){
 }
 
 void Sampler::computeAverages() {
-    /* Compute the averages of the sampled quantities. You need to think
-     * thoroughly through what is written here currently; is this correct?
-     */
-    double steps =m_system->getNumberOfMetropolisSteps()*(1-m_system->getEquilibrationFraction());
-    m_energy = m_cumulativeEnergy / steps;
-    m_kineticenergy= m_cumulkinetic / steps;
-    m_potentialenergy= m_cumulpotential / steps;
+    /* Compute the averages of the sampled quantities.*/
+    double steps = m_system->getNumberOfMetropolisSteps()*(1-m_system->getEquilibrationFraction());
+    m_energy = m_cumulativeEnergy/steps;
+    m_kineticenergy = m_cumulkinetic/steps;
+    m_potentialenergy = m_cumulpotential/steps;
 }

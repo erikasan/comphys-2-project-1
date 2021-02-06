@@ -7,7 +7,9 @@ public:
     System();
     System(int seed);
     bool metropolisStep             ();
+    bool metropolis_LangevinStep    ();
     void runMetropolisSteps         (int numberOfMetropolisSteps, bool desire_output, std::string sample_type);
+    void runMetropolisLangevinSteps (int numberOfMetropolisSteps, bool desire_output);
     void setNumberOfParticles       (int numberOfParticles);
     void setNumberOfDimensions      (int numberOfDimensions);
     void setStepLength              (double stepLength);
@@ -33,6 +35,7 @@ private:
     int                             m_numberOfMetropolisSteps = 0;
     double                          m_equilibrationFraction = 0.0;
     double                          m_stepLength = 0.1;
+    double                          m_stepLengthRoot=0.01;
     int                             m_duration=0;
     double                          m_omega=0.0;
     class WaveFunction*             m_waveFunction = nullptr;

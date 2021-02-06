@@ -9,4 +9,6 @@ public:
     double computeDoubleDerivative(std::vector<class Particle*> particles);
     double computeDoubleDerivative(std::vector<class Particle*> particles, int particle_id);
     double computeDoubleDerivativeNumerically(std::vector<class Particle*> particles);
+    std::vector<double> quantumForce(std::vector<class Particle*> particles);
+    std::vector<double> quantumForce(std::vector<class Particle*> particles, int particle_id);
 };
