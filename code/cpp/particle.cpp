@@ -4,6 +4,11 @@
 Particle::Particle() {
 }
 
+Particle::Particle(const Particle &particle){
+  m_numberOfDimensions = particle.m_numberOfDimensions;
+  m_position = particle.m_position;
+}
+
 void Particle::setPosition(const std::vector<double> &position) {
     assert(position.size() == (unsigned int) m_numberOfDimensions);
     m_position = position;
