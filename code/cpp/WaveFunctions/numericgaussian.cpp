@@ -1,12 +1,11 @@
 #include "numericgaussian.h"
+#include "../system.h"
+#include "../particle.h"
+
+
 
 double NumericGaussian::computeDoubleDerivative(std::vector<class Particle*> particles){
-  /* NOTE: This works for a general wavefunction with the only requirement
-     that it is separable with respect to the particles (a property utilized to
-     make the computation more efficient). The function could therefore
-     arguably be moved to a superclass, say the WaveFunction superclass or
-     the Hamiltonian superclass.
-  */
+
 
   int numParticles  = m_system->getNumberOfParticles();
   int numDimensions = m_system->getNumberOfDimensions();
