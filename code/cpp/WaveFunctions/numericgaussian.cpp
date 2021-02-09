@@ -19,11 +19,12 @@ double NumericGaussian::computeDoubleDerivative(std::vector<class Particle*> par
 
     for (int j = 0; j < numDimensions; j++){
       particles[i]->adjustPosition(h, j);
-      term += NumericGaussian::evaluate(particles, i);
+      term +=evaluate(particles, i);
       particles[i]->adjustPosition(minus2h, j);
-      term += SimpleGaussian::evaluate(particles, i);
+      term +=evaluate(particles, i);
       particles[i]->adjustPosition(h, j);
     }
+    term/=evaluate(particles,i);
     doubleDerivative += term;
     term = 0;
   }

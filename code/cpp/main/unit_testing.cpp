@@ -13,6 +13,7 @@ c++ -o test.exe unit_testing.o VMC.o System.o functions.o tests_main.o
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
 #include "WaveFunctions/simplegaussian.h"
+#include "WaveFunctions/numericgaussian.h"
 #include "Hamiltonians/hamiltonian.h"
 #include "Hamiltonians/harmonicoscillator.h"
 #include "InitialStates/initialstate.h"
@@ -56,7 +57,7 @@ TEST_CASE("Evaluate wether numerical also works"){
   string sample_type="numerically";
   System* system = new System(seed);
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
-  system->setWaveFunction             (new SimpleGaussian(system, alpha));
+  system->setWaveFunction             (new NumericGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
   system->setEquilibrationFraction    (equilibration);
   system->setStepLength               (stepLength);
