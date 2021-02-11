@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
     }
     }
-    string sample_type="0";
     System* system = new System(seed);
     system->setOmega(omega);
     system->setHamiltonian              (new HarmonicOscillator(system, omega));
@@ -46,6 +45,6 @@ int main(int argc, char *argv[]) {
     system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction    (equilibration);
     system->setStepLength               (stepLength);
-    system->runMetropolisSteps          (numberOfSteps,true,sample_type);
+    system->runMetropolisSteps          (numberOfSteps,true);
     return 0;
 }

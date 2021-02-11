@@ -39,7 +39,7 @@ TEST_CASE("Test that the analytical value matches the calculated value when the 
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
   system->setEquilibrationFraction    (equilibration);
   system->setStepLength               (stepLength);
-  system->runMetropolisSteps          (numberOfSteps,false,sample_type);
+  system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
   double potential_energy_expected=omega*numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);
@@ -54,14 +54,13 @@ TEST_CASE("Evaluate wether numerical also works"){
   double alpha            = omega*0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
-  string sample_type="numerically";
   System* system = new System(seed);
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new NumericGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
   system->setEquilibrationFraction    (equilibration);
   system->setStepLength               (stepLength);
-  system->runMetropolisSteps          (numberOfSteps,false,sample_type);
+  system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
   double potential_energy_expected=omega*numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);

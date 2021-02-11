@@ -93,7 +93,7 @@ void System::runMetropolisLangevinSteps(int numberOfMetropolisSteps, bool desire
     m_sampler->printOutputToFile();
   }
 }
-void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output,string sample_type) {
+void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output) {
     m_particles                 = m_initialState->getParticles();
     m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
@@ -109,13 +109,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output,
          * are equilibration steps; m_equilibrationFraction.
          */
         if (i > (int)(m_equilibrationFraction*numberOfMetropolisSteps)){
-          if (sample_type.compare("numerically")==0){
-            m_sampler->sample_numerically(acceptedStep);
-
-          }
-          else{
-            m_sampler->sample(acceptedStep);
-          }
+          m_sampler->sample(acceptedStep);
         }
     }
     auto stop = high_resolution_clock::now();
