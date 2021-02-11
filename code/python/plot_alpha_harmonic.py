@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import os, sys
 import subprocess
 import pandas as pd
+import seaborn as sns
+
 number_particles=10
 number_dimensions=3;
 N = int(1e5)
@@ -22,6 +24,7 @@ energies=infile["energy"][-len(alphas):]
 kinetic_energies=infile["kin_en"][-len(alphas):]
 potential_energies=infile["pot_en"][-len(alphas):]
 
+sns.set()
 plt.plot(alphas,energies,label=r"$E_{TOT}$")
 plt.plot(alphas,potential_energies,label=r"$V$")
 plt.plot(alphas,kinetic_energies,label=r"$K$")
