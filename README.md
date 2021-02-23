@@ -1,2 +1,10 @@
 # comphys-2-project1
 electric boogaloo
+
+
+TODO for the annoying wave function:
+- Implement proper initialization and update scheme for the distance matrix
+- Implement the actual energy expression. So far, I only have the quantum force.
+- Lots and lots (and lots) of optimization: Make the distance matrix 4D (x,y,z, total), make (maybe) a quantum force matrix. 
+- Test if everything works. One way to test is to set a=0, which should return the original system.
+- I have not yet written a single comment. Reminder to myself: Get drunk (to ease the pain), then write comments.
