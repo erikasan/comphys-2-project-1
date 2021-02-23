@@ -82,7 +82,7 @@ TEST_CASE("Evaluate wether importance sampling works"){
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
   system->setEquilibrationFraction    (equilibration);
   system->setStepLength               (stepLength);
-  system->runMetropolisLangevinSteps  (numberOfSteps,true);
+  system->runMetropolisLangevinSteps  (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
   double potential_energy_expected=numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);

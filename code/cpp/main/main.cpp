@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     // Seed for the random number generator
-    int seed = 020;
+    int seed = 2020;
 
     int numberOfDimensions  = 3;
     int numberOfParticles   = 1;
