@@ -29,7 +29,7 @@ TEST_CASE("Test that the analytical value matches the calculated value when the 
   int numberOfParticles   = 10;
   int numberOfSteps       = (int) 1e6;
   double omega            = 10;          // Oscillator frequency.
-  double alpha            = omega*0.5;          // Variational parameter.
+  double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
   string sample_type="not_numerically";
@@ -41,7 +41,7 @@ TEST_CASE("Test that the analytical value matches the calculated value when the 
   system->setStepLength               (stepLength);
   system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
-  double potential_energy_expected=omega*numberOfDimensions*numberOfParticles*0.5;
+  double potential_energy_expected=numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);
 }
 TEST_CASE("Evaluate wether numerical also works"){
@@ -51,7 +51,7 @@ TEST_CASE("Evaluate wether numerical also works"){
   int numberOfParticles   = 10;
   int numberOfSteps       = (int) 1e6;
   double omega            = 10;          // Oscillator frequency.
-  double alpha            = omega*0.5;          // Variational parameter.
+  double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
   System* system = new System(seed);
@@ -62,6 +62,28 @@ TEST_CASE("Evaluate wether numerical also works"){
   system->setStepLength               (stepLength);
   system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
-  double potential_energy_expected=omega*numberOfDimensions*numberOfParticles*0.5;
+  double potential_energy_expected=numberOfDimensions*numberOfParticles*0.5;
+  REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);
+}
+TEST_CASE("Evaluate wether importance sampling works"){
+  int seed = 020;
+
+  int numberOfDimensions  = 3;
+  int numberOfParticles   = 10;
+  int numberOfSteps       = (int) 1e5;
+  double omega            = 20;          // Oscillator frequency.
+  double alpha            = 0.5;          // Variational parameter.
+  double stepLength       = 0.1;          // Metropolis step length.
+  double equilibration    = 0.1;          // Amount of the total steps used
+  System* system = new System(seed);
+  system->setOmega(omega);
+  system->setHamiltonian              (new HarmonicOscillator(system, omega));
+  system->setWaveFunction             (new SimpleGaussian(system, alpha));
+  system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
+  system->setEquilibrationFraction    (equilibration);
+  system->setStepLength               (stepLength);
+  system->runMetropolisLangevinSteps  (numberOfSteps,true);
+  double potential_energy_calculated=system->getSampler()->getEnergy();
+  double potential_energy_expected=numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);
 }

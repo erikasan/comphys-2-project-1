@@ -24,7 +24,7 @@ double HarmonicOscillator::computeLocalPotentialEnergy(std::vector<Particle*> pa
   for (int i = 0; i < m_system->getNumberOfParticles(); i++){
     potentialEnergy += particles[i]->getRadiussquared();
   }
-  potentialEnergy *= 0.5*m_omega*m_omega;
+  potentialEnergy *= 0.5;
   return potentialEnergy;
 }
 
