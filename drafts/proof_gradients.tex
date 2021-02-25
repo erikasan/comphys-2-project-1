@@ -159,5 +159,42 @@ and again, we get equivalent expressions for the second partial derivatives with
 \begin{equation*}
     \nabla_k^2 u(r_{kl})=u''(r_{ki})\frac{r_{ki}^2}{r_{ki}^2}+u'(r_{ki})\left(\frac{3}{r_{ki}}-\frac{r_{ki}^2}{r_{ki}^3}\right)= u''(r_{kj})+\frac{2}{r_{kj}}u'(r_{kj})
 \end{equation*}
-Inserting this in the expression for the second derivative, we get Morten's result.
-\end{document}
+Inserting this in the expression for the second derivative, we get Morten's result.\\
+Here are the analytic expressions for the quantum force and the second derivative:
+The quantum force $\frac{2\nabla\psi}{\psi}$ for particle $k$ is given by:
+\begin{equation*}
+\begin{split}
+ \frac{2\nabla_k\psi}{\psi} &=\frac{2\nabla_k\phi(\mathbf{r}_k)\left[\prod_{i\ne k}\phi(\mathbf{r}_i)\right]\exp{\left(\sum_{j<m}u(r_{jm})\right)} +  2\left[\prod_i\phi(\mathbf{r}_i)\right]
+  \exp{\left(\sum_{j<m}u(r_{jm})\right)}\sum_{l\ne k}\nabla_k u(r_{kl})}{\psi}\\
+  &= \frac{-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)\psi+2\psi\sum_{l\ne k}\nabla_k u(r_{kl})}{\psi}\\
+  &=-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)+2\sum_{l\ne k}\frac{(\mathbf{r}_k-\mathbf{r}_l)}{r_{kl}}u'(r_{kl})\\
+  &= -4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)+2\sum_{l\ne k}\frac{(\mathbf{r}_k-\mathbf{r}_l)}{r_{kl}}\frac{-a}{ar_{kl}-r^2_{kl}}\\
+  &= -4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)-\sum_{l\ne k}\frac{2a}{ar^2_{kl}-r^3_{kl}}{(\mathbf{r}_k-\mathbf{r}_l)}
+\end{split}
+  \end{equation*}
+Now let's have a good look at the best that we call second derivative / kinetic energy. 
+We have the formula given by
+\begin{align*}
+\frac{1}{\Psi_T(\mathbf{r})}\nabla_k^2\Psi_T(\mathbf{r}) &=
+   \frac{\nabla_k^2\phi(\mathbf{r}_k)}{\phi(\mathbf{r}_k)}
+   + 2\frac{\nabla_k\phi(\mathbf{r}_k)}{\phi(\mathbf{r}_k)}\cdot 
+   \sum_{l\ne k}\nabla_k u(r_{kl})
+   \\
+   &\qquad
+   + \sum_{l\ne k}\nabla_k u(r_{kl}) \cdot \sum_{i\ne k}\nabla_k u(r_{ki})
+   \\
+   &\qquad
+   + \sum_{l\ne k}\nabla_k^2 u(r_{kl})
+   \\
+   &=\left[ 4\alpha^2\left[x_k^2+y_k^2+\beta^2z_k^2\right]-4\alpha-2\alpha\beta\right]-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)\cdot \sum_{j\ne k}\frac{-a}{ar^2_{kj}-r^3_{kj}}{(\mathbf{r}_k-\mathbf{r}_j)}
+   \\
+   &\qquad + \sum_{k \ne i}\sum_{k \ne j}\frac{(\mathbf{r}_k-\mathbf{r}_i)\cdot(\mathbf{r}_k-\mathbf{r}_i)}{r_{ki}r_{kj}}\frac{a^2}{(ar^2_{kj}-r^3_{kj})(ar^2_{ki}-r^3_{ki})}
+   \\
+   &\qquad + \sum_{k \ne j}\frac{a(a-2r_{kj})}{r_{kj}^2(a-r_{kj})^2}-\frac{2a}{(ar^2_{kj}-r^3_{kj})}\\
+   &=\left[ 4\alpha^2\left[x_k^2+y_k^2+\beta^2z_k^2\right]-4\alpha-2\alpha\beta\right]-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)\cdot \sum_{j\ne k}\frac{-a}{ar^2_{kj}-r^3_{kj}}{(\mathbf{r}_k-\mathbf{r}_j)}
+   \\
+   &\qquad + 2\sum_{k \ne i,k \ne j, i\leq j} \frac{(\mathbf{r}_k-\mathbf{r}_i)\cdot(\mathbf{r}_k-\mathbf{r}_i)}{r_{ki}r_{kj}}\frac{a^2}{(ar^2_{kj}-r^3_{kj})(ar^2_{ki}-r^3_{ki})}
+   \\
+   &\qquad + \sum_{k \ne j}\frac{-a^2}{r_{kj}^2(a-r_{kj})^2}
+\end{align*}
+ \end{document}
