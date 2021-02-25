@@ -47,3 +47,10 @@ add_executable(metropolis_langevin main/Metropolis_Langevin.cpp)
 target_link_libraries(test mylib)
 target_link_libraries(vmc mylib)
 target_link_libraries(metropolis_langevin mylib)
+
+find_package(Armadillo REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
+add_executable(monster main/different_wavefunction.cpp)
+
+target_link_libraries(monster mylib)
+target_link_libraries(monster ${ARMADILLO_LIBRARIES})

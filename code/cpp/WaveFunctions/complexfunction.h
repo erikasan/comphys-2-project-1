@@ -1,9 +1,11 @@
 #pragma once
 #include "wavefunction.h"
 
-class ComplexFunction : public WaveFunction { //Gaussian thus extends WaveFunction
+class ComplexFunction : public WaveFunction { //ComplexFunction thus extends WaveFunction
 public:
     ComplexFunction(class System* system, double alpha);
+    void initiateDistances(std::vector<class Particle*> particles);
+    void updateDistances(std::vector<class Particle*> particles, int particle_id);
     double evaluate(std::vector<class Particle*> particles);
     double evaluate(std::vector<class Particle*> particles, int particle_id);
     virtual double computeDoubleDerivative(std::vector<class Particle*> particles);
@@ -24,4 +26,5 @@ private:
     double vectorProduct(std::vector<double> part1, std::vector<double> part2);
     double distance(std::vector<double> part1, std::vector<double> part2);
     std::vector<double> distance_vector(std::vector<double> part1, std::vector<double> part2);
+    void printMatrix(double **A, int n);
 };

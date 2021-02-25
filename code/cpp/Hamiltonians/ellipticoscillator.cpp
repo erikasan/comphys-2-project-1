@@ -16,7 +16,7 @@ double EllipticOscillator::computeLocalPotentialEnergy(std::vector<Particle*> pa
     for (int j=0;j<dimension-1;j++){
       potentialEnergy += position[j]*position[j];
     }
-    potentialEnergy+=position[dimension-1]*position[dimension-1]*gamma;
+    potentialEnergy+=position[dimension-1]*position[dimension-1]*gamma*gamma;
   }
   potentialEnergy *= 0.5;
   return potentialEnergy;

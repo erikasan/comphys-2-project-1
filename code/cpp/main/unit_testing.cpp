@@ -9,18 +9,18 @@ c++ -o test.exe unit_testing.o VMC.o System.o functions.o tests_main.o
 #include "catch.hpp"
 
 #include <iostream>
-#include "system.h"
-#include "particle.h"
-#include "WaveFunctions/wavefunction.h"
-#include "WaveFunctions/simplegaussian.h"
-#include "WaveFunctions/numericgaussian.h"
-#include "Hamiltonians/hamiltonian.h"
-#include "Hamiltonians/harmonicoscillator.h"
-#include "InitialStates/initialstate.h"
-#include "InitialStates/randomuniform.h"
-#include "Math/random.h"
-#include "sampler.h"
-#include "catch.hpp"
+#include "../system.h"
+#include "../particle.h"
+#include "../WaveFunctions/wavefunction.h"
+#include "../WaveFunctions/simplegaussian.h"
+#include "../WaveFunctions/numericgaussian.h"
+#include "../Hamiltonians/hamiltonian.h"
+#include "../Hamiltonians/harmonicoscillator.h"
+#include "../InitialStates/initialstate.h"
+#include "../InitialStates/randomuniform.h"
+#include "../Math/random.h"
+#include "../sampler.h"
+#include "../catch.hpp"
 using namespace std;
 TEST_CASE("Test that the analytical value matches the calculated value when the right omega is chosen"){
   int seed = 2020;

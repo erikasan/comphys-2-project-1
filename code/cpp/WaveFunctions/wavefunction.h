@@ -16,7 +16,8 @@ public:
     virtual double computeDoubleDerivative(std::vector<class Particle*> particles) = 0;
     virtual std::vector<double> quantumForce(std::vector<class Particle*> particles, int particle_id) {(void)particle_id;return quantumForce(particles);};
     virtual std::vector<double> quantumForce(std::vector<class Particle*> particles) = 0;
-
+    virtual void updateDistances(std::vector<class Particle*> particles,int particle_id){(void)particle_id;(void)particles;return;}
+    virtual void initiateDistances(std::vector<class Particle*> particles){(void)particles;return;}
 protected:
     int m_numberOfParameters = 0;
     std::vector<double> m_parameters = std::vector<double>();

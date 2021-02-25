@@ -30,6 +30,7 @@ bool System::metropolis_LangevinStep(){
     adjustment=0.5*quantumForceOld[i]*m_stepLength+m_random->nextGaussian(0,1)*m_stepLengthRoot;
     m_particles[particle_id]->adjustPosition(adjustment,i);
   }
+  m_waveFunction->updateDistances(m_particles,particle_id);
   std::vector<double> newPosition=m_particles[particle_id]->getPosition();
   double wf_new=m_waveFunction->evaluate(m_particles,particle_id);
   std::vector<double> quantumForceNew= m_waveFunction->quantumForce(m_particles,particle_id);
@@ -44,6 +45,7 @@ bool System::metropolis_LangevinStep(){
   }
   else{
       m_particles[particle_id]->setPosition(position);
+      m_waveFunction->updateDistances(m_particles,particle_id);
   }
   return false;
 }
@@ -62,6 +64,7 @@ bool System::metropolisStep() {
      for (int i=0; i<m_numberOfDimensions;i++){
        m_particles[particle_id]->adjustPosition(2*(m_random->nextDouble()-0.5)*m_stepLength,i);
      }
+     m_waveFunction->updateDistances(m_particles,particle_id);
      double wf_new=m_waveFunction->evaluate(m_particles,particle_id);
      //Change position randomly
      if ((wf_new*wf_new)/(wf_old*wf_old)> m_random->nextDouble() ){
@@ -69,6 +72,7 @@ bool System::metropolisStep() {
      }//Perform Metropolis test
      else{
        m_particles[particle_id]->setPosition(position);
+       m_waveFunction->updateDistances(m_particles,particle_id);
      }
     return false;
 }
@@ -76,6 +80,7 @@ void System::runMetropolisLangevinSteps(int numberOfMetropolisSteps, bool desire
   m_particles                 = m_initialState->getParticles();
   m_sampler                   = new Sampler(this);
   m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
+  m_waveFunction-> initiateDistances(m_particles);
   m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
   auto start = high_resolution_clock::now();
   for (int i=0; i < numberOfMetropolisSteps; i++) {
@@ -95,8 +100,10 @@ void System::runMetropolisLangevinSteps(int numberOfMetropolisSteps, bool desire
 }
 void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output) {
     m_particles                 = m_initialState->getParticles();
+
     m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
+    m_waveFunction-> initiateDistances(m_particles);
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
     auto start = high_resolution_clock::now();
     for (int i=0; i < numberOfMetropolisSteps; i++) {

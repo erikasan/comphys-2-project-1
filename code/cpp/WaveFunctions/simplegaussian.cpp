@@ -74,5 +74,6 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
      }
      int num_part = m_system->getNumberOfParticles();
      int num_dim  = m_system->getNumberOfDimensions();
+     cout << (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius) << endl; 
      return (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius);
 }
