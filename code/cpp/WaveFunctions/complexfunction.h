@@ -29,4 +29,8 @@ private:
     double distance(std::vector<double> part1, std::vector<double> part2);
     std::vector<double> distance_vector(std::vector<double> part1, std::vector<double> part2);
     void printMatrix(double **A, int n);
+    double u(double r);
+    double uder(double r);
+    double uderder(double r);
+
 };

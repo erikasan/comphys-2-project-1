@@ -69,6 +69,15 @@ double ComplexFunction::distance(std::vector<double> part1, std::vector<double> 
   }
   return sqrt(val);
 }
+double ComplexFunction::u(double r){
+
+}
+double ComplexFunction::uder(double r){
+
+}
+double ComplexFunction::uderder(double r){
+
+}
 std::vector<double> ComplexFunction:: distance_vector(std::vector<double> part1, std::vector<double> part2){
   int num_dim=m_system->getNumberOfDimensions();
   std::vector<double> distance_vec = std::vector<double>();
@@ -118,6 +127,9 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles, int par
      std::vector<double> position=particles[particle_id]->getPosition();
      for (int j=0;j<dimension-1;j++){
        total_radius += position[j]*position[j];
+       if(particle_distances_absolute[particle_id][j]<a){
+         return 0;
+       }
      }
      total_radius+=position[dimension-1]*position[dimension-1]*beta;
      double g=exp(-alpha*total_radius);
