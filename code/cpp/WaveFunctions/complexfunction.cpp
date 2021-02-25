@@ -120,8 +120,7 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles, int par
        total_radius += position[j]*position[j];
      }
      total_radius+=position[dimension-1]*position[dimension-1]*beta;
-     double radius = particles[particle_id]->getRadiussquared();
-     double g=exp(-alpha*radius);
+     double g=exp(-alpha*total_radius);
      double prod_f=1;
      for (int i=0;i<particle_id;i++){
        prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
@@ -144,9 +143,10 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
       vec distance_vec;
       vec  temp(num_dim); //Vector of length num_dim with all 0s
       temp.fill(0.0);
+      /*
       for(Particle *particle : particles){
         total_radius_withbeta += particle->getRadiussquared();
-      }
+      }*/
       for (int k = 0; k < numberOfParticles; k++){
         vec position=conv_to<vec>::from(particles[k]->getPosition());
         vec first_sum_vector=vec(position);
@@ -173,9 +173,9 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
           total_energy+=-(third_sum_temp*third_sum_temp);
         }
       }
-
-      total_energy+=4*alpha*alpha*total_radius_withbeta-(2*num_dim-2)*alpha-2*alpha*beta;
-      printf("total_energy %f\n",total_energy);
+      total_energy+=4*alpha*alpha*total_radius_withbeta;
+      total_energy-=numberOfParticles*((2*num_dim-2)*alpha+2*alpha*beta);
+      //printf("total_energy %f\n",total_energy);
       return total_energy;
 }
 

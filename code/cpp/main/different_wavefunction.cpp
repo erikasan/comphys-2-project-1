@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     }
     System* system = new System(seed);
     system->setOmega(omega);
-    system->setHamiltonian              (new HarmonicOscillator(system, omega));
+    system->setHamiltonian              (new EllipticOscillator(system, omega));
     system->setWaveFunction             (new ComplexFunction(system, alpha));
     system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction    (equilibration);

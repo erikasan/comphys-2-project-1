@@ -17,6 +17,8 @@ public:
 private:
     double beta=2.82843;
     double a=0.0043;
+    //double beta=1;
+    //double a=0.0000000000000001;
     double ** particle_distances_absolute;
 
     double ** createNNMatrix(int n);
