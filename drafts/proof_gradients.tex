@@ -188,12 +188,12 @@ We have the formula given by
    \\
    &=\left[ 4\alpha^2\left[x_k^2+y_k^2+\beta^2z_k^2\right]-4\alpha-2\alpha\beta\right]-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)\cdot \sum_{j\ne k}\frac{-a}{ar^2_{kj}-r^3_{kj}}{(\mathbf{r}_k-\mathbf{r}_j)}
    \\
-   &\qquad + \sum_{k \ne i}\sum_{k \ne j}\frac{(\mathbf{r}_k-\mathbf{r}_i)\cdot(\mathbf{r}_k-\mathbf{r}_i)}{r_{ki}r_{kj}}\frac{a^2}{(ar^2_{kj}-r^3_{kj})(ar^2_{ki}-r^3_{ki})}
+   &\qquad + \sum_{k \ne i}\sum_{k \ne j}{(\mathbf{r}_k-\mathbf{r}_i)\cdot(\mathbf{r}_k-\mathbf{r}_j)}\frac{a^2}{(ar^2_{kj}-r^3_{kj})(ar^2_{ki}-r^3_{ki})}
    \\
    &\qquad + \sum_{k \ne j}\frac{a(a-2r_{kj})}{r_{kj}^2(a-r_{kj})^2}-\frac{2a}{(ar^2_{kj}-r^3_{kj})}\\
    &=\left[ 4\alpha^2\left[x_k^2+y_k^2+\beta^2z_k^2\right]-4\alpha-2\alpha\beta\right]-4\alpha(x_k \hat{x}_k+y_k \hat{y}_k+\beta z_k \hat{z}_k)\cdot \sum_{j\ne k}\frac{-a}{ar^2_{kj}-r^3_{kj}}{(\mathbf{r}_k-\mathbf{r}_j)}
    \\
-   &\qquad + 2\sum_{k \ne i,k \ne j, i\leq j} \frac{(\mathbf{r}_k-\mathbf{r}_i)\cdot(\mathbf{r}_k-\mathbf{r}_i)}{r_{ki}r_{kj}}\frac{a^2}{(ar^2_{kj}-r^3_{kj})(ar^2_{ki}-r^3_{ki})}
+   &\qquad + \sum_{k \ne i}\frac{-a(\mathbf{r}_k-\mathbf{r}_i)}{(ar^2_{ki}-r^3_{ki})}\cdot\sum_{k \ne j}\frac{-a{(\mathbf{r}_k-\mathbf{r}_j)}}{(ar^2_{kj}-r^3_{kj})}
    \\
    &\qquad + \sum_{k \ne j}\frac{-a^2}{r_{kj}^2(a-r_{kj})^2}
 \end{align*}
