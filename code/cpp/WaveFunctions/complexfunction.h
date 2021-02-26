@@ -3,7 +3,7 @@
 
 class ComplexFunction : public WaveFunction { //ComplexFunction thus extends WaveFunction
 public:
-    ComplexFunction(class System* system, double alpha);
+    ComplexFunction(class System* system, double alpha, double beta_param, double a_param);
     void initiateDistances(std::vector<class Particle*> particles);
     void updateDistances(std::vector<class Particle*> particles, int particle_id);
     double evaluate(std::vector<class Particle*> particles);

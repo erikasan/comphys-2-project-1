@@ -1,4 +1,3 @@
-
 #include <cmath>
 #include <cassert>
 #include "wavefunction.h"
@@ -10,14 +9,16 @@
 #include <armadillo>
 using namespace std;
 using namespace arma;
-ComplexFunction::ComplexFunction(System* system, double alpha) : WaveFunction(system) {
+ComplexFunction::ComplexFunction(System* system, double alpha, double beta_param, double a_param) : WaveFunction(system) {
     assert(alpha >= 0);
+    beta=beta_param;
+    a=a_param;
     m_numberOfParameters = 1;
     m_parameters.reserve(1);
     m_parameters.push_back(alpha);
 }
 void ComplexFunction::printMatrix(double **A, int n){
-  cout << std::setprecision(5) << fixed;
+  cout << std::setprecision(3) << fixed;
   for (int i=0; i<n;i++){
     for(int j=0;j<n;j++){
       cout << A[i][j] << " ";
@@ -45,6 +46,7 @@ void ComplexFunction::initiateDistances(std::vector<class Particle*> particles){
         particle_distances_absolute[i][j]=distance(particles[i]->getPosition(),particles[j]->getPosition());
       }
   }
+  printMatrix(particle_distances_absolute,m_system->getNumberOfParticles());
 }
 void ComplexFunction::updateDistances(std::vector<class Particle*> particles,int particle_id){
   double distanceval=0;
