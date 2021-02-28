@@ -66,14 +66,36 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
      * This quantity is needed to compute the (local) energy (consider the
      * Schrödinger equation to see how the two are related).
      */
-     double dobdev = 0; // Not needed?
-     double total_radius = 0;
+     double total_radius = SimpleGaussian::totalRadius(particles);
      double alpha = m_parameters[0];
-     for(Particle *particle : particles){
-       total_radius += particle->getRadiussquared();
-     }
      int num_part = m_system->getNumberOfParticles();
      int num_dim  = m_system->getNumberOfDimensions();
-     cout << (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius) << endl; 
+     //cout << (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius) << endl;
      return (-2*num_part*num_dim*alpha + 4*alpha*alpha*total_radius);
+}
+
+
+
+double SimpleGaussian::totalRadius(std::vector<class Particle*> particles){
+  /* Sum up the squares of the particle distances from the origin.
+     This quantity is required for
+     - computing the gradient of the average local energy with respect to the variational parameter.
+     - computing the Laplacian of the wavefunction.
+  */
+  double total_radius = 0;
+  for (Particle *particle : particles){
+    total_radius += particle->getRadiussquared();
+  }
+  return total_radius;
+}
+
+double SimpleGaussian::localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy){
+  double total_radius = SimpleGaussian::totalRadius(particles);
+  return localEnergy*total_radius;
+}
+
+void SimpleGaussian::sample(std::vector<class Particle*> particles, double localEnergy){
+  m_av_total_radius += SimpleGaussian::totalRadius(particles);
+  m_av_local_energy_total_radius += SimpleGaussian::localEnergyTotalRadius(particles, localEnergy);
+  return;
 }

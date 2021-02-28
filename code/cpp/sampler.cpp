@@ -22,6 +22,9 @@ void Sampler::setNumberOfMetropolisSteps(int steps) {
 }
 
 void Sampler::sample(bool acceptedStep) {
+
+    std::vector<Particle*> particles = m_system->getParticles();
+
     // Make sure the sampling variable(s) are initialized at the first step.
     if (m_stepNumber == 0) {
         m_cumulativeEnergy = 0;
@@ -32,15 +35,19 @@ void Sampler::sample(bool acceptedStep) {
     /* Here you should sample all the interesting things you want to measure.
      * Note that there are (way) more than the single one here currently.
      */
-     double localPotentialEnergy= m_system->getHamiltonian()->
-                         computeLocalPotentialEnergy(m_system->getParticles());
-    double localKineticEnergy= m_system->getHamiltonian()->
-                        computeLocalKineticEnergy(m_system->getParticles());
 
-    double localEnergy = localPotentialEnergy+localKineticEnergy;
-    m_cumulativeEnergy  += localEnergy;
-    m_cumulkinetic+=localKineticEnergy;
-    m_cumulpotential+=localPotentialEnergy;
+    double localPotentialEnergy = m_system->getHamiltonian()->
+                         computeLocalPotentialEnergy(particles);
+    double localKineticEnergy   = m_system->getHamiltonian()->
+                         computeLocalKineticEnergy(particles);
+
+    double localEnergy = localPotentialEnergy + localKineticEnergy;
+
+    m_system->getWaveFunction()->sample(particles, localEnergy);
+
+    m_cumulativeEnergy += localEnergy;
+    m_cumulkinetic     += localKineticEnergy;
+    m_cumulpotential   += localPotentialEnergy;
     m_stepNumber++;
 }
 
