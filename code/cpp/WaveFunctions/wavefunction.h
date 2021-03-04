@@ -20,9 +20,12 @@ public:
     virtual void initiateDistances(std::vector<class Particle*> particles){(void)particles;return;}
 
     //
-    virtual void sample(std::vector<class Particle*> particles, double localEnergy) = 0;
-    virtual void computeAverages(double steps) = 0;
-    virtual void gradientDescent() = 0;
+    // virtual void sample(std::vector<class Particle*> particles, double localEnergy) = 0;
+    // virtual void computeAverages(double steps) = 0;
+    // virtual void gradientDescent() = 0;
+    virtual void sample(std::vector<class Particle*> particles, double localEnergy){(void) localEnergy; return;};
+    virtual void computeAverages(double steps){(void) steps; return;}
+    virtual void gradientDescent(){return;}
     //
 
 protected:
