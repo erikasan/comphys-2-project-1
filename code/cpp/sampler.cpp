@@ -104,4 +104,6 @@ void Sampler::computeAverages() {
     m_energy = m_cumulativeEnergy/steps;
     m_kineticenergy = m_cumulkinetic/steps;
     m_potentialenergy = m_cumulpotential/steps;
+
+    m_system->getWaveFunction()->computeAverages(steps);
 }

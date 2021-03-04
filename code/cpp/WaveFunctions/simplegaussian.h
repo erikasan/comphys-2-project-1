@@ -17,6 +17,8 @@ public:
     void sample(std::vector<class Particle*> particles, double localEnergy);
     double totalRadius(std::vector<class Particle*> particles);
     double localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy);
+    void computeAverages(double steps);
+    void gradientDescent();
     //
 protected:
   double m_av_total_radius = 0;

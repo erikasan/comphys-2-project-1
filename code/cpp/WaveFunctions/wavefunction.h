@@ -19,7 +19,11 @@ public:
     virtual void updateDistances(std::vector<class Particle*> particles,int particle_id){(void)particle_id;(void)particles;return;}
     virtual void initiateDistances(std::vector<class Particle*> particles){(void)particles;return;}
 
+    //
     virtual void sample(std::vector<class Particle*> particles, double localEnergy) = 0;
+    virtual void computeAverages(double steps) = 0;
+    virtual void gradientDescent() = 0;
+    //
 
 protected:
     int m_numberOfParameters = 0;

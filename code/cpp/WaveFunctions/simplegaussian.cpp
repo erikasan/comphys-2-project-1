@@ -4,6 +4,7 @@
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
+#include "../sampler.h"
 #include <iostream>
 using namespace std;
 SimpleGaussian::SimpleGaussian(System* system, double alpha) : WaveFunction(system) {
@@ -77,10 +78,10 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
 
 
 double SimpleGaussian::totalRadius(std::vector<class Particle*> particles){
-  /* Sum up the squares of the particle distances from the origin.
+  /* Sum up the squares of the particle distances from the origin for a particular configuration.
      This quantity is required for
-     - computing the gradient of the average local energy with respect to the variational parameter.
-     - computing the Laplacian of the wavefunction.
+      - computing the gradient of the average local energy with respect to the variational parameter.
+      - computing the Laplacian of the wavefunction.
   */
   double total_radius = 0;
   for (Particle *particle : particles){
@@ -90,12 +91,35 @@ double SimpleGaussian::totalRadius(std::vector<class Particle*> particles){
 }
 
 double SimpleGaussian::localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy){
+  /* The total radius times the local energy for a particular configuration.
+     This quantity is required for
+      - computing the gradient of the average local energy with respect to the variational parameter
+  */
   double total_radius = SimpleGaussian::totalRadius(particles);
   return localEnergy*total_radius;
 }
 
 void SimpleGaussian::sample(std::vector<class Particle*> particles, double localEnergy){
+  /* Sample the quantities required for computing the gradient of the
+     average local energy with respect to the variational parameter
+  */
   m_av_total_radius += SimpleGaussian::totalRadius(particles);
   m_av_local_energy_total_radius += SimpleGaussian::localEnergyTotalRadius(particles, localEnergy);
+  return;
+}
+
+void SimpleGaussian::computeAverages(double steps){
+  m_av_total_radius /= steps;
+  m_av_local_energy_total_radius /= steps;
+  return;
+}
+
+void SimpleGaussian::gradientDescent(){
+  double alpha = m_parameters[0];
+  double eta = 0.01;
+  double energy = m_system->getSampler()->getEnergy();
+  double localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
+  alpha -= eta*localEnergyGradient;
+  m_parameters[0] = alpha;
   return;
 }
