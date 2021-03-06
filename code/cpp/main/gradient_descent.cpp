@@ -46,10 +46,10 @@ int main(int argc, char *argv[]) {
     system->setInitialState          (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction (equilibration);
     system->setStepLength            (stepLength);
-    //system->runMetropolisSteps       (numberOfSteps,true);
-
+    // system->runMetropolisSteps       (numberOfSteps,true);
+    //
     // Not yet implemented
-    //system->gradientDescent(tolerance, learning_rate);
+    // system->gradientDescent(double tol, double learningRate, maxIter);
 
     return 0;
 }

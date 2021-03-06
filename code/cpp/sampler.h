@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 class Sampler {
 public:
@@ -10,7 +11,13 @@ public:
     void computeAverages();
     double getEnergy()          { return m_energy; }
 
-private:
+    virtual void gdsampler(std::vector<class Particle*> particles, double localEnergy){
+      (void) particles;
+      (void) localEnergy;
+      return;
+    }
+
+protected:
     int     m_numberOfMetropolisSteps = 0;
     int     m_stepNumber = 0;
     double  m_energy = 0;

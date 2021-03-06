@@ -43,7 +43,9 @@ void Sampler::sample(bool acceptedStep) {
 
     double localEnergy = localPotentialEnergy + localKineticEnergy;
 
-    m_system->getWaveFunction()->sample(particles, localEnergy);
+    //m_system->getWaveFunction()->sample(particles, localEnergy);
+
+    gdsampler(particles, localEnergy);
 
     m_cumulativeEnergy += localEnergy;
     m_cumulkinetic     += localKineticEnergy;

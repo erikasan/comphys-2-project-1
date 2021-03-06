@@ -12,7 +12,7 @@ public:
     void runMetropolisSteps          (int numberOfMetropolisSteps, bool desire_output);
     void runMetropolisLangevinSteps  (int numberOfMetropolisSteps, bool desire_output);
 
-    void gradientDescent             (double tol, double learningRate);
+    void gradientDescent             (double tol, double learningRate, int maxIter);
 
     void setNumberOfParticles        (int numberOfParticles);
     void setNumberOfDimensions       (int numberOfDimensions);
@@ -23,6 +23,9 @@ public:
     void setHamiltonian              (class Hamiltonian* hamiltonian);
     void setWaveFunction             (class WaveFunction* waveFunction);
     void setInitialState             (class InitialState* initialState);
+    void setSampler                  (class Sampler* sampler);
+
+    void setOmega                    (double omega);
 
     class WaveFunction* getWaveFunction(){
       return m_waveFunction;

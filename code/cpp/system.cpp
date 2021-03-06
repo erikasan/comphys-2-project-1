@@ -1,6 +1,7 @@
 #include "system.h"
 #include <cassert>
 #include "sampler.h"
+#include "GDsampler.h"
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
 #include "Hamiltonians/hamiltonian.h"
@@ -144,6 +145,15 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     }
 }
 
+void System::gradientDescent(double tol, double learningRate, int maxIter){
+  GDsampler* sampler;
+  setSampler(sampler);
+  for (int i = 0; i < maxIter; i++){
+    runMetropolisSteps(m_numberOfMetropolisSteps, false);
+  }
+  return;
+}
+
 void System::setNumberOfParticles(int numberOfParticles) {
     m_numberOfParticles = numberOfParticles;
 }
@@ -177,4 +187,8 @@ void System::setWaveFunction(WaveFunction* waveFunction) {
 
 void System::setInitialState(InitialState* initialState) {
     m_initialState = initialState;
+}
+
+void System::setSampler(Sampler* sampler){
+  m_sampler = sampler;
 }
