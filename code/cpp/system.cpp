@@ -87,7 +87,7 @@ bool System::metropolisStep() {
 
 void System::runMetropolisLangevinSteps(int numberOfMetropolisSteps, bool desire_output){
   m_particles               = m_initialState->getParticles();
-  m_sampler                 = new Sampler(this);
+  //m_sampler                 = new Sampler(this);
   m_numberOfMetropolisSteps = numberOfMetropolisSteps;
 
   m_waveFunction->initiateDistances(m_particles);
@@ -115,7 +115,7 @@ void System::runMetropolisLangevinSteps(int numberOfMetropolisSteps, bool desire
 void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output) {
     m_particles                 = m_initialState->getParticles();
 
-    m_sampler                   = new Sampler(this);
+    //m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
     m_waveFunction->initiateDistances(m_particles);
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
@@ -138,6 +138,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     m_duration = duration.count();
 
     m_sampler->computeAverages();
+    m_waveFunction->gradientDescent();
 
     if (desire_output){
       m_sampler->printOutputToTerminal();
@@ -145,12 +146,26 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     }
 }
 
+void System::stopGradientDescent(){
+  m_stopGradientDescent = true;
+}
+
 void System::gradientDescent(double tol, double learningRate, int maxIter){
-  GDsampler* sampler;
-  setSampler(sampler);
-  for (int i = 0; i < maxIter; i++){
-    runMetropolisSteps(m_numberOfMetropolisSteps, false);
+  setSampler(new GDsampler(this));
+
+  m_tol = tol;
+  m_waveFunction->setTolerance(tol);
+
+  int fewMetropolisSteps = m_numberOfMetropolisSteps/5;
+
+  int i = 0;
+  while ((m_stopGradientDescent == false) & (i < maxIter)){
+    runMetropolisSteps(fewMetropolisSteps, false);
+    i++;
   }
+
+  runMetropolisSteps(m_numberOfMetropolisSteps, false); // All gas no brakes
+
   return;
 }
 
@@ -175,6 +190,10 @@ void System::setEquilibrationFraction(double equilibrationFraction) {
 
 void System::setOmega(double omega){
   m_omega=omega;
+}
+
+void System::setMetropolisSteps(int numberOfMetropolisSteps){
+  m_numberOfMetropolisSteps = numberOfMetropolisSteps;
 }
 
 void System::setHamiltonian(Hamiltonian* hamiltonian) {
