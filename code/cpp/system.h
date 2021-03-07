@@ -26,6 +26,9 @@ public:
     void setSampler                  (class Sampler* sampler);
 
     void setOmega                    (double omega);
+    void setMetropolisSteps          (int numberOfMetropolisSteps);
+    
+    void stopGradientDescent         ();
 
     class WaveFunction* getWaveFunction(){
       return m_waveFunction;
@@ -81,6 +84,8 @@ private:
     double                       m_stepLengthRoot          = 0.01;
     int                          m_duration                = 0;
     double                       m_omega                   = 0.0;
+    double                       m_tol                     = 0.0;
+    bool                         m_stopGradientDescent     = false;
 
     class WaveFunction*          m_waveFunction = nullptr;
     class Hamiltonian*           m_hamiltonian  = nullptr;
