@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../system.h"
 #include "../particle.h"
+#include "sampler.h"
+#include "GDsampler.h"
 #include "../WaveFunctions/wavefunction.h"
 #include "../WaveFunctions/simplegaussian.h"
 #include "../WaveFunctions/numericgaussian.h"
