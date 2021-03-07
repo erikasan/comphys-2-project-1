@@ -26,10 +26,12 @@ public:
     virtual void sample(std::vector<class Particle*> particles, double localEnergy){(void) localEnergy; return;};
     virtual void computeAverages(double steps){(void) steps; return;}
     virtual void gradientDescent(){return;}
+    void setTolerance(double tol);
     //
 
 protected:
     int m_numberOfParameters = 0;
     std::vector<double> m_parameters = std::vector<double>();
     class System* m_system = nullptr;
+    double m_tol = 0.0;
 };
