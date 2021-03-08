@@ -9,8 +9,6 @@ TODO for the theoretical part of the report:
 - Optimization
 
 TODO for the annoying wave function:
-- Make the wave function be zero when a single particle distance is below psi
-- Remove everything that is not armadillo from the energy calculation (possibly quantum force)
 - Some (intensive) testing
 - Lots and lots (and lots) of optimization: Make the distance matrix 4D (x,y,z, total), make (maybe) a quantum force matrix. 
 - Test if everything works. One way to test is to set a=0, which should return the original system.
