@@ -3,6 +3,7 @@
 #include "../particle.h"
 #include "../WaveFunctions/wavefunction.h"
 #include "../WaveFunctions/simplegaussian.h"
+#include "../WaveFunctions/numericgaussian.h"
 #include "../Hamiltonians/hamiltonian.h"
 #include "../Hamiltonians/harmonicoscillator.h"
 #include "../InitialStates/initialstate.h"
@@ -13,16 +14,15 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     // Seed for the random number generator
-    int seed = 020;
+    int seed = 2020;
 
     int numberOfDimensions  = 3;
-    int numberOfParticles   = 10;
-    int numberOfSteps       = (int) 1e5;
-    double omega            = 20;          // Oscillator frequency.
+    int numberOfParticles   = 1;
+    int numberOfSteps       = (int) 1e6;
+    double omega            = 25;          // Oscillator frequency.
     double alpha            = 0.5;          // Variational parameter.
     double stepLength       = 0.1;          // Metropolis step length.
     double equilibration    = 0.1;          // Amount of the total steps used
-
     if (argc>1){
     try{
         numberOfDimensions=atoi(argv[1]);
@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
     System* system = new System(seed);
     system->setOmega(omega);
     system->setHamiltonian              (new HarmonicOscillator(system, omega));
-    system->setWaveFunction             (new SimpleGaussian(system, alpha));
+    system->setWaveFunction             (new NumericGaussian(system, alpha));
     system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction    (equilibration);
     system->setStepLength               (stepLength);
-    system->runMetropolisLangevinSteps  (numberOfSteps,true);
+    system->runMetropolisSteps          (numberOfSteps,true);
     return 0;
 }
