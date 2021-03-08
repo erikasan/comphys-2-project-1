@@ -122,29 +122,40 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles) {
 }
 
 double ComplexFunction::evaluate(std::vector<class Particle*> particles, int particle_id) {
-    //As the Wave function is seperable, evaluates only the part belonging to particle "particle_id"
-     double alpha = m_parameters[0];
-     double total_radius = 0;
-     int dimension=m_system->getNumberOfDimensions();
-     std::vector<double> position=particles[particle_id]->getPosition();
-     for (int j=0;j<dimension-1;j++){
-       total_radius += position[j]*position[j];
+    //As the Wave function is partially seperable, evaluates only the part belonging to particle "particle_id"
+    double alpha = m_parameters[0];
+    double total_radius = 0;
+    int dimension=m_system->getNumberOfDimensions();
+    int numberOfParticles=m_system->getNumberOfParticles();
+    std::vector<double> position=particles[particle_id]->getPosition();
+    double prod_f=1;
 
-       if(particle_distances_absolute[particle_id][j]<a){
-         return 0;
-       }
-     }
-     total_radius+=position[dimension-1]*position[dimension-1]*beta;
-     double g=exp(-alpha*total_radius);
-     double prod_f=1;
-     for (int i=0;i<particle_id;i++){
-       prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
-     }
-     for (int i=particle_id+1;i<m_system->getNumberOfParticles();i++){
-       prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
-     }
-     return g*prod_f;
+
+    //Calculate f-part of wave function
+    for (int i=0;i<particle_id;i++){
+      if(particle_distances_absolute[particle_id][i]<a){
+        return 0;
+      }
+      prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
+    }
+    for (int i=particle_id+1;i<numberOfParticles;i++){
+      if(particle_distances_absolute[particle_id][i]<a){
+        return 0;
+      }
+      prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
+    }
+
+
+    //Calculate G-part of Wave function
+    for (int j=0;j<dimension-1;j++){
+      total_radius += position[j]*position[j];
+    }
+    total_radius+=position[dimension-1]*position[dimension-1]*beta;
+    double prod_g=exp(-alpha*total_radius);
+
+    return prod_g*prod_f;
 }
+
 /*
 double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> particles){
   double total_energy=0;
