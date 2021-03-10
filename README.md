@@ -3,7 +3,6 @@ electric boogaloo
 
 TODO for the theoretical part of the report:
 - Describe the problem
-- Trial Wave function
 - Minor changes to the Hamiltonian
 - Defining the actual process: Monte Carlo sampling from the trial wave function with help of the local energy
 - Optimization
@@ -15,7 +14,7 @@ TODO for the annoying wave function:
 - I have not yet written a single comment. Reminder to myself: Get drunk (to ease the pain), then write comments.
 
 TODO Otherwise:
-- The whole result part
+- Most of the result part
 - Introduction
 - Abstract
 - Add the derivations we have as pdf to the appendix
