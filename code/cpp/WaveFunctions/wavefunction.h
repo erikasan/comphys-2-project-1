@@ -27,6 +27,7 @@ public:
     virtual void computeAverages(double steps){(void) steps; return;}
     virtual void gradientDescent(){return;}
     void setTolerance(double tol);
+    void setLearningRate(double learningRate);
     //
 
 protected:
@@ -34,4 +35,5 @@ protected:
     std::vector<double> m_parameters = std::vector<double>();
     class System* m_system = nullptr;
     double m_tol = 0.0;
+    double m_learningRate = 0.0;
 };

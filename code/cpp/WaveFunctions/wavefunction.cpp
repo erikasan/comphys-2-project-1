@@ -7,3 +7,7 @@ WaveFunction::WaveFunction(System* system) {
 void WaveFunction::setTolerance(double tol){
   m_tol = tol;
 }
+
+void WaveFunction::setLearningRate(double learningRate){
+  m_learningRate = learningRate;
+}

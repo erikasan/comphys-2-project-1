@@ -115,14 +115,13 @@ void SimpleGaussian::computeAverages(double steps){
 }
 
 void SimpleGaussian::gradientDescent(){
-  double alphaOld, alphaNew, eta, energy, localEnergyGradient;
+  double alphaOld, alphaNew, energy, localEnergyGradient;
 
   alphaOld            = m_parameters[0];
-  eta                 = 0.01;
   energy              = m_system->getSampler()->getEnergy();
   localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
 
-  alphaNew = alphaOld - eta*localEnergyGradient;
+  alphaNew = alphaOld - m_learningRate*localEnergyGradient;
 
   if (abs(alphaNew - alphaOld) < m_tol){
     m_system->stopGradientDescent();
