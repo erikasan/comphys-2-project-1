@@ -52,9 +52,9 @@ target_link_libraries(vmc mylib)
 target_link_libraries(metropolis_langevin mylib)
 target_link_libraries(numerical mylib)
 
-find_package(Armadillo REQUIRED)
-include_directories(${ARMADILLO_INCLUDE_DIRS})
+# find_package(Armadillo REQUIRED)
+# include_directories(${ARMADILLO_INCLUDE_DIRS})
 add_executable(monster main/different_wavefunction.cpp)
 
 target_link_libraries(monster mylib)
-target_link_libraries(monster ${ARMADILLO_LIBRARIES})
+# target_link_libraries(monster ${ARMADILLO_LIBRARIES})

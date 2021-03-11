@@ -6,9 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include "complexfunction.h"
-#include <armadillo>
 using namespace std;
-using namespace arma;
 ComplexFunction::ComplexFunction(System* system, double alpha, double beta_param, double a_param) : WaveFunction(system) {
     assert(alpha >= 0);
     beta=beta_param;
@@ -214,13 +212,12 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
       int num_dim  = m_system->getNumberOfDimensions();
       double third_sum_temp=0;
       double prefactor;
-      vec distance_vec;
-      vec  temp(num_dim); //Vector of length num_dim with all 0s
-      temp.fill(0.0);
+      std::vector<double> distance_vec = std::vector<double>(num_dim,0.0);
+      std::vector<double> temp = std::vector<double>(num_dim,0.0);
       for (int k = 0; k < numberOfParticles; k++){
-        vec position=conv_to<vec>::from(particles[k]->getPosition());
-        vec first_sum_vector=vec(position);
-        first_sum_vector(num_dim-1)*=beta; //multiply z-parameter by beta
+        std::vector<double> position=particles[k]->getPosition();
+        std::vector<double> first_sum_vector=position;
+        first_sum_vector[num_dim-1]*=beta; //multiply z-parameter by beta
 
         //Calculate the energy of the non-interacting wave function
         for (int j=0;j<num_dim-1;j++){
@@ -230,24 +227,31 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
 
 
         for (int i=0;i<k;i++){
-          distance_vec=position-conv_to<vec>::from(particles[i]->getPosition()); //Distance between particle [i] and particle [k] as vector
-          prefactor=-a/((a-particle_distances_absolute[k][i])*particle_distances_absolute[k][i]*particle_distances_absolute[k][i]); //The prefactor for the 2. sum
-          temp+=prefactor*distance_vec; //Add the vector to the temp_vector (which becomes the second sum)
+          prefactor=-a/((a-particle_distances_absolute[k][i])*particle_distances_absolute[k][i]*particle_distances_absolute[k][i]);
+          for (int l=0;l<num_dim;l++){
+            distance_vec[l]=position[l]-particles[i]->getPosition()[l]; //Distance between particle [i] and particle [k] as vector
+            temp[l]+=prefactor*distance_vec[l];
+          }
           third_sum_temp=a/(particle_distances_absolute[k][i]*(a-particle_distances_absolute[k][i])); //The value for the third sum
           total_energy+=-(third_sum_temp*third_sum_temp);
         }
 
         //Repetition of the previous loop for the particles with higher index than k (so k itself isn't included)
         for (int i=k+1;i<numberOfParticles;i++){
-          distance_vec=position-conv_to<vec>::from(particles[i]->getPosition());
           prefactor=-a/((a-particle_distances_absolute[k][i])*particle_distances_absolute[k][i]*particle_distances_absolute[k][i]);
-          temp+=prefactor*distance_vec;
-          third_sum_temp=a/(particle_distances_absolute[k][i]*(a-particle_distances_absolute[k][i]));
+          for (int l=0;l<num_dim;l++){
+            distance_vec[l]=position[l]-particles[i]->getPosition()[l]; //Distance between particle [i] and particle [k] as vector
+            temp[l]+=prefactor*distance_vec[l];
+          }
+          third_sum_temp=a/(particle_distances_absolute[k][i]*(a-particle_distances_absolute[k][i])); //The value for the third sum
           total_energy+=-(third_sum_temp*third_sum_temp);
         }
-        total_energy+=dot(temp,temp);
-        total_energy+=-4*alpha*dot(temp,first_sum_vector);
-        temp.fill(0.0);
+        for(int l=0;l<num_dim;l++){
+          total_energy+=temp[l]*temp[l];
+          total_energy+=-4*alpha*temp[l]*first_sum_vector[l];
+        }
+        std::fill(temp.begin(), temp.end(), 0.0);
+
       }
       total_energy+=4*alpha*alpha*total_radius_withbeta;
       total_energy-=numberOfParticles*((2*num_dim-2)*alpha+2*alpha*beta);
@@ -261,28 +265,34 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
      int num_dim=m_system->getNumberOfDimensions();
      std::vector<double> qForce = std::vector<double>();
      qForce.reserve(num_dim);
-     vec  temp(num_dim); //Vector of length num_dim with all 0s
-     temp.fill(0.0);
-     vec particle_position=conv_to<vec>::from(particles[particle_id]->getPosition());
-     temp+=particle_position*(-4*alpha);
-     temp(num_dim-1)*=beta;
+     std::vector<double> temp = std::vector<double>(num_dim,0.0);
+     std::vector<double> particle_position=particles[particle_id]->getPosition();
+     for(int l=0;l<num_dim;l++){
+       temp[l]+=particle_position[l]*(-4*alpha);
+     }
+     temp[num_dim-1]*=beta;
+
      double prefactor;
      double dist;
-     vec distance_vec;
+     std::vector<double> distance_vec = std::vector<double>(num_dim,0.0);
      for (int i=0;i<particle_id;i++){
        dist=particle_distances_absolute[i][particle_id];
        prefactor=2*a/((dist*dist)*(a-dist));
-       distance_vec=particle_position-conv_to<vec>::from(particles[i]->getPosition());
-       temp+=-prefactor*distance_vec[i];
+       for(int l=0;l<num_dim;l++){
+         distance_vec[l]=particle_position[l]-particles[i]->getPosition()[l];
+         temp[l]+=-prefactor*distance_vec[l];
+       }
      }
      for (int i=particle_id+1;i< m_system->getNumberOfDimensions();i++){
-       dist=particle_distances_absolute[particle_id][i];
-       prefactor=1/dist*uder(dist);
-       distance_vec=particle_position-conv_to<vec>::from(particles[i]->getPosition());
-       temp+=-prefactor*distance_vec[i];
+       dist=particle_distances_absolute[i][particle_id];
+       prefactor=2*a/((dist*dist)*(a-dist));
+       for(int l=0;l<num_dim;l++){
+         distance_vec[l]=particle_position[l]-particles[i]->getPosition()[l];
+         temp[l]+=-prefactor*distance_vec[l];
+       }
      }
      for (int i=0;i<num_dim;i++){
-       qForce.push_back(temp(i));
+       qForce.push_back(temp[i]);
      }
      return qForce;
 }
