@@ -7,13 +7,15 @@
 #include "Hamiltonians/hamiltonian.h"
 #include "InitialStates/initialstate.h"
 #include "Math/random.h"
+#include <iostream>
 #include <chrono>
+#include <string>
 #include <cmath>
-
-
 
 using namespace std::chrono;
 using namespace std;
+
+
 
 bool MetropolisLangevin::metropolisStep(){
   //Pick random Particle
@@ -54,7 +56,7 @@ bool MetropolisLangevin::metropolisStep(){
 void MetropolisLangevin::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output){
   m_particles               = m_initialState->getParticles();
   //m_sampler                 = new Sampler(this);
-  m_numberOfMetropolisSteps = numberOfMetropolisSteps;
+  //m_numberOfMetropolisSteps = numberOfMetropolisSteps;
 
   m_waveFunction->initiateDistances(m_particles);
   m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);

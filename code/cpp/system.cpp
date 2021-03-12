@@ -56,7 +56,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     m_particles                 = m_initialState->getParticles();
 
     //m_sampler                   = new Sampler(this);
-    m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
+    //m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
     m_waveFunction->initiateDistances(m_particles);
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
     auto start = high_resolution_clock::now();
@@ -78,7 +78,6 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     m_duration = duration.count();
 
     m_sampler->computeAverages();
-    m_waveFunction->gradientDescent();
 
     if (desire_output){
       m_sampler->printOutputToTerminal();
@@ -97,11 +96,12 @@ void System::gradientDescent(double tol, double learningRate, int maxIter){
   m_waveFunction->setTolerance(tol);
   m_waveFunction->setLearningRate(learningRate);
 
-  int fewMetropolisSteps = m_numberOfMetropolisSteps/5;
+  int fewMetropolisSteps = m_numberOfMetropolisSteps;
 
   int i = 0;
   while ((m_stopGradientDescent == false) & (i < maxIter)){
     runMetropolisSteps(fewMetropolisSteps, false);
+    m_waveFunction->gradientDescent();
     i++;
   }
 
