@@ -7,10 +7,10 @@ public:
     System();
     System(int seed);
 
-    bool metropolisStep              ();
-    bool metropolis_LangevinStep     ();
-    void runMetropolisSteps          (int numberOfMetropolisSteps, bool desire_output);
-    void runMetropolisLangevinSteps  (int numberOfMetropolisSteps, bool desire_output);
+    virtual bool metropolisStep      ();
+    // bool metropolis_LangevinStep ();
+    virtual void runMetropolisSteps  (int numberOfMetropolisSteps, bool desire_output);
+    //void runMetropolisLangevinSteps  (int numberOfMetropolisSteps, bool desire_output);
 
     void gradientDescent             (double tol, double learningRate, int maxIter);
 
@@ -27,7 +27,7 @@ public:
 
     void setOmega                    (double omega);
     void setMetropolisSteps          (int numberOfMetropolisSteps);
-    
+
     void stopGradientDescent         ();
 
     class WaveFunction* getWaveFunction(){
@@ -75,7 +75,7 @@ public:
     }
 
 
-private:
+protected:
     int                          m_numberOfParticles       = 0;
     int                          m_numberOfDimensions      = 0;
     int                          m_numberOfMetropolisSteps = 0;

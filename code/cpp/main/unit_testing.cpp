@@ -10,6 +10,7 @@ c++ -o test.exe unit_testing.o VMC.o System.o functions.o tests_main.o
 
 #include <iostream>
 #include "../system.h"
+#include "../metropolis_langevin.h"
 #include "../particle.h"
 #include "../WaveFunctions/wavefunction.h"
 #include "../WaveFunctions/simplegaussian.h"
@@ -75,14 +76,14 @@ TEST_CASE("Evaluate wether importance sampling works"){
   double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
-  System* system = new System(seed);
+  System* system = new MetropolisLangevin(seed);
   system->setOmega(omega);
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new SimpleGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
   system->setEquilibrationFraction    (equilibration);
   system->setStepLength               (stepLength);
-  system->runMetropolisLangevinSteps  (numberOfSteps,false);
+  system->runMetropolisSteps  (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
   double potential_energy_expected=numberOfDimensions*numberOfParticles*0.5;
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-3);

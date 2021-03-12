@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../system.h"
+#include "../metropolis_langevin.h"
 #include "../particle.h"
 #include "../WaveFunctions/wavefunction.h"
 #include "../WaveFunctions/simplegaussian.h"
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]) {
       cout << "An exception occurred. Exception Nr. " << e << '\n';
     }
     }
-    System* system = new System(seed);
+    System* system = new MetropolisLangevin(seed);
     system->setOmega(omega);
     system->setHamiltonian              (new EllipticOscillator(system, omega));
     system->setWaveFunction             (new ComplexFunction(system, alpha, beta, a));
@@ -54,6 +55,6 @@ int main(int argc, char *argv[]) {
     system->setInitialState             (new RandomUniformMinDist(system, numberOfDimensions, numberOfParticles,a));
     system->setEquilibrationFraction    (equilibration);
     system->setStepLength               (stepLength);
-    system->runMetropolisLangevinSteps  (numberOfSteps,true);
+    system->runMetropolisSteps  (numberOfSteps,true);
     return 0;
 }
