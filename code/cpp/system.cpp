@@ -22,14 +22,14 @@ System::System(int seed) {
 }
 bool System::metropolis_LangevinStep(){
   //Pick random Particle
-  int particle_id = m_random -> nextInt(m_numberOfParticles-1);
+  int particle_id = m_random->nextInt(m_numberOfParticles-1);
   double wf_old = m_waveFunction->evaluate(m_particles,particle_id);
   std::vector<double> position = m_particles[particle_id]->getPosition(); //old position
   std::vector<double> quantumForceOld = m_waveFunction->quantumForce(m_particles,particle_id);
   double adjustment = 0;
 
-  for (int i=0;i<m_numberOfDimensions;i++){
-    adjustment=0.5*quantumForceOld[i]*m_stepLength+m_random->nextGaussian(0,1)*m_stepLengthRoot;
+  for (int i = 0; i < m_numberOfDimensions; i++){
+    adjustment = 0.5*quantumForceOld[i]*m_stepLength + m_random->nextGaussian(0,1)*m_stepLengthRoot;
     m_particles[particle_id]->adjustPosition(adjustment,i);
   }
 
@@ -155,6 +155,7 @@ void System::gradientDescent(double tol, double learningRate, int maxIter){
 
   m_tol = tol;
   m_waveFunction->setTolerance(tol);
+  m_waveFunction->setLearningRate(learningRate);
 
   int fewMetropolisSteps = m_numberOfMetropolisSteps/5;
 
