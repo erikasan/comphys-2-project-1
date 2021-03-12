@@ -57,6 +57,5 @@ int main(int argc, char *argv[]) {
     double learningRate = 0.01;
     system->gradientDescent(tol, learningRate, maxIter);
 
-    cout << "Success!" << endl;
     return 0;
 }
