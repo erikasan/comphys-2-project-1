@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
     system->setHamiltonian           (new HarmonicOscillator(system, omega));
     system->setWaveFunction          (new SimpleGaussian(system, alpha));
     system->setInitialState          (new RandomUniform(system, numberOfDimensions, numberOfParticles));
-    system->setSampler               (new GDsampler(system));
     system->setEquilibrationFraction (equilibration);
     system->setStepLength            (stepLength);
     system->setMetropolisSteps       (numberOfSteps);
