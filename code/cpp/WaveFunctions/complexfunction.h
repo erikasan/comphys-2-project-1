@@ -14,11 +14,23 @@ public:
     std::vector<double> quantumForce(std::vector<class Particle*> particles);
     std::vector<double> quantumForce(std::vector<class Particle*> particles, int particle_id);
 
+    //
+    void sample(std::vector<class Particle*> particles, double localEnergy);
+    double totalRadius(std::vector<class Particle*> particles);
+    double localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy);
+    void computeAverages(double steps);
+    void gradientDescent();
+    //
+
 private:
     double beta=2.82843;
     double a=0.0043;
     //double beta=1;
     //double a=0.0000000000000001;
+
+    double m_av_total_radius = 0;
+    double m_av_local_energy_total_radius = 0;
+
     double ** particle_distances_absolute;
 
     double ** createNNMatrix(int n);

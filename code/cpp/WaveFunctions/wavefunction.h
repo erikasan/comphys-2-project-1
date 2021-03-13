@@ -18,18 +18,17 @@ public:
     virtual std::vector<double> quantumForce(std::vector<class Particle*> particles) = 0;
     virtual void updateDistances(std::vector<class Particle*> particles,int particle_id){(void)particle_id;(void)particles;return;}
     virtual void initiateDistances(std::vector<class Particle*> particles){(void)particles;return;}
-
-    //
-    // virtual void sample(std::vector<class Particle*> particles, double localEnergy) = 0;
-    // virtual void computeAverages(double steps) = 0;
-    // virtual void gradientDescent() = 0;
     virtual void sample(std::vector<class Particle*> particles, double localEnergy){(void) localEnergy; return;};
     virtual void computeAverages(double steps){(void) steps; return;}
     virtual void gradientDescent(){return;}
-    //
+    void setTolerance(double tol);
+    void setLearningRate(double learningRate);
+
 
 protected:
     int m_numberOfParameters = 0;
     std::vector<double> m_parameters = std::vector<double>();
     class System* m_system = nullptr;
+    double m_tol = 0.0;
+    double m_learningRate = 0.0;
 };

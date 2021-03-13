@@ -3,6 +3,7 @@
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
+#include "../sampler.h"
 #include <iostream>
 #include <iomanip>
 #include "complexfunction.h"
@@ -303,4 +304,49 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
   std::vector<double> qForce = std::vector<double>();
   qForce.reserve(num_dim);
   return qForce;
+}
+
+double ComplexFunction::totalRadius(std::vector<class Particle*> particles){
+  double total_radius = 0;
+  vector<double> position;
+  for (Particle *particle : particles){
+    position = particle->getPosition();
+    total_radius += position[0] + position[1] + beta*position[2];
+  }
+}
+
+double ComplexFunction::localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy){
+  double total_radius = ComplexFunction::totalRadius(particles);
+  return localEnergy*total_radius;
+}
+
+void ComplexFunction::sample(std::vector<class Particle*> particles, double localEnergy){
+  m_av_total_radius += ComplexFunction::totalRadius(particles);
+  m_av_local_energy_total_radius += ComplexFunction::localEnergyTotalRadius(particles, localEnergy);
+  return;
+}
+
+void ComplexFunction::computeAverages(double steps){
+  m_av_total_radius /= steps;
+  m_av_local_energy_total_radius /= steps;
+  return;
+}
+
+void ComplexFunction::gradientDescent(){
+  double alphaOld, alphaNew, energy, localEnergyGradient;
+
+  alphaOld            = m_parameters[0];
+  energy              = m_system->getSampler()->getEnergy();
+  localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
+
+  alphaNew = alphaOld - m_learningRate*localEnergyGradient;
+
+  if (abs(alphaNew - alphaOld) < m_tol){
+    m_system->stopGradientDescent();
+  }
+
+  m_parameters[0] = alphaNew;
+
+  m_av_total_radius = m_av_local_energy_total_radius = 0;
+  return;
 }

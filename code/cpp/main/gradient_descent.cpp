@@ -12,6 +12,7 @@
 #include "../InitialStates/randomuniform.h"
 #include "../Math/random.h"
 #include <string>
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
     int numberOfParticles  = 1;
     int numberOfSteps      = (int) 1e6;
     double omega           = 25;           // Oscillator frequency.
-    double alpha           = 0.5;          // Variational parameter.
+    double alpha           = 1;          // Variational parameter.
     double stepLength      = 0.1;          // Metropolis step length.
     double equilibration   = 0.1;          // Amount of the total steps used
 
@@ -35,7 +36,6 @@ int main(int argc, char *argv[]) {
           alpha              = atof(argv[5]);
           stepLength         = atof(argv[6]);
           equilibration      = atof(argv[7]);
-          seed=atoi(argv[8]);
       }
       catch (int e){
         cout << "An exception occurred. Exception Nr. " << e << '\n';
@@ -49,7 +49,12 @@ int main(int argc, char *argv[]) {
     system->setInitialState          (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction (equilibration);
     system->setStepLength            (stepLength);
-    system->runMetropolisSteps       (numberOfSteps,true);
+    system->setMetropolisSteps       (numberOfSteps);
+
+    double tol = 0.0001;
+    int maxIter = 300;
+    double learningRate = 0.01;
+    system->gradientDescent(tol, learningRate, maxIter);
 
     return 0;
 }

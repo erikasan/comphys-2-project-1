@@ -43,7 +43,7 @@ void Sampler::sample(bool acceptedStep) {
 
     double localEnergy = localPotentialEnergy + localKineticEnergy;
 
-    m_system->getWaveFunction()->sample(particles, localEnergy);
+    gdsampler(particles, localEnergy);
 
     m_cumulativeEnergy += localEnergy;
     m_cumulkinetic     += localKineticEnergy;
@@ -108,4 +108,8 @@ void Sampler::computeAverages() {
     m_potentialenergy = m_cumulpotential/steps;
 
     m_system->getWaveFunction()->computeAverages(steps);
+    m_stepNumber = 0;
+
+    cout << m_energy << endl;
+    return;
 }
