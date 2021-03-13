@@ -109,7 +109,5 @@ void Sampler::computeAverages() {
 
     m_system->getWaveFunction()->computeAverages(steps);
     m_stepNumber = 0;
-
-    cout << m_energy << endl;
     return;
 }
