@@ -54,6 +54,7 @@ target_link_libraries(metropolis_langevin mylib)
 target_link_libraries(numerical mylib)
 target_link_libraries(gradient_descent mylib)
 
+
 # find_package(Armadillo REQUIRED)
 # include_directories(${ARMADILLO_INCLUDE_DIRS})
 add_executable(monster main/different_wavefunction.cpp)

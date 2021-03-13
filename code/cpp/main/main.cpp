@@ -17,7 +17,6 @@ using namespace std;
 int main(int argc, char *argv[]) {
     // Seed for the random number generator
     int seed = 2020;
-
     int numberOfDimensions = 3;
     int numberOfParticles  = 1;
     int numberOfSteps      = (int) 1e6;
@@ -35,10 +34,12 @@ int main(int argc, char *argv[]) {
           alpha              = atof(argv[5]);
           stepLength         = atof(argv[6]);
           equilibration      = atof(argv[7]);
+          seed               = atoi(argv[8]);
       }
       catch (int e){
         cout << "An exception occurred. Exception Nr. " << e << '\n';
       }
+
     }
 
     System* system = new System(seed);

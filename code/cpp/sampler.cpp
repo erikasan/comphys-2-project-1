@@ -49,6 +49,7 @@ void Sampler::sample(bool acceptedStep) {
     m_cumulkinetic     += localKineticEnergy;
     m_cumulpotential   += localPotentialEnergy;
     m_stepNumber++;
+    m_accepted+=int(acceptedStep);
 }
 
 void Sampler::printOutputToTerminal() {
@@ -74,6 +75,7 @@ void Sampler::printOutputToTerminal() {
     }
     cout << endl;
     cout << "  -- Results -- " << endl;
+    cout << "Acceptance rate:" << double(m_accepted)/(ms*(1-ef))<<  endl;
     cout << " Energy : " << m_energy << endl;
     cout << "Kinetic Energy: " << m_kineticenergy <<endl;
     cout << "Potential Energy: " << m_potentialenergy <<endl;
@@ -92,7 +94,7 @@ void Sampler::printOutputToFile(){
   std::ofstream myfile;
   myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
   myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ms*ef<<",";
-  myfile <<pa.at(0)<<","<<omeg<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<dur<<endl;
+  myfile <<pa.at(0)<<","<<omeg<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms*(1-ef))<<","<<dur<<endl;
   myfile.close();
   std::cout << "written to file...?"<<endl;
   return;

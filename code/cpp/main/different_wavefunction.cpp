@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
         equilibration=atof(argv[7]);
         a=atof(argv[8]);
         beta=atof(argv[9]);
+        seed=atoi(argv[10]);
     }
     catch (int e)
     {
