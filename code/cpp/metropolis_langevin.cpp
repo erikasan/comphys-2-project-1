@@ -56,7 +56,7 @@ bool MetropolisLangevin::metropolisStep(){
 void MetropolisLangevin::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output){
   m_particles               = m_initialState->getParticles();
   //m_sampler                 = new Sampler(this);
-  //m_numberOfMetropolisSteps = numberOfMetropolisSteps;
+  m_numberOfMetropolisSteps = numberOfMetropolisSteps;
 
   m_waveFunction->initiateDistances(m_particles);
   m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);

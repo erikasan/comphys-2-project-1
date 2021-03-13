@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         alpha              = atof(argv[5]);
         stepLength         = atof(argv[6]);
         equilibration      = atof(argv[7]);
-        seed               = atoi(argv[8])
+        seed               = atoi(argv[8]);
     }
     catch (int e)
     {

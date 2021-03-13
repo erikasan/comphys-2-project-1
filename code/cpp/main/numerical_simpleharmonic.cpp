@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../system.h"
+#include "../sampler.h"
+#include "../GDsampler.h"
 #include "../particle.h"
 #include "../WaveFunctions/wavefunction.h"
 #include "../WaveFunctions/simplegaussian.h"
@@ -40,6 +42,7 @@ int main(int argc, char *argv[]) {
     }
     }
     System* system = new System(seed);
+    system->setSampler               (new Sampler(system));
     system->setOmega(omega);
     system->setHamiltonian              (new HarmonicOscillator(system, omega));
     system->setWaveFunction             (new NumericGaussian(system, alpha));

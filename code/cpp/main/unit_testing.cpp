@@ -21,6 +21,7 @@ c++ -o test.exe unit_testing.o VMC.o System.o functions.o tests_main.o
 #include "../InitialStates/randomuniform.h"
 #include "../Math/random.h"
 #include "../sampler.h"
+#include "../GDsampler.h"
 #include "../catch.hpp"
 using namespace std;
 TEST_CASE("Test that the analytical value matches the calculated value when the right omega is chosen"){
@@ -35,6 +36,7 @@ TEST_CASE("Test that the analytical value matches the calculated value when the 
   double equilibration    = 0.1;          // Amount of the total steps used
   string sample_type="not_numerically";
   System* system = new System(seed);
+  system->setSampler               (new Sampler(system));
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new SimpleGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
@@ -56,6 +58,7 @@ TEST_CASE("Evaluate wether numerical also works"){
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
   System* system = new System(seed);
+  system->setSampler               (new Sampler(system));
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new NumericGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
@@ -70,13 +73,14 @@ TEST_CASE("Evaluate wether importance sampling works"){
   int seed = 020;
 
   int numberOfDimensions  = 3;
-  int numberOfParticles   = 10;
+  int numberOfParticles   = 1;
   int numberOfSteps       = (int) 1e5;
   double omega            = 20;          // Oscillator frequency.
   double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
   double equilibration    = 0.1;          // Amount of the total steps used
   System* system = new MetropolisLangevin(seed);
+  system->setSampler                  (new Sampler(system));
   system->setOmega(omega);
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new SimpleGaussian(system, alpha));

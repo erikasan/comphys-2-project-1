@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     int seed = 2020;
 
     int numberOfDimensions = 3;
-    int numberOfParticles  = 1;
+    int numberOfParticles  = 10;
     int numberOfSteps      = (int) 1e6;
     double omega           = 25;           // Oscillator frequency.
     double alpha           = 0.5;          // Variational parameter.
@@ -43,13 +43,16 @@ int main(int argc, char *argv[]) {
     }
 
     System* system = new System(seed);
+    system->setSampler               (new Sampler(system));
     system->setOmega(omega);
     system->setHamiltonian           (new HarmonicOscillator(system, omega));
     system->setWaveFunction          (new SimpleGaussian(system, alpha));
     system->setInitialState          (new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setEquilibrationFraction (equilibration);
     system->setStepLength            (stepLength);
+
     system->runMetropolisSteps       (numberOfSteps,true);
+
 
     return 0;
 }

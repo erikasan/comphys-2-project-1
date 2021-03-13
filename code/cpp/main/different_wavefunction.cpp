@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../system.h"
+#include "../sampler.h"
+#include "../GDsampler.h"
 #include "../metropolis_langevin.h"
 #include "../particle.h"
 #include "../WaveFunctions/wavefunction.h"
@@ -49,6 +51,7 @@ int main(int argc, char *argv[]) {
     }
     }
     System* system = new MetropolisLangevin(seed);
+    system->setSampler                  (new Sampler(system));
     system->setOmega(omega);
     system->setHamiltonian              (new EllipticOscillator(system, omega));
     system->setWaveFunction             (new ComplexFunction(system, alpha, beta, a));
