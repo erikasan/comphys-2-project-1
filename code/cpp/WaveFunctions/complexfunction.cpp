@@ -298,11 +298,18 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
      return qForce;
 }
 std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> particles){
-  //UNFINISHED!!!!!!!!!!!!
-  double alpha = m_parameters[0];
   int num_dim=m_system->getNumberOfDimensions();
+  int num_part=m_system->getNumberOfParticles();
   std::vector<double> qForce = std::vector<double>();
-  qForce.reserve(num_dim);
+  std::vector<double> qForce_oneparticle = std::vector<double>();
+  qForce.reserve(num_dim*num_part);
+  qForce_oneparticle.reserve(num_dim);
+  for (int i=0;i<num_part;i++){
+    qForce_oneparticle=quantumForce(particles,i);
+    for (int j=0;j<num_dim;j++){
+      qForce[num_dim*i+j]=qForce_oneparticle[j];
+    }
+  }
   return qForce;
 }
 
@@ -313,6 +320,7 @@ double ComplexFunction::totalRadius(std::vector<class Particle*> particles){
     position = particle->getPosition();
     total_radius += position[0] + position[1] + beta*position[2];
   }
+  return total_radius;
 }
 
 double ComplexFunction::localEnergyTotalRadius(std::vector<class Particle*> particles, double localEnergy){
