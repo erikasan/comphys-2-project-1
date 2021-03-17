@@ -59,7 +59,6 @@ void Sampler::sample(bool acceptedStep) {
     m_accepted+=int(acceptedStep);
 }
 void Sampler::initiateFile                 (){
-  std::ofstream myfile;
   long time=(long) std::chrono::system_clock::now().time_since_epoch().count();
   m_energyfile = "../../../output/energies_"+ std::to_string(time)+".csv";
   myfile.open(m_energyfile,std::ofstream::out);
@@ -68,7 +67,6 @@ void Sampler::initiateFile                 (){
   myfile.close();
 }
 void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
-  std::ofstream myfile;
   myfile.open(m_energyfile,std::ofstream::app);
   myfile << cumul_energy<< ","<<local_energy <<"\n";
   myfile.close();

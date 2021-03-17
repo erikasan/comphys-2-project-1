@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <fstream>
+
 class Sampler {
 public:
     Sampler(class System* system);
@@ -34,5 +36,5 @@ protected:
     int     m_writeOutStep=100;
     class System* m_system = nullptr;
     std::string  m_energyfile;
-
+    std::ofstream myfile;
 };
