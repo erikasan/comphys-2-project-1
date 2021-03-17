@@ -7,7 +7,8 @@
 #include "particle.h"
 #include "Hamiltonians/hamiltonian.h"
 #include "WaveFunctions/wavefunction.h"
-
+#include <chrono>
+#include <string>
 using std::cout;
 using std::endl;
 
@@ -30,6 +31,9 @@ void Sampler::sample(bool acceptedStep) {
         m_cumulativeEnergy = 0;
         m_cumulkinetic=0;
         m_cumulpotential=0;
+        if (m_samplertype==true){
+          initiateFile();
+          }
     }
 
     /* Here you should sample all the interesting things you want to measure.
@@ -48,8 +52,26 @@ void Sampler::sample(bool acceptedStep) {
     m_cumulativeEnergy += localEnergy;
     m_cumulkinetic     += localKineticEnergy;
     m_cumulpotential   += localPotentialEnergy;
+    if(m_stepNumber%m_writeOutStep==0 && m_samplertype==true){
+      writeExpectationEnergyToFile(m_cumulativeEnergy/(m_stepNumber+1),localEnergy);
+    }
     m_stepNumber++;
     m_accepted+=int(acceptedStep);
+}
+void Sampler::initiateFile                 (){
+  std::ofstream myfile;
+  long time=(long) std::chrono::system_clock::now().time_since_epoch().count();
+  m_energyfile = "../../../output/energies_"+ std::to_string(time)+".csv";
+  myfile.open(m_energyfile,std::ofstream::out);
+  myfile << "cumulative energy, local energy at each "<<m_writeOutStep << "step\n";
+  //myfile << "Number of Particles:<<  Number of Dimensions: alpha:  Number of Monte Carlo steps: \n";
+  myfile.close();
+}
+void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
+  std::ofstream myfile;
+  myfile.open(m_energyfile,std::ofstream::app);
+  myfile << cumul_energy<< ","<<local_energy <<"\n";
+  myfile.close();
 }
 
 void Sampler::printOutputToTerminal() {

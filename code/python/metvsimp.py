@@ -6,14 +6,14 @@ import subprocess
 import pandas as pd
 import seaborn as sns
 
-number_particles=100
+number_particles=10
 number_dimensions=3;
 equilibration=0.1;
 omega=1
 Ns=np.array([1e2,1e3,1e4,1e5,1e6,1e7])
 alpha=1
 steps=[0.01,0.1,0.5,1]
-seeds=np.array(np.linspace(1,100,5),dtype=int)
+seeds=np.array(np.linspace(1,100,10),dtype=int)
 anal_en=(alpha+(1-4*alpha**2)/(8*alpha))*number_particles*number_dimensions
 energies=np.zeros((len(Ns),2*len(steps)),dtype=float)
 for j, N in enumerate(Ns):

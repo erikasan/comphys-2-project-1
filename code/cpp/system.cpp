@@ -91,7 +91,7 @@ void System::stopGradientDescent(){
 
 void System::gradientDescent(double tol, double learningRate, int maxIter){
   setSampler(new GDsampler(this));
-
+  m_sampler -> setWriteout(false);
   m_tol = tol;
   m_waveFunction->setTolerance(tol);
   m_waveFunction->setLearningRate(learningRate);
@@ -109,7 +109,6 @@ void System::gradientDescent(double tol, double learningRate, int maxIter){
 
   return;
 }
-
 void System::setNumberOfParticles(int numberOfParticles) {
     m_numberOfParticles = numberOfParticles;
 }

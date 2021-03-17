@@ -7,28 +7,26 @@ public:
     System();
     System(int seed);
 
-    virtual bool metropolisStep      ();
-    // bool metropolis_LangevinStep ();
-    virtual void runMetropolisSteps  (int numberOfMetropolisSteps, bool desire_output);
-    //void runMetropolisLangevinSteps  (int numberOfMetropolisSteps, bool desire_output);
+    virtual bool metropolisStep       ();
+    virtual void runMetropolisSteps   (int numberOfMetropolisSteps, bool desire_output);
 
-    void gradientDescent             (double tol, double learningRate, int maxIter);
+    void gradientDescent              (double tol, double learningRate, int maxIter);
 
-    void setNumberOfParticles        (int numberOfParticles);
-    void setNumberOfDimensions       (int numberOfDimensions);
+    void setNumberOfParticles         (int numberOfParticles);
+    void setNumberOfDimensions        (int numberOfDimensions);
 
-    void setStepLength               (double stepLength);
-    void setEquilibrationFraction    (double equilibrationFraction);
+    void setStepLength                (double stepLength);
+    void setEquilibrationFraction     (double equilibrationFraction);
 
-    void setHamiltonian              (class Hamiltonian* hamiltonian);
-    void setWaveFunction             (class WaveFunction* waveFunction);
-    void setInitialState             (class InitialState* initialState);
-    void setSampler                  (class Sampler* sampler);
+    void setHamiltonian               (class Hamiltonian* hamiltonian);
+    void setWaveFunction              (class WaveFunction* waveFunction);
+    void setInitialState              (class InitialState* initialState);
+    void setSampler                   (class Sampler* sampler);
 
-    void setOmega                    (double omega);
-    void setMetropolisSteps          (int numberOfMetropolisSteps);
+    void setOmega                     (double omega);
+    void setMetropolisSteps           (int numberOfMetropolisSteps);
 
-    void stopGradientDescent         ();
+    void stopGradientDescent          ();
 
     class WaveFunction* getWaveFunction(){
       return m_waveFunction;
