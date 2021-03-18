@@ -289,7 +289,7 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
        prefactor=2*a/((dist*dist)*(a-dist));
        for(int l=0;l<num_dim;l++){
          distance_vec[l]=particle_position[l]-particles[i]->getPosition()[l];
-         temp[l]+=-prefactor*distance_vec[l];
+         temp[l] += -prefactor*distance_vec[l];
        }
      }
      for (int i=0;i<num_dim;i++){
@@ -322,7 +322,7 @@ double ComplexFunction::totalRadius(std::vector<class Particle*> particles){
   int num_part=m_system->getNumberOfParticles();
   for (int i=0;i<num_part;i++){
     position = particles[i]->getPosition();
-    total_radius += position[0] + position[1] + beta*position[2];
+    total_radius += position[0]*position[0] + position[1]*position[1] + beta*position[2]*position[2];
   }
 
   return total_radius;

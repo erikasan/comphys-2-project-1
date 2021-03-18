@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     system->setMetropolisSteps       (numberOfSteps);
 
     double tol = 0.0001;
-    int maxIter = 5;
+    int maxIter = 100;
     double learningRate = 0.01;
     system->gradientDescent(tol, learningRate, maxIter);
 
