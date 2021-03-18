@@ -32,8 +32,10 @@ protected:
     double  m_cumulativeEnergy = 0;
     double  m_kineticenergy = 0, m_cumulkinetic=0;
     double  m_potentialenergy = 0, m_cumulpotential=0;
+    double  m_cumulenergysquared=0;
+    double  m_energysquared=0;
     int     m_accepted=0;
-    int     m_writeOutStep=100;
+    int     m_writeOutStep=1;
     class System* m_system = nullptr;
     std::string  m_energyfile;
     std::ofstream myfile;

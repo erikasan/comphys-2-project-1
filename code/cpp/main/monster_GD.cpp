@@ -18,13 +18,13 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     // Seed for the random number generator
-    int seed = 2020;
+    int seed = 345;
 
     int numberOfDimensions = 3;
-    int numberOfParticles  = 1;
-    int numberOfSteps      = (int) 1e6;
+    int numberOfParticles  = 10;
+    int numberOfSteps      = (int) 1e4;
     double omega           = 25;           // Oscillator frequency.
-    double alpha           = 0.5;          // Variational parameter.
+    double alpha           = 0.55;          // Variational parameter.
     double beta            = 2.82843;
     double a               = 0.0043;
     double stepLength      = 0.1;          // Metropolis step length.
@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
     system->setStepLength            (stepLength);
     system->setMetropolisSteps       (numberOfSteps);
 
-    double tol = 0.0001;
-    int maxIter = 100;
+    double tol = 0.000001;
+    int maxIter = 200;
     double learningRate = 0.01;
     system->gradientDescent(tol, learningRate, maxIter);
 

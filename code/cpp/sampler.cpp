@@ -51,7 +51,7 @@ void Sampler::sample(bool acceptedStep) {
     double localEnergy = localPotentialEnergy + localKineticEnergy;
 
     gdsampler(particles, localEnergy);
-
+    m_cumulenergysquared   += localEnergy*localEnergy;
     m_cumulativeEnergy += localEnergy;
     m_cumulkinetic     += localKineticEnergy;
     m_cumulpotential   += localPotentialEnergy;
@@ -101,6 +101,7 @@ void Sampler::printOutputToTerminal() {
     cout << " Energy : " << m_energy << endl;
     cout << "Kinetic Energy: " << m_kineticenergy <<endl;
     cout << "Potential Energy: " << m_potentialenergy <<endl;
+    cout << "standard error: " << sqrt(m_energysquared-m_energy*m_energy)/sqrt(m_stepNumber);
     cout << "Duration: " << dur << " ms" << endl;
     cout << endl;
 }
@@ -124,13 +125,12 @@ void Sampler::printOutputToFile(){
 
 void Sampler::computeAverages() {
     /* Compute the averages of the sampled quantities.*/
-    double steps = m_system->getNumberOfMetropolisSteps()*(1-m_system->getEquilibrationFraction());
+    double steps = m_stepNumber;
     m_energy = m_cumulativeEnergy/steps;
     m_kineticenergy = m_cumulkinetic/steps;
     m_potentialenergy = m_cumulpotential/steps;
-
+    m_energysquared = m_cumulenergysquared/steps;
     m_system->getWaveFunction()->computeAverages(steps);
-    m_stepNumber = 0;
     cout << m_energy << endl;
     return;
 }

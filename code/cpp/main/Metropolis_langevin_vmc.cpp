@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     }
 
     System* system = new MetropolisLangevin(seed);
+    system->m_energyfile="test";
     system->setSampler               (new Sampler(system));
     system->setOmega(omega);
     system->setHamiltonian           (new HarmonicOscillator(system, omega));
