@@ -16,3 +16,4 @@ make -j2
 mv vmc ..
 mv metropolis_langevin ..
 mv gradient_descent ..
+mv monster_GD ..
