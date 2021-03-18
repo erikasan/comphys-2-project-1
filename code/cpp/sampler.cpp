@@ -131,6 +131,6 @@ void Sampler::computeAverages() {
     m_potentialenergy = m_cumulpotential/steps;
     m_energysquared = m_cumulenergysquared/steps;
     m_system->getWaveFunction()->computeAverages(steps);
-    cout << m_energy << endl;
+    m_stepNumber = 0;
     return;
 }
