@@ -257,7 +257,6 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
       total_energy+=4*alpha*alpha*total_radius_withbeta;
       total_energy-=numberOfParticles*((2*num_dim-2)*alpha+2*alpha*beta);
       //printf("total_energy %f\n",total_energy);
-
       return total_energy;
 }
 
@@ -284,8 +283,9 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
          temp[l]+=-prefactor*distance_vec[l];
        }
      }
-     for (int i=particle_id+1;i< m_system->getNumberOfDimensions();i++){
+     for (int i=particle_id+1;i< m_system->getNumberOfParticles();i++){
        dist=particle_distances_absolute[i][particle_id];
+
        prefactor=2*a/((dist*dist)*(a-dist));
        for(int l=0;l<num_dim;l++){
          distance_vec[l]=particle_position[l]-particles[i]->getPosition()[l];
@@ -315,11 +315,16 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
 
 double ComplexFunction::totalRadius(std::vector<class Particle*> particles){
   double total_radius = 0;
-  vector<double> position;
-  for (Particle *particle : particles){
-    position = particle->getPosition();
+  std::vector<double> position;
+  position.reserve(3);
+
+  int num_dim=m_system->getNumberOfDimensions();
+  int num_part=m_system->getNumberOfParticles();
+  for (int i=0;i<num_part;i++){
+    position = particles[i]->getPosition();
     total_radius += position[0] + position[1] + beta*position[2];
   }
+
   return total_radius;
 }
 
@@ -346,7 +351,7 @@ void ComplexFunction::gradientDescent(){
   alphaOld            = m_parameters[0];
   energy              = m_system->getSampler()->getEnergy();
   localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
-
+  cout << alphaOld << endl;
   alphaNew = alphaOld - m_learningRate*localEnergyGradient;
 
   if (abs(alphaNew - alphaOld) < m_tol){

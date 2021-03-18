@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <chrono>
 class Sampler {
 public:
     Sampler(class System* system);
@@ -16,7 +16,7 @@ public:
     void initiateFile                 ();
     void writeExpectationEnergyToFile (double cumul_energy, double local_energy);
     void writeLocalEnergyToFile      ();
-
+    void setFileNameforEnergy(std:: string filename);
 
     virtual void gdsampler(std::vector<class Particle*> particles, double localEnergy){
       (void) particles;
@@ -37,4 +37,5 @@ protected:
     class System* m_system = nullptr;
     std::string  m_energyfile;
     std::ofstream myfile;
+
 };

@@ -16,6 +16,7 @@ using std::endl;
 Sampler::Sampler(System* system) {
     m_system = system;
     m_stepNumber = 0;
+    setFileNameforEnergy(system->m_energyfile);
 }
 
 void Sampler::setNumberOfMetropolisSteps(int steps) {
@@ -31,6 +32,8 @@ void Sampler::sample(bool acceptedStep) {
         m_cumulativeEnergy = 0;
         m_cumulkinetic=0;
         m_cumulpotential=0;
+
+
         if (m_samplertype==true){
           initiateFile();
           }
@@ -59,11 +62,8 @@ void Sampler::sample(bool acceptedStep) {
     m_accepted+=int(acceptedStep);
 }
 void Sampler::initiateFile                 (){
-  long time=(long) std::chrono::system_clock::now().time_since_epoch().count();
-  m_energyfile = "../../../output/energies_"+ std::to_string(time)+".csv";
   myfile.open(m_energyfile,std::ofstream::out);
   myfile << "cumulative energy, local energy at each "<<m_writeOutStep << "step\n";
-  //myfile << "Number of Particles:<<  Number of Dimensions: alpha:  Number of Monte Carlo steps: \n";
   myfile.close();
 }
 void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
@@ -71,7 +71,9 @@ void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_en
   myfile << cumul_energy<< ","<<local_energy <<"\n";
   myfile.close();
 }
-
+void Sampler::setFileNameforEnergy(std::string filename){
+  m_energyfile = "../../../output/energies_"+ filename+".csv";
+}
 void Sampler::printOutputToTerminal() {
     int    np = m_system->getNumberOfParticles();
     int    nd = m_system->getNumberOfDimensions();

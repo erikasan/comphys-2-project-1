@@ -59,3 +59,8 @@ target_link_libraries(gradient_descent mylib)
 target_link_libraries(mlvmc mylib)
 target_link_libraries(monster mylib)
 target_link_libraries(monster_GD mylib)
+
+find_package(OpenMP REQUIRED)
+add_executable(vmcparallel main/main_parallel.cpp)
+target_link_libraries(vmcparallel PRIVATE OpenMP::OpenMP_CXX)
+target_link_libraries(vmcparallel mylib)

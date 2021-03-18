@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Math/random.h"
-
+#include <string>
 class System {
 public:
     System();
@@ -71,7 +71,7 @@ public:
     double getOmega(){
       return m_omega;
     }
-
+    std::string  m_energyfile="default";
 
 protected:
     int                          m_numberOfParticles       = 0;

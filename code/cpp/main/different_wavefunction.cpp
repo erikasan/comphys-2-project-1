@@ -51,14 +51,14 @@ int main(int argc, char *argv[]) {
     }
     }
     System* system = new MetropolisLangevin(seed);
-    system->setSampler                  (new Sampler(system));
+    system->setSampler               (new Sampler(system));
     system->setOmega(omega);
     system->setHamiltonian              (new EllipticOscillator(system, omega));
     system->setWaveFunction             (new ComplexFunction(system, alpha, beta, a));
-    //system->setInitialState             (new RandomUniformMinDist(system, numberOfDimensions, numberOfParticles,a));
     system->setInitialState             (new RandomUniformMinDist(system, numberOfDimensions, numberOfParticles,a));
     system->setEquilibrationFraction    (equilibration);
     system->setStepLength               (stepLength);
-    system->runMetropolisSteps  (numberOfSteps,true);
+    system->setMetropolisSteps          (numberOfSteps);
+    system->runMetropolisSteps       (numberOfSteps,true);
     return 0;
 }
