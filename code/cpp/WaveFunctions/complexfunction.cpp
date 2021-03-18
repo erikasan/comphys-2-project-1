@@ -39,13 +39,15 @@ double ** ComplexFunction::createNNMatrix(int n){
   return A;
 }
 void ComplexFunction::initiateDistances(std::vector<class Particle*> particles){
+
   particle_distances_absolute=createNNMatrix(m_system->getNumberOfParticles());
   for (int i=0; i<m_system->getNumberOfParticles();i++){
       for (int j=0; j<m_system->getNumberOfParticles();j++){
         particle_distances_absolute[i][j]=distance(particles[i]->getPosition(),particles[j]->getPosition());
       }
   }
-  printMatrix(particle_distances_absolute,m_system->getNumberOfParticles());
+
+  //printMatrix(particle_distances_absolute,m_system->getNumberOfParticles());
 }
 void ComplexFunction::updateDistances(std::vector<class Particle*> particles,int particle_id){
   double distanceval=0;
@@ -351,8 +353,9 @@ void ComplexFunction::gradientDescent(){
   alphaOld            = m_parameters[0];
   energy              = m_system->getSampler()->getEnergy();
   localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
-  cout << alphaOld << endl;
+
   alphaNew = alphaOld - m_learningRate*localEnergyGradient;
+  cout << alphaNew << endl;
 
   if (abs(alphaNew - alphaOld) < m_tol){
     m_system->stopGradientDescent();
