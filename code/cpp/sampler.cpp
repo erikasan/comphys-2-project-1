@@ -9,6 +9,7 @@
 #include "WaveFunctions/wavefunction.h"
 #include <chrono>
 #include <string>
+#include <iomanip>
 using std::cout;
 using std::endl;
 
@@ -66,6 +67,7 @@ void Sampler::initiateFile                 (){
   myfile << "cumulative energy, local energy at each "<<m_writeOutStep << "step\n";
   myfile.close();
   myfile.open(m_energyfile,std::ios::app);
+  myfile << std::setprecision(10);
 }
 void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
 
@@ -113,11 +115,11 @@ void Sampler::printOutputToFile(){
   int dur = m_system->getDuration()/(1000);
   double ef = m_system->getEquilibrationSteps();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
-  std::ofstream myfile;
-  myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
-  myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ef<<",";
-  myfile <<pa.at(0)<<","<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;
-  myfile.close();
+  std::ofstream newmyfile;
+  newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+  newmyfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ef<<",";
+  newmyfile <<pa.at(0)<<","<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;
+  newmyfile.close();
   std::cout << "written to file...?"<<endl;
   return;
 }
