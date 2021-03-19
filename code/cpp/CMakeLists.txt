@@ -40,27 +40,19 @@ file(
     GLOB SOURCES "WaveFunctions/*.cpp"
 )
 add_library(mylib STATIC ${SOURCES})
+find_package(OpenMP REQUIRED)
+
+
+
 # Create executables called "vmc" and "test"
 
-add_executable(vmc main/main.cpp)
 add_executable(test main/unit_testing.cpp)
-add_executable(metropolis_langevin main/Metropolis_Langevin.cpp)
-add_executable(numerical main/numerical_simpleharmonic.cpp)
-add_executable(gradient_descent main/gradient_descent.cpp)
-add_executable(mlvmc main/Metropolis_langevin_vmc.cpp)
-add_executable(monster main/different_wavefunction.cpp)
-add_executable(monster_GD main/monster_GD.cpp)
+add_executable(variationalMonteCarlo main/vmc.cpp)
+add_executable(gradientdescent main/gradientDescent.cpp)
+add_executable(vmc_parallel main/parallel.cpp)
 
+
+target_link_libraries(variationalMonteCarlo mylib)
 target_link_libraries(test mylib)
-target_link_libraries(vmc mylib)
-target_link_libraries(metropolis_langevin mylib)
-target_link_libraries(numerical mylib)
-target_link_libraries(gradient_descent mylib)
-target_link_libraries(mlvmc mylib)
-target_link_libraries(monster mylib)
-target_link_libraries(monster_GD mylib)
-
-find_package(OpenMP REQUIRED)
-add_executable(vmcparallel main/main_parallel.cpp)
-target_link_libraries(vmcparallel PRIVATE OpenMP::OpenMP_CXX)
-target_link_libraries(vmcparallel mylib)
+target_link_libraries(gradientdescent mylib)
+target_link_libraries(vmc_parallel mylib OpenMP::OpenMP_CXX)

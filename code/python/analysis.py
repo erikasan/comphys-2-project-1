@@ -6,7 +6,7 @@ DATA_ID = "../../output/"
 def data_path(dat_id):
     return os.path.join(DATA_ID, dat_id)
 
-infile = open(data_path("energies_1616003395561436856.csv"),'r')
+infile = open(data_path("energies_test.csv"),'r')
 import pandas as pd
 from pandas import DataFrame
 
@@ -48,10 +48,11 @@ def block(x):
 
 
 
-xy = loadtxt(infile,skiprows=1,usecols=(0),delimiter=",")
+xy = loadtxt(infile,skiprows=1,usecols=(1),delimiter=",")
 maxval=int( log2(len(xy)))
 start=2
 xvals=np.logspace(start,maxval,maxval-start+1,base=2,dtype=int)
+xvals=[2**maxval]
 means=np.zeros(len(xvals))
 stds=np.zeros(len(xvals))
 print(xvals)
@@ -66,7 +67,6 @@ for i,xval in enumerate(xvals):
     frame = pd.DataFrame(data,index=['Values'])
     print(frame)
 import matplotlib.pyplot as plt
-xvals*=100
 plt.errorbar(xvals,means,yerr=stds)
 plt.xscale("log",base=2);
 plt.xlabel("Number of Monte Carlo Cycles")

@@ -12,12 +12,13 @@ public:
     void printOutputToTerminal();
     void computeAverages();
     double getEnergy()          { return m_energy; }
+    double getCumulEnergy() {return m_cumulativeEnergy;}
+    double getCumulEnergysquared() {return m_cumulenergysquared;}
     void setWriteout(bool samplertype){m_samplertype=samplertype;}
     void initiateFile                 ();
     void writeExpectationEnergyToFile (double cumul_energy, double local_energy);
-    void writeLocalEnergyToFile      ();
     void setFileNameforEnergy(std:: string filename);
-
+    void closeFile(){myfile.close();}
     virtual void gdsampler(std::vector<class Particle*> particles, double localEnergy){
       (void) particles;
       (void) localEnergy;

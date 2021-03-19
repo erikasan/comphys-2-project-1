@@ -16,7 +16,7 @@ public:
     void setNumberOfDimensions        (int numberOfDimensions);
 
     void setStepLength                (double stepLength);
-    void setEquilibrationFraction     (double equilibrationFraction);
+    void setEquilibrationSteps        (int equilibrationSteps);
 
     void setHamiltonian               (class Hamiltonian* hamiltonian);
     void setWaveFunction              (class WaveFunction* waveFunction);
@@ -64,8 +64,8 @@ public:
       return m_duration;
     }
 
-    double getEquilibrationFraction(){
-      return m_equilibrationFraction;
+    int getEquilibrationSteps(){
+      return m_equilibrationSteps;
     }
 
     double getOmega(){
@@ -77,7 +77,7 @@ protected:
     int                          m_numberOfParticles       = 0;
     int                          m_numberOfDimensions      = 0;
     int                          m_numberOfMetropolisSteps = 0;
-    double                       m_equilibrationFraction   = 0.0;
+    int                          m_equilibrationSteps      = 0.0;
     double                       m_stepLength              = 0.1;
     double                       m_stepLengthRoot          = 0.01;
     int                          m_duration                = 0;

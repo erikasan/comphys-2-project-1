@@ -62,11 +62,13 @@ void MetropolisLangevin::runMetropolisSteps(int numberOfMetropolisSteps, bool de
   m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
 
   auto start = high_resolution_clock::now();
-  for (int i = 0; i < numberOfMetropolisSteps; i++){
-      bool acceptedStep = metropolisStep();
-      if (i > (int)(m_equilibrationFraction*numberOfMetropolisSteps)){
-          m_sampler->sample(acceptedStep);
-      }
+  bool acceptedStep;
+  for (int i = 0; i < m_equilibrationSteps; i++) {
+      acceptedStep = metropolisStep();
+  }
+  for (int i = 0; i < numberOfMetropolisSteps; i++) {
+      acceptedStep = metropolisStep();
+      m_sampler->sample(acceptedStep);
   }
   auto stop = high_resolution_clock::now();
   auto duration = duration_cast<microseconds>(stop - start);

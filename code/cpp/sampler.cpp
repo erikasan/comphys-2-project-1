@@ -62,14 +62,14 @@ void Sampler::sample(bool acceptedStep) {
     m_accepted+=int(acceptedStep);
 }
 void Sampler::initiateFile                 (){
-  myfile.open(m_energyfile,std::ofstream::out);
+  myfile.open(m_energyfile,std::ios::out);
   myfile << "cumulative energy, local energy at each "<<m_writeOutStep << "step\n";
   myfile.close();
+  myfile.open(m_energyfile,std::ios::app);
 }
 void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
-  myfile.open(m_energyfile,std::ofstream::app);
-  myfile << cumul_energy<< ","<<local_energy <<"\n";
-  myfile.close();
+
+  myfile <<local_energy <<"\n";
 }
 void Sampler::setFileNameforEnergy(std::string filename){
   m_energyfile = "../../../output/energies_"+ filename+".csv";
@@ -80,7 +80,7 @@ void Sampler::printOutputToTerminal() {
     int    ms = m_system->getNumberOfMetropolisSteps();
     int    p  = m_system->getWaveFunction()->getNumberOfParameters();
     int    dur= m_system->getDuration()/(1000);
-    double ef = m_system->getEquilibrationFraction();
+    double ef = m_system->getEquilibrationSteps();
 
     std::vector<double> pa = m_system->getWaveFunction()->getParameters();
     cout << endl;
@@ -88,7 +88,7 @@ void Sampler::printOutputToTerminal() {
     cout << " Number of particles  : " << np << endl;
     cout << " Number of dimensions : " << nd << endl;
     cout << " Number of Metropolis steps run : 10^" << std::log10(ms) << endl;
-    cout << " Number of equilibration steps  : 10^" << std::log10(std::round(ms*ef)) << endl;
+    cout << " Number of equilibration steps  : 10^" << std::log10(std::round(ef)) << endl;
     cout << endl;
     cout << "  -- Wave function parameters -- " << endl;
     cout << " Number of parameters : " << p << endl;
@@ -97,11 +97,11 @@ void Sampler::printOutputToTerminal() {
     }
     cout << endl;
     cout << "  -- Results -- " << endl;
-    cout << "Acceptance rate:" << double(m_accepted)/(ms*(1-ef))<<  endl;
+    cout << "Acceptance rate:" << double(m_accepted)/(ms)<<  endl;
     cout << " Energy : " << m_energy << endl;
     cout << "Kinetic Energy: " << m_kineticenergy <<endl;
     cout << "Potential Energy: " << m_potentialenergy <<endl;
-    cout << "standard error: " << sqrt(m_energysquared-m_energy*m_energy)/sqrt(m_stepNumber);
+    cout << "standard error: " << sqrt(m_energysquared-m_energy*m_energy)/sqrt(m_stepNumber)<<endl;
     cout << "Duration: " << dur << " ms" << endl;
     cout << endl;
 }
@@ -111,13 +111,12 @@ void Sampler::printOutputToFile(){
   int ms  = m_system->getNumberOfMetropolisSteps();
   int p   = m_system->getWaveFunction()->getNumberOfParameters();
   int dur = m_system->getDuration()/(1000);
-  double  omeg=m_system->getOmega(); // UNFINISHED
-  double ef = m_system->getEquilibrationFraction();
+  double ef = m_system->getEquilibrationSteps();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream myfile;
   myfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
-  myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ms*ef<<",";
-  myfile <<pa.at(0)<<","<<omeg<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms*(1-ef))<<","<<dur<<endl;
+  myfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ef<<",";
+  myfile <<pa.at(0)<<","<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;
   myfile.close();
   std::cout << "written to file...?"<<endl;
   return;
@@ -132,5 +131,6 @@ void Sampler::computeAverages() {
     m_energysquared = m_cumulenergysquared/steps;
     m_system->getWaveFunction()->computeAverages(steps);
     cout << m_energy << endl;
+    myfile.close();
     return;
 }

@@ -60,18 +60,13 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output)
     m_waveFunction->initiateDistances(m_particles);
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
     auto start = high_resolution_clock::now();
+    bool acceptedStep;
+    for (int i = 0; i < m_equilibrationSteps; i++) {
+        acceptedStep = metropolisStep();
+    }
     for (int i = 0; i < numberOfMetropolisSteps; i++) {
-        bool acceptedStep = metropolisStep();
-
-        /* Here you should sample the energy (and maybe other things using
-         * the m_sampler instance of the Sampler class. Make sure, though,
-         * to only begin sampling after you have let the system equilibrate
-         * for a while. You may handle this using the fraction of steps which
-         * are equilibration steps; m_equilibrationFraction.
-         */
-        if (i > (int)(m_equilibrationFraction*numberOfMetropolisSteps)){
-          m_sampler->sample(acceptedStep);
-        }
+        acceptedStep = metropolisStep();
+        m_sampler->sample(acceptedStep);
     }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
@@ -123,9 +118,9 @@ void System::setStepLength(double stepLength) {
     m_stepLengthRoot = sqrt(stepLength);
 }
 
-void System::setEquilibrationFraction(double equilibrationFraction) {
-    assert(equilibrationFraction >= 0);
-    m_equilibrationFraction = equilibrationFraction;
+void System::setEquilibrationSteps(int equilibrationSteps) {
+    assert(equilibrationSteps >= 0);
+    m_equilibrationSteps = equilibrationSteps;
 }
 
 void System::setOmega(double omega){

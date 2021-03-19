@@ -33,14 +33,14 @@ TEST_CASE("Test that the analytical value matches the calculated value when the 
   double omega            = 10;          // Oscillator frequency.
   double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
-  double equilibration    = 0.1;          // Amount of the total steps used
+  int equilibration      = (int) 1e5;          // Amount of the total steps used
   string sample_type="not_numerically";
   System* system = new System(seed);
   system->setSampler               (new Sampler(system));
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new SimpleGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
-  system->setEquilibrationFraction    (equilibration);
+  system->setEquilibrationSteps   (equilibration);
   system->setStepLength               (stepLength);
   system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
@@ -56,13 +56,13 @@ TEST_CASE("Evaluate wether numerical also works"){
   double omega            = 10;          // Oscillator frequency.
   double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
-  double equilibration    = 0.1;          // Amount of the total steps used
+  int equilibration      = (int) 1e5;         // Amount of the total steps used
   System* system = new System(seed);
   system->setSampler               (new Sampler(system));
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new NumericGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
-  system->setEquilibrationFraction    (equilibration);
+  system->setEquilibrationSteps    (equilibration);
   system->setStepLength               (stepLength);
   system->runMetropolisSteps          (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
@@ -78,14 +78,14 @@ TEST_CASE("Evaluate wether importance sampling works"){
   double omega            = 20;          // Oscillator frequency.
   double alpha            = 0.5;          // Variational parameter.
   double stepLength       = 0.1;          // Metropolis step length.
-  double equilibration    = 0.1;          // Amount of the total steps used
+  int equilibration      = (int) 1e5;          // Amount of the total steps used
   System* system = new MetropolisLangevin(seed);
   system->setSampler                  (new Sampler(system));
   system->setOmega(omega);
   system->setHamiltonian              (new HarmonicOscillator(system, omega));
   system->setWaveFunction             (new SimpleGaussian(system, alpha));
   system->setInitialState             (new RandomUniform(system, numberOfDimensions, numberOfParticles));
-  system->setEquilibrationFraction    (equilibration);
+  system->setEquilibrationSteps    (equilibration);
   system->setStepLength               (stepLength);
   system->runMetropolisSteps  (numberOfSteps,false);
   double potential_energy_calculated=system->getSampler()->getEnergy();
