@@ -66,7 +66,6 @@ int main(int argc, char *argv[]) {
     {
       System* system;
       int id = omp_get_thread_num();
-      int nproc = omp_get_num_threads();
       string filename_blocking_parallel=filename_blocking+to_string(id);
       int seed_parallel=seed+id;
 

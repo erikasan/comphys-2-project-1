@@ -320,7 +320,6 @@ double ComplexFunction::totalRadius(std::vector<class Particle*> particles){
   std::vector<double> position;
   position.reserve(3);
 
-  int num_dim=m_system->getNumberOfDimensions();
   int num_part=m_system->getNumberOfParticles();
   for (int i=0;i<num_part;i++){
     position = particles[i]->getPosition();

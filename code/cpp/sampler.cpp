@@ -70,7 +70,7 @@ void Sampler::initiateFile                 (){
   myfile << std::setprecision(10);
 }
 void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
-
+  (void)cumul_energy;
   myfile <<local_energy <<"\n";
 }
 void Sampler::setFileNameforEnergy(std::string filename){
@@ -112,6 +112,7 @@ void Sampler::printOutputToFile(){
   int nd  = m_system->getNumberOfDimensions();
   int ms  = m_system->getNumberOfMetropolisSteps();
   int p   = m_system->getWaveFunction()->getNumberOfParameters();
+  (void)p;
   int dur = m_system->getDuration()/(1000);
   double ef = m_system->getEquilibrationSteps();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
