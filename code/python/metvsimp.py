@@ -18,8 +18,9 @@ anal_en=(alpha+(1-4*alpha**2)/(8*alpha))*number_particles*number_dimensions
 energies=np.zeros((len(Ns),2*len(steps)),dtype=float)
 for j, N in enumerate(Ns):
     for i, stepLength in enumerate(steps):
+        equilibration=int(0.1*N)
         for seed in seeds:
-            bashCommand="./vmc %d %d %d %f %f %f %f %d"%(number_dimensions,number_particles,N,omega,alpha,stepLength,equilibration,seed)
+            bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","VMC","test")
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
             output, error = process.communicate()
             infile=pd.read_csv(filepath_or_buffer="../../output/sympleharmonic.csv",header=0)
@@ -28,8 +29,9 @@ for j, N in enumerate(Ns):
         print("Steplength: %.2f, N: %d, energy: %.3f"%(stepLength,N,energies[j,i]/len(seeds)))
 for j, N in enumerate(Ns):
     for i, stepLength in enumerate(steps):
+        equilibration=int(0.1*N)
         for seed in seeds:
-            bashCommand="./mlvmc %d %d %d %f %f %f %f %d"%(number_dimensions,number_particles,N,omega,alpha,stepLength,equilibration,seed)
+            bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","IMP","test")
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
             output, error = process.communicate()
             infile=pd.read_csv(filepath_or_buffer="../../output/sympleharmonic.csv",header=0)

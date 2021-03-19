@@ -11,15 +11,15 @@ number_dimensions=3;
 N = int(1e4)
 omega=1
 stepLength=1;
-equilibration=0.1;
 alphas=linspace(0.3,0.7,11)
 totnum=len(alphas)*len(number_particles)
 number_particles_tot=np.repeat(number_particles,len(alphas),axis=0)
 alphas_tot=np.tile(alphas, len(number_particles))
 for num_part in number_particles:
     number_runs=N*num_part
+    equilibration=int(0.1*number_runs)
     for alpha in alphas:
-        bashCommand="./vmc %d %d %d %f %f %f %f %d"%(number_dimensions,num_part,number_runs,omega,alpha,stepLength,equilibration,2021)
+        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,N,alpha,stepLength,equilibration,2021,"HO","VMC","test")
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
         output, error = process.communicate()
         print("Done alpha=%f num_part=%d"%(alpha,num_part))
@@ -39,7 +39,7 @@ np.savetxt("../../output/vmc_time_simpleharmonic.csv", a, delimiter=",")
 for num_part in number_particles:
     number_runs=N*num_part
     for alpha in alphas:
-        bashCommand="./numerical %d %d %d %f %f %f %f %d"%(number_dimensions,num_part,number_runs,omega,alpha,stepLength,equilibration,2021)
+        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,N,alpha,stepLength,equilibration,2021,"NHO","VMC","test")
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
         output, error = process.communicate()
         print("Done alpha=%f num_part=%d"%(alpha,num_part))

@@ -11,14 +11,13 @@ number_dimensions=3;
 N = int(1e5)
 omega=1
 stepLength=0.1;
-equilibration=0.1;
+equilibration=int(0.1*N);
 beta=2.82843
 a=0.0043
 seed=12;
 alphas=[1/8*np.sqrt(2)**i for i in range(0,10)]
 for alpha in alphas:
-    bashCommand="./monster %d %d %d   %f %f  %f  %f  %f       %f     %d"%(number_dimensions,number_particles,N,omega,alpha,stepLength,equilibration,a,beta, seed)
-    #bashCommand="./monster 3 10 100000 1 0.7 0.1 0.1 0.0043 2.82843 12345"
+    bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"EO","IMP","test")
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
     output, error = process.communicate()
     print(output)
