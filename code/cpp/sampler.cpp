@@ -56,22 +56,31 @@ void Sampler::sample(bool acceptedStep) {
     m_cumulativeEnergy += localEnergy;
     m_cumulkinetic     += localKineticEnergy;
     m_cumulpotential   += localPotentialEnergy;
-    if(m_stepNumber%m_writeOutStep==0 && m_samplertype==true){
-      writeExpectationEnergyToFile(m_cumulativeEnergy/(m_stepNumber+1),localEnergy);
-    }
+
     m_stepNumber++;
+    local_energyarray[m_stepNumber%m_writeOutStep]=localEnergy;
+    if(m_stepNumber%m_writeOutStep==0 && m_samplertype==true){
+      writeExpectationEnergyToFile();
+    }
     m_accepted+=int(acceptedStep);
 }
 void Sampler::initiateFile                 (){
   myfile.open(m_energyfile,std::ios::out);
   myfile << "cumulative energy, local energy at each "<<m_writeOutStep << "step\n";
   myfile.close();
+}
+void Sampler::writeExpectationEnergyToFile (){
   myfile.open(m_energyfile,std::ios::app);
   myfile << std::setprecision(10);
+  for(int i=0;i<m_writeOutStep;i++){
+    myfile <<local_energyarray[i] <<"\n";
+  }
+  myfile.close();
 }
-void Sampler::writeExpectationEnergyToFile (double cumul_energy, double local_energy){
-  (void)cumul_energy;
-  myfile <<local_energy <<"\n";
+void Sampler::writeExpectationEnergyToFile (double local_energy){
+  myfile.open(m_energyfile,std::ios::app);
+  myfile << std::setprecision(10) <<local_energy <<"\n";
+  myfile.close();
 }
 void Sampler::setFileNameforEnergy(std::string filename){
   m_energyfile = "../../../output/energies_"+ filename+".csv";

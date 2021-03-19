@@ -16,7 +16,8 @@ public:
     double getCumulEnergysquared() {return m_cumulenergysquared;}
     void setWriteout(bool samplertype){m_samplertype=samplertype;}
     void initiateFile                 ();
-    void writeExpectationEnergyToFile (double cumul_energy, double local_energy);
+    void writeExpectationEnergyToFile (double local_energy);
+    void writeExpectationEnergyToFile ();
     void setFileNameforEnergy(std:: string filename);
     void closeFile(){myfile.close();}
     virtual void gdsampler(std::vector<class Particle*> particles, double localEnergy){
@@ -36,7 +37,8 @@ protected:
     double  m_cumulenergysquared=0;
     double  m_energysquared=0;
     int     m_accepted=0;
-    int     m_writeOutStep=1;
+    int     m_writeOutStep=1024;
+    double  local_energyarray[1024]={};
     class System* m_system = nullptr;
     std::string  m_energyfile;
     std::ofstream myfile;

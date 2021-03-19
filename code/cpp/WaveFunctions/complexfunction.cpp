@@ -185,6 +185,8 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
           third_sum_temp=a/(particle_distances_absolute[k][i]*(a-particle_distances_absolute[k][i])); //The value for the third sum
           total_energy+=-(third_sum_temp*third_sum_temp);
         }
+
+        
         for(int l=0;l<num_dim;l++){
           total_energy+=temp[l]*temp[l];
           total_energy+=-4*alpha*temp[l]*first_sum_vector[l];
