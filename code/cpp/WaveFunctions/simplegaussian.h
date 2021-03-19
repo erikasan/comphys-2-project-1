@@ -4,8 +4,8 @@
 class SimpleGaussian : public WaveFunction { //Gaussian thus extends WaveFunction
 public:
     SimpleGaussian(class System* system, double alpha);
-    double evaluate(std::vector<class Particle*> particles);
-    double evaluate(std::vector<class Particle*> particles, int particle_id);
+    double evaluate(std::vector<class Particle*> particles);   //Evaluate the wave function for a fixed set of particle positions
+    double evaluate(std::vector<class Particle*> particles, int particle_id);   //Evaluate the wave function part of a fixed particle, requires seperability
     virtual double computeDoubleDerivative(std::vector<class Particle*> particles);
     double computeDoubleDerivative(std::vector<class Particle*> particles, int particle_id);
     std::vector<double> quantumForce(std::vector<class Particle*> particles);

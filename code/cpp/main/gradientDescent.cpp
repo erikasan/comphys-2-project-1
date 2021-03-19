@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     int equilibration      = (int) 1e5;          // Amount of the total steps used
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
-    string filename_blocking = "default"; //no for "don't write", any other will then be written to file
+    string filename_blocking = "no";  // Legacy code, nothing is written to file anywasy
     System* system;
     if (argc>=11){
           numberOfDimensions = atoi(argv[1]);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
     system->setMetropolisSteps       (numberOfSteps);
     double tol = 0.0000001;
     int maxIter = 200;
-    double learningRate = 0.01;
+    double learningRate = 0.0001;
     system->gradientDescent(tol, learningRate, maxIter);
 
 

@@ -16,7 +16,7 @@ ComplexFunction::ComplexFunction(System* system, double alpha, double beta_param
     m_parameters.reserve(1);
     m_parameters.push_back(alpha);
 }
-void ComplexFunction::printMatrix(double **A, int n){
+void ComplexFunction::printMatrix(double **A, int n){ //Simple print matrix function, needed for debugging
   cout << std::setprecision(3) << fixed;
   for (int i=0; i<n;i++){
     for(int j=0;j<n;j++){
@@ -25,7 +25,7 @@ void ComplexFunction::printMatrix(double **A, int n){
     cout << endl;
   }
 }
-double ** ComplexFunction::createNNMatrix(int n){
+double ** ComplexFunction::createNNMatrix(int n){ //Create matrix function, needed for storing distances
   double** A;
   A = new double*[n];
   for (int i = 0; i < n; i++){
@@ -39,7 +39,8 @@ double ** ComplexFunction::createNNMatrix(int n){
   return A;
 }
 void ComplexFunction::initiateDistances(std::vector<class Particle*> particles){
-
+  //Initate distance matrix for particles, as these are used a lot
+  //The matrix is symmetric, but the algorithms get easier by double-storing distances
   particle_distances_absolute=createNNMatrix(m_system->getNumberOfParticles());
   for (int i=0; i<m_system->getNumberOfParticles();i++){
       for (int j=0; j<m_system->getNumberOfParticles();j++){
@@ -47,9 +48,9 @@ void ComplexFunction::initiateDistances(std::vector<class Particle*> particles){
       }
   }
 
-  //printMatrix(particle_distances_absolute,m_system->getNumberOfParticles());
 }
 void ComplexFunction::updateDistances(std::vector<class Particle*> particles,int particle_id){
+  //Update distances in the matrix  from all particles to the particle particle_id
   double distanceval=0;
   std::vector<double> particlePosition=particles[particle_id]->getPosition();
   for (int i=0; i<m_system->getNumberOfParticles();i++){
@@ -58,14 +59,9 @@ void ComplexFunction::updateDistances(std::vector<class Particle*> particles,int
     particle_distances_absolute[particle_id][i]=distanceval;
   }
 }
-double ComplexFunction::vectorProduct(std::vector<double> part1, std::vector<double> part2){
-  double val=0;
-  for (int i=0; i<m_system->getNumberOfDimensions();i++){
-    val+=part1[i]*part2[i];
-  }
-  return val;
-}
+
 double ComplexFunction::distance(std::vector<double> part1, std::vector<double> part2){
+  //Distance between two vectors
   double val=0;
   for (int i=0; i<m_system->getNumberOfDimensions();i++){
     val+=(part1[i]-part2[i])*(part1[i]-part2[i]);
@@ -81,23 +77,9 @@ double ComplexFunction::uder(double r){
 double ComplexFunction::uderder(double r){
   return a*(a-2*r)/(r*r*(a-r)*(a-r));
 }
-std::vector<double> ComplexFunction:: distance_vector(std::vector<double> part1, std::vector<double> part2){
-  int num_dim=m_system->getNumberOfDimensions();
-  std::vector<double> distance_vec = std::vector<double>();
-  distance_vec.reserve(num_dim);
-  for (int i=0; i<m_system->getNumberOfDimensions();i++){
-    distance_vec.push_back(part1[i]-part2[i]);
-  }
-  return distance_vec;
-}
+
 double ComplexFunction::evaluate(std::vector<class Particle*> particles) {
-    /* You need to implement a Gaussian wave function here. The positions of
-     * the particles are accessible through the particle[i].getPosition()
-     * function.
-     *
-     * For the actual expression, use exp(-alpha * r^2), with alpha being the
-     * (only) variational parameter.
-     */
+    //Evaluate the wave function for a fixed set of particle positions
      double alpha = m_parameters[0];
      double total_radius = 0;
      int dimension=m_system->getNumberOfDimensions();
@@ -107,14 +89,14 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles) {
        for (int j=0;j<dimension-1;j++){
          total_radius += position[j]*position[j];
        }
-       total_radius+=position[dimension-1]*position[dimension-1]*beta;
+       total_radius+=position[dimension-1]*position[dimension-1]*beta; //Add beta part for the z coordinate
      }
-     double prod_g=exp(-alpha*total_radius);
+     double prod_g=exp(-alpha*total_radius); // The g-part of the wave function
      double prod_f=1;
-     for (int i=0; i<numberOfParticles; i++){
-       for (int j=i+1; j<numberOfParticles; j++){
+     for (int i=0; i<numberOfParticles; i++){ // For each particle
+       for (int j=i+1; j<numberOfParticles; j++){ // For all particles with a larger value
          if(particle_distances_absolute[i][j]<a){
-           return 0;
+           return 0; //If the particle distance is illegal (less than a)
          }
          prod_f*=(1-a/particle_distances_absolute[i][j]);
        }
@@ -124,6 +106,7 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles) {
 
 double ComplexFunction::evaluate(std::vector<class Particle*> particles, int particle_id) {
     //As the Wave function is partially seperable, evaluates only the part belonging to particle "particle_id"
+    //Partially seperable in the sense that there is a part of the wave function that is independent when only moving 1 particle
     double alpha = m_parameters[0];
     double total_radius = 0;
     int dimension=m_system->getNumberOfDimensions();
@@ -133,13 +116,13 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles, int par
 
 
     //Calculate f-part of wave function
-    for (int i=0;i<particle_id;i++){
+    for (int i=0;i<particle_id;i++){ //For all particles with a lower id
       if(particle_distances_absolute[particle_id][i]<a){
         return 0;
       }
       prod_f*=(1-a/particle_distances_absolute[particle_id][i]);
     }
-    for (int i=particle_id+1;i<numberOfParticles;i++){
+    for (int i=particle_id+1;i<numberOfParticles;i++){ //For all particles with a larger id
       if(particle_distances_absolute[particle_id][i]<a){
         return 0;
       }
@@ -157,57 +140,9 @@ double ComplexFunction::evaluate(std::vector<class Particle*> particles, int par
     return prod_g*prod_f;
 }
 
-/*
-double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> particles){
-  double total_energy=0;
-  double total_radius_withbeta = 0; //This is x^2+y^2+beta^2z^2
-  double alpha = m_parameters[0];
-  int numberOfParticles = m_system->getNumberOfParticles();
-  int num_dim  = m_system->getNumberOfDimensions();
-  double third_sum_temp=0;
-  double prefactor;
-  vec distance_vec;
-  double rad_alt=0;
-  double distance_abs;
-  vec  temp(num_dim); //Vector of length num_dim with all 0s
-  temp.fill(0.0);
-  for (int k = 0; k < numberOfParticles; k++){
-    vec position=conv_to<vec>::from(particles[k]->getPosition());
-    rad_alt=position[0]*position[0]+position[1]*position[1]+position[2]*position[2]*beta*beta;
-    total_energy+=4*alpha*alpha*rad_alt-4*alpha-2*alpha*beta;
-    vec first_sum_vector=vec(position);
-    first_sum_vector(2)*=beta; //multiply z-parameter by beta
-    for (int i=0;i<numberOfParticles;i++){
-      if (k==i){
-        continue;
-      }
-      distance_vec=position-conv_to<vec>::from(particles[i]->getPosition());
-      distance_abs=particle_distances_absolute[i][k];
-      total_energy+=uder(distance_abs)/distance_abs*(-4)*alpha*dot(first_sum_vector,distance_vec);
-    }
-    for (int i=0;i<numberOfParticles;i++){
-        if (k==i){
-          continue;
-        }
-        distance_vec=position-conv_to<vec>::from(particles[i]->getPosition());
-        distance_abs=particle_distances_absolute[k][i];
-        temp+=distance_vec*(uder(distance_abs)/distance_abs);
-    }
-    total_energy+=dot(temp,temp);
-    temp.fill(0.0);
-    for (int i=0;i<numberOfParticles;i++){
-      if (k==i){
-        continue;
-      }
-      distance_abs=particle_distances_absolute[i][k];
-      total_energy+=uderder(distance_abs)+2/distance_abs*uder(distance_abs);
-    }
-
-  }
-  return total_energy;
-}
-*/
 double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> particles) {
+      //Compute the local energy. Sadly, this is not a seperable WaveFunction
+      // So it is really expensive to calculate.
       double total_energy=0;
       double total_radius_withbeta = 0; //This is x^2+y^2+beta^2z^2
       double alpha = m_parameters[0];
@@ -215,8 +150,8 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
       int num_dim  = m_system->getNumberOfDimensions();
       double third_sum_temp=0;
       double prefactor;
-      std::vector<double> distance_vec = std::vector<double>(num_dim,0.0);
-      std::vector<double> temp = std::vector<double>(num_dim,0.0);
+      std::vector<double> distance_vec = std::vector<double>(num_dim,0.0); //Reusable vector, distance between particles
+      std::vector<double> temp = std::vector<double>(num_dim,0.0); //Temporary vector for calculations
       for (int k = 0; k < numberOfParticles; k++){
         std::vector<double> position=particles[k]->getPosition();
         std::vector<double> first_sum_vector=position;
@@ -230,6 +165,7 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
 
 
         for (int i=0;i<k;i++){
+          //The prefactor in the first sum which is reused for each dimension
           prefactor=-a/((a-particle_distances_absolute[k][i])*particle_distances_absolute[k][i]*particle_distances_absolute[k][i]);
           for (int l=0;l<num_dim;l++){
             distance_vec[l]=position[l]-particles[i]->getPosition()[l]; //Distance between particle [i] and particle [k] as vector

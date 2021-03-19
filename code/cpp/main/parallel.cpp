@@ -97,6 +97,9 @@ int main(int argc, char *argv[]) {
 
       system->setEquilibrationSteps (equilibration);
       system->setStepLength            (stepLength);
+      if(filename_blocking.compare("no")==0){
+        system->getSampler()->setWriteout(false);
+      }
       system->runMetropolisSteps       (numberOfSteps,false);
       cumulativeEnergies[id]=system->getSampler()->getCumulEnergy();
       cumulativeEnergiesSquared[id]=system->getSampler()->getCumulEnergysquared();

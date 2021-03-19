@@ -14,11 +14,6 @@ RandomUniformMinDist::RandomUniformMinDist(System* system, int numberOfDimension
     m_numberOfDimensions = numberOfDimensions;
     m_numberOfParticles  = numberOfParticles;
 
-    /* The Initial State class is in charge of everything to do with the
-     * initialization of the system; this includes determining the number of
-     * particles and the number of dimensions used. To make sure everything
-     * works as intended, this information is passed to the system here.
-     */
     m_system->setNumberOfDimensions(numberOfDimensions);
     m_system->setNumberOfParticles(numberOfParticles);
     m_minDist=minDist;
@@ -30,39 +25,47 @@ void RandomUniformMinDist::setupInitialState() {
     int counter=0; //How often a random placement has gone wrong
     double multiplier=1; //The number to multiply the random placing with (so we get a larger number)
     bool accepted; //If the particle can be placed
+
+    //For each particle
     for (int i=0; i < m_numberOfParticles; i++) {
         std::vector<double> position = std::vector<double>();
         accepted=true;
-        replace: //Label for replacing the particle
+        replace: //Label for retrying
+
+        //The for loop suggests a new position
         for (int j=0; j < m_numberOfDimensions; j++) {
               //Create a random double between 0 and 1*multiplier to place the particle, and places the particle there
               randnumb=m_system->getRandomEngine()->nextDouble()*multiplier;
               position.push_back(randnumb);
           }
-          for(int k=0; k<i;k++){ //For each particle, check wether the distance to the other particles is sufficiently large
-            if(distance(m_particles[k]->getPosition(),position)<=m_minDist){
-              accepted=false;
-              break;
-            }
+        //It is checked if the suggested position has the relevant distance from the other particles to be legally placed
+        for(int k=0; k<i;k++){
+          if(distance(m_particles[k]->getPosition(),position)<=m_minDist){
+            accepted=false;
+            break;
+          }
         }
-        if(accepted){ //If the move is accepted (if the distance is sufficiently large to all particles)
+        //If the move is accepted (if the distance is sufficiently large to all particles), create an new particle
+        if(accepted){
           m_particles.push_back(new Particle());
           m_particles.at(i)->setNumberOfDimensions(m_numberOfDimensions);
           m_particles.at(i)->setPosition(position);
         }
+
+        /*
+        Clear the positions, increase the number of wrong placements by one,
+        if the misplacements are consistent, increase the multiplier (so that new suggestions are further away)
+        go back to placing the particle
+        */
         else{
-          /*
-          Clear the positions, increase the number of wrong placements by one,
-          if the misplacements ar consistent, increase the multiplier,
-          go back to placing the particle
-          */
+
           position.clear();
           counter++;
-          if (counter>=10){
+          if (counter>=10){ //If more than 10 placing suggestions have failed
             multiplier*=1.1;
-            counter=0;
+            counter=0; //10 more to fail to be multiplied by 1.1 again
           }
-          accepted=true;
+          accepted=true; //Default value is true
           goto replace;
         }
     }

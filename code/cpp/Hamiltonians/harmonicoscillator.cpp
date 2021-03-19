@@ -29,5 +29,6 @@ double HarmonicOscillator::computeLocalPotentialEnergy(std::vector<Particle*> pa
 }
 
 double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) {
+    //The local energy is just the sum of the potential local energy and the kinetic local energy
     return computeLocalPotentialEnergy(particles) + computeLocalKineticEnergy(particles);
 }
