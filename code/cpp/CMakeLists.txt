@@ -50,9 +50,10 @@ add_executable(test main/unit_testing.cpp)
 add_executable(vmc main/vmc.cpp)
 add_executable(gradientdescent main/gradientDescent.cpp)
 add_executable(vmc_parallel main/parallel.cpp)
-
+add_executable(gradientdescent_parallel main/gradientDescent_parallel.cpp)
 
 target_link_libraries(vmc mylib)
 target_link_libraries(test mylib)
 target_link_libraries(gradientdescent mylib)
 target_link_libraries(vmc_parallel mylib OpenMP::OpenMP_CXX)
+target_link_libraries(gradientdescent_parallel mylib OpenMP::OpenMP_CXX)

@@ -84,9 +84,9 @@ int main(int argc, char *argv[]) {
     system->setMetropolisSteps       (numberOfSteps);
     double tol = 0.0000001;
     int maxIter = 200;
-    double learningRate = 0.0001;
+    double learningRate = 0.01;
     system->gradientDescent(tol, learningRate, maxIter);
-
-
+    alpha=system->getWaveFunction()->getParameters()[0];
+    cout << "The ideal value for alpha is "<<alpha << endl;
     return 0;
 }

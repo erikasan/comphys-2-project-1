@@ -50,11 +50,7 @@ int main(int argc, char *argv[]) {
           num_threads        = atoi(argv[11]);
     }
     omp_set_num_threads(num_threads);
-    double total_cumulativeEnergysquared=0;
-    double total_cumulativeEnergy=0;
-    int total_N=num_threads*numberOfSteps;
-    double cumulativeEnergies[num_threads]={};
-    double cumulativeEnergiesSquared[num_threads]={};
+    double alphas[num_threads]={};
     if(sampler_type.compare("IMP") != 0 &&sampler_type.compare("VMC") != 0){
       cout << "Not a legal sampler type" << endl;
       return 1;
@@ -68,7 +64,6 @@ int main(int argc, char *argv[]) {
       int id = omp_get_thread_num();
       string filename_blocking_parallel=filename_blocking+to_string(id);
       int seed_parallel=seed+id;
-
       if (sampler_type.compare("VMC")==0){
         system = new System(seed_parallel);
       }
@@ -97,24 +92,18 @@ int main(int argc, char *argv[]) {
 
       system->setEquilibrationSteps (equilibration);
       system->setStepLength            (stepLength);
-      if(filename_blocking.compare("no")==0){
-        system->getSampler()->setWriteout(false);
-      }
-      system->runMetropolisSteps       (numberOfSteps,true);
-      cumulativeEnergies[id]=system->getSampler()->getCumulEnergy();
-      cumulativeEnergiesSquared[id]=system->getSampler()->getCumulEnergysquared();
+      system->setMetropolisSteps       (numberOfSteps);
+      double tol = 0.00001;
+      int maxIter = 200;
+      double learningRate = 0.01;
+      system->gradientDescent(tol, learningRate, maxIter);
+      alphas[id]=system->getWaveFunction()->getParameters()[0];
     }
+    alpha=0;
     for (int i=0; i<num_threads;i++){
-      total_cumulativeEnergy+=cumulativeEnergies[i];
-      total_cumulativeEnergysquared+=cumulativeEnergiesSquared[i];
+      alpha+=alphas[i];
     }
-    double expectation_energy=total_cumulativeEnergy/total_N;
-    double expectation_energysquared=total_cumulativeEnergysquared/total_N;
-    cout << "Number of total steps:"<<total_N << endl;
-    cout << "Energy: "<<expectation_energy<<endl;
-    cout << "Energy squared: " <<expectation_energysquared <<endl;
-    double std=sqrt(expectation_energysquared-expectation_energy*expectation_energy);
-    cout << "standard Deviation: "<<std<<endl;
-    cout << "standard error: " << std/sqrt(total_N)<<endl;
+    alpha/=num_threads;
+    cout << "The ideal value for alpha is "<<alpha << endl;
     return 0;
 }

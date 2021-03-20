@@ -35,7 +35,7 @@ void RandomUniformMinDist::setupInitialState() {
         //The for loop suggests a new position
         for (int j=0; j < m_numberOfDimensions; j++) {
               //Create a random double between 0 and 1*multiplier to place the particle, and places the particle there
-              randnumb=m_system->getRandomEngine()->nextDouble()*multiplier;
+              randnumb=(m_system->getRandomEngine()->nextDouble()-0.5)*multiplier;
               position.push_back(randnumb);
           }
         //It is checked if the suggested position has the relevant distance from the other particles to be legally placed
