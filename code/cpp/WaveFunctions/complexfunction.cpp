@@ -186,7 +186,7 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
           total_energy+=-(third_sum_temp*third_sum_temp);
         }
 
-        
+
         for(int l=0;l<num_dim;l++){
           total_energy+=temp[l]*temp[l];
           total_energy+=-4*alpha*temp[l]*first_sum_vector[l];
@@ -292,7 +292,6 @@ void ComplexFunction::gradientDescent(){
   localEnergyGradient = 2*(energy*m_av_total_radius - m_av_local_energy_total_radius);
 
   alphaNew = alphaOld - m_learningRate*localEnergyGradient;
-  cout << alphaNew << endl;
 
   if (abs(alphaNew - alphaOld) < m_tol){
     m_system->stopGradientDescent();

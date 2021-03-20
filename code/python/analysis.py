@@ -6,15 +6,18 @@ from numpy import log2, sqrt
 import pandas as pd
 from pandas import DataFrame
 import matplotlib.pyplot as plt
-
+import seaborn as sns
 # Where to save the figures and data files
 DATA_ID = "../../output/"
-
+def naive(E,Esquared):
+    length=len(E)
+    exp_esquared=np.mean(Esquared)
+    exp_e=np.mean(E)
+    return sqrt(exp_esquared-exp_e**2)/sqrt(length)
 def data_path(dat_id):
     return os.path.join(DATA_ID, dat_id)
 
-filename="energies_test"; num_threads=4
-infile = open(data_path("energies_test.csv"),'r')
+filename="energies_data"; num_threads=4
 
 
 values=np.empty((0));
@@ -29,14 +32,16 @@ for i in range(num_threads):
         values=np.append(values,np.loadtxt(infile,skiprows=1,usecols=(0),delimiter=","))
         infile.close()
         print(len(values)/(i+1))
+Esquared=values*values
 maxval=int( log2(len(values)))
 start=2
 xvals=np.logspace(start,maxval,maxval-start+1,base=2,dtype=int)
 #xvals=[2**maxval]
 means=np.zeros(len(xvals))
 stds=np.zeros(len(xvals))
-print(xvals)
+naive_standarderror=np.zeros(len(xvals))
 #np.random.shuffle(values)
+print("MC steps   Mean    standarderror_blocking standarderror_naive")
 for i,xval in enumerate(xvals):
     #print(i,xval)
     #print(xy[0:xval])
@@ -44,12 +49,17 @@ for i,xval in enumerate(xvals):
     std = sqrt(vary)
     means[i]=meany;
     stds[i]=std;
-    data ={'Mean':[meany], 'STDev':[std]}
-    frame = pd.DataFrame(data,index=['Values'])
-    print(frame)
-plt.errorbar(xvals,means,yerr=stds)
+    naive_standarderror[i]=naive(values[0:xval],Esquared[0:xval])
+    print("$2^{%d}$ & %5.5f & %5.5f & %5.5f\\\\ \\hline "%(int(log2(xval)+1e-5),meany,std,naive_standarderror[i]))
+
+sns.set_style("darkgrid")
+sns.set_context("talk")
+plt.errorbar(xvals,means,yerr=stds,label="Blocking")
+plt.errorbar(xvals,means,linestyle="--",yerr=naive_standarderror,label="Naive")
 plt.xscale("log",base=2);
 plt.xlabel("Number of Monte Carlo Cycles")
 plt.ylabel("Mean energy")
-plt.savefig("test.png")
+plt.legend()
+plt.tight_layout()
+plt.savefig("../../figures/blocking.pdf")
 plt.show()

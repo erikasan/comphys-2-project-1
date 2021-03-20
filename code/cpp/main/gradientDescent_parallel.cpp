@@ -18,6 +18,9 @@
 #include "../InitialStates/randomuniform2.h"
 #include <omp.h>
 #include <cmath>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -36,6 +39,8 @@ int main(int argc, char *argv[]) {
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
     string filename_blocking = "default"; //no for "don't write", any other will then be written to file
+    double tol = 0.00001;
+    int maxIter = 50;
     if (argc>=12){
           numberOfDimensions = atoi(argv[1]);
           numberOfParticles  = atoi(argv[2]);
@@ -49,6 +54,7 @@ int main(int argc, char *argv[]) {
           filename_blocking  = argv[10];
           num_threads        = atoi(argv[11]);
     }
+    double learningRate = 0.8/(numberOfParticles*numberOfParticles);
     omp_set_num_threads(num_threads);
     double alphas[num_threads]={};
     if(sampler_type.compare("IMP") != 0 &&sampler_type.compare("VMC") != 0){
@@ -93,9 +99,6 @@ int main(int argc, char *argv[]) {
       system->setEquilibrationSteps (equilibration);
       system->setStepLength            (stepLength);
       system->setMetropolisSteps       (numberOfSteps);
-      double tol = 0.00001;
-      int maxIter = 200;
-      double learningRate = 0.01;
       system->gradientDescent(tol, learningRate, maxIter);
       alphas[id]=system->getWaveFunction()->getParameters()[0];
     }
@@ -105,5 +108,13 @@ int main(int argc, char *argv[]) {
     }
     alpha/=num_threads;
     cout << "The ideal value for alpha is "<<alpha << endl;
+    ofstream myfile;
+    bool output=true;
+    if (output){
+      myfile.open("../../../output/alphas.csv",std::ofstream::app);
+      myfile << numberOfParticles <<","<<numberOfSteps<<"," << equilibration<<","<<num_threads<<",";
+      myfile << stepLength << "," << learningRate << "," <<wF_type<<","<< alpha<<endl;
+      myfile.close();
+    }
     return 0;
 }
