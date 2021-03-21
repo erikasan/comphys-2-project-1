@@ -238,6 +238,7 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
      return qForce;
 }
 std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> particles){
+  //Unused, but might be useful...?
   int num_dim=m_system->getNumberOfDimensions();
   int num_part=m_system->getNumberOfParticles();
   std::vector<double> qForce = std::vector<double>();
