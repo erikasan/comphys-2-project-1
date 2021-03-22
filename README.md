@@ -1,6 +1,6 @@
 # Project 1 in FYS4411 by Erik Alexander Sandvik & Simon Elias Schrader
 
-##How to run our code
+## How to run our code
  In the folder code/cpp/, all executables can be compiled the following way
  ```bash
 # Create build-directory
