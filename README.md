@@ -1,20 +1,30 @@
-# comphys-2-project1
-electric boogaloo
+# Project 1 in FYS4411 by Erik Alexander Sandvik & Simon Elias Schrader
 
-TODO for the theoretical part of the report:
-- Describe the problem
-- Minor changes to the Hamiltonian
-- Defining the actual process: Monte Carlo sampling from the trial wave function with help of the local energy
-- Optimization
+## How to run our code
+ In the folder code/cpp/, all executables can be compiled the following way
+ ```bash
+# Create build-directory
+mkdir build
 
-TODO for the annoying wave function:
-- Some (intensive) testing
-- Lots and lots (and lots) of optimization: Make the distance matrix 4D (x,y,z, total), make (maybe) a quantum force matrix. 
-- Test if everything works. One way to test is to set a=0, which should return the original system.
-- I have not yet written a single comment. Reminder to myself: Get drunk (to ease the pain), then write comments.
+# Move into the build-directory
+cd build
 
-TODO Otherwise:
-- Most of the result part
-- Introduction
-- Abstract
-- Add the derivations we have as pdf to the appendix
+# Run CMake to create a Makefile
+cmake ../
+
+# Make the Makefile using two threads
+make -j2
+```
+this will produce 5 executables, *test*, *vmc*, *vmc_parallel*, *gradientdescent* and *gradientdescent_parallel*.
+These are run the following way (except for test which does not take arguments):
+ ```bash
+ ./filename numberOfDimensions numberOfParticles numberOfMCCycles alpha stepLength numberOfEquilibrationSteps seed wF_type sampler_type Filename_Blocking (numberOfThreads)
+```
+where
+- wF_type is either "HO" (Harmonic Oscillator), "NHO" (Numerical Harmonic Oscillator) or "EO" (Elliptic Oscillator), where only Elliptical Oscillator contains the repulsion term
+- sampler_type is "VMC" (Brute force) or "IMP" (Importance Sampling)
+- Filename_Blocking is the filename of the blocking data written to file (one file per thread, gets an extra number after the file name). Use "no" if no output is desired.
+- alpha is either the initial guess (for gradient descent) or the actual value (for VMC). 
+- For the parallel simulations, each thread gets the seed (input_seed+thread_id) to keep the process sufficiently random.
+
+There is a bunch of python files that automatize runs and have several runs run at once, found in the code/python folder.
