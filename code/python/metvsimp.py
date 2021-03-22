@@ -12,7 +12,7 @@ equilibration=0.1;
 omega=1
 Ns=np.array([1e2,1e3,1e4,1e5,1e6,1e7])
 alpha=1
-steps=[0.01,0.1,0.5,1]
+steps=[0.01,0.1,0.5,0.7,1]
 seeds=np.array(np.linspace(1,100,10),dtype=int)
 anal_en=(alpha+(1-4*alpha**2)/(8*alpha))*number_particles*number_dimensions
 energies=np.zeros((len(Ns),2*len(steps)),dtype=float)
@@ -20,7 +20,9 @@ for j, N in enumerate(Ns):
     for i, stepLength in enumerate(steps):
         equilibration=int(0.1*N)
         for seed in seeds:
-            bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","VMC","test")
+            bashCommand="./vmc %d %d %d %f %f %d %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","VMC","no")
+            print(bashCommand)
+            print("N: %d steplength: %.2f"%(N, stepLength))
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
             output, error = process.communicate()
             infile=pd.read_csv(filepath_or_buffer="../../output/sympleharmonic.csv",header=0)
@@ -31,7 +33,7 @@ for j, N in enumerate(Ns):
     for i, stepLength in enumerate(steps):
         equilibration=int(0.1*N)
         for seed in seeds:
-            bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","IMP","test")
+            bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,seed,"HO","IMP","no")
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
             output, error = process.communicate()
             infile=pd.read_csv(filepath_or_buffer="../../output/sympleharmonic.csv",header=0)

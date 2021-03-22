@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
           filename_blocking  = argv[10];
           num_threads        = atoi(argv[11]);
     }
-    double learningRate = 0.8/(numberOfParticles*numberOfParticles);
+    double learningRate = 1.5/(numberOfParticles*numberOfParticles);
     omp_set_num_threads(num_threads);
     double alphas[num_threads]={};
     if(sampler_type.compare("IMP") != 0 &&sampler_type.compare("VMC") != 0){

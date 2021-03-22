@@ -27,6 +27,32 @@ c++ -o test.exe unit_testing.o VMC.o System.o functions.o tests_main.o
 #include "../GDsampler.h"
 #include "../catch.hpp"
 using namespace std;
+TEST_CASE("Evaluate that Gradient Descent leads us to the correct minimum"){
+  int seed = 2020;
+
+  int numberOfDimensions  = 3;
+  int numberOfParticles   = 10;
+  int numberOfSteps       = (int) 5e4;
+  double alpha            = 0.55;          // Variational parameter.
+  double stepLength       = 0.1;          // Metropolis step length.
+  int equilibration      = (int) 1e4;          // Amount of the total steps used
+  System* system = new MetropolisLangevin(seed);
+  system->setSampler               (new Sampler(system));
+  system->setOmega(25);
+  system->setHamiltonian           (new HarmonicOscillator(system, 25));
+  system->setWaveFunction          (new SimpleGaussian(system, alpha));
+  system->setInitialState          (new RandomUniform(system, numberOfDimensions, numberOfParticles));
+  system->setEquilibrationSteps (equilibration);
+  system->setStepLength            (stepLength);
+  system->setMetropolisSteps       (numberOfSteps);
+  double tol = 0.00000001;
+  int maxIter = 50;
+  double learningRate = 0.02;
+  system->gradientDescent(tol, learningRate, maxIter);
+  double alpha_calculated=system->getWaveFunction()->getParameters()[0];
+  double alpha_expected=0.5;
+  REQUIRE(fabs(alpha_expected-alpha_calculated)<3e-3);
+}
 TEST_CASE("Test that the analytical value matches the calculated value when the right omega is chosen"){
   int seed = 2020;
 

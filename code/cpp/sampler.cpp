@@ -127,10 +127,10 @@ void Sampler::printOutputToFile(){
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream newmyfile;
   newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+  newmyfile << std::setprecision(10);
   newmyfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ef;
   newmyfile <<","<<pa.at(0)<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;
   newmyfile.close();
-  std::cout << "written to file...?"<<endl;
   return;
 }
 

@@ -6,13 +6,13 @@ import subprocess
 import pandas as pd
 import seaborn as sns
 
-number_particles=1
-number_dimensions=1;
-N = int(1e5)*number_particles
+number_particles=10
+number_dimensions=3;
+N = int(1e4)*number_particles
 omega=1
 stepLength=1.0;
 equilibration=int(0.1*N);
-alphas=np.linspace(0.1,1,10);#[1/8*np.sqrt(2)**i for i in range(0,10)]
+alphas=np.linspace(0.1,10,10);#[1/8*np.sqrt(2)**i for i in range(0,10)]
 for alpha in alphas:
     bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,number_particles,N,alpha,stepLength,equilibration,2021,"HO","VMC","test")
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)

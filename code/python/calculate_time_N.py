@@ -6,7 +6,7 @@ import subprocess
 import pandas as pd
 import seaborn as sns
 
-number_particles=[1,5,10,50,100]
+number_particles=[1,5,10,25,50,100]
 number_dimensions=3;
 N = int(1e4)
 omega=1
@@ -19,7 +19,7 @@ for num_part in number_particles:
     number_runs=N*num_part
     equilibration=int(0.1*number_runs)
     for alpha in alphas:
-        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,N,alpha,stepLength,equilibration,2021,"HO","VMC","test")
+        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,number_runs,alpha,stepLength,equilibration,2021,"HO","VMC","no")
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
         output, error = process.communicate()
         print("Done alpha=%f num_part=%d"%(alpha,num_part))
@@ -39,7 +39,7 @@ np.savetxt("../../output/vmc_time_simpleharmonic.csv", a, delimiter=",")
 for num_part in number_particles:
     number_runs=N*num_part
     for alpha in alphas:
-        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,N,alpha,stepLength,equilibration,2021,"NHO","VMC","test")
+        bashCommand="./vmc %d %d %d %f %f %d  %d %s %s %s"%(number_dimensions,num_part,number_runs,alpha,stepLength,equilibration,2021,"NHO","VMC","no")
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)
         output, error = process.communicate()
         print("Done alpha=%f num_part=%d"%(alpha,num_part))

@@ -11,10 +11,10 @@ number_particles_tot,alphas_tot,energies_vmc,time_vmc=harr.T
 harr=np.loadtxt("../../output/numerical_time_simpleharmonic.csv",dtype="float",delimiter=",")
 number_particles_tot,alphas_tot,energies_numerical,time_numerical=harr.T
 number_particles_tot=(number_particles_tot+1e-10).astype(int)
-Ns=[1,5,10,50,100]
-times=np.zeros(5); times_numerical=np.zeros(5)
+Ns=[1,5,10,25,50,100]
+times=np.zeros(len(Ns)); times_numerical=np.zeros(len(Ns))
 
-for i,N in enumerate([1,5,10,50,100]):
+for i,N in enumerate(Ns):
     times[i]=np.mean(time_vmc[number_particles_tot==N])
     times_numerical[i]=np.mean(time_numerical[number_particles_tot==N])
 print(times_numerical/times)
@@ -36,4 +36,4 @@ plt.show()
 alphas=np.linspace(0.3,0.7,11)
 print("alpha   numerical energy       analytical energy")
 for i,alpha in enumerate(alphas):
- print("%5.3f  %10.7f %10.7f "%(alpha,energies_numerical[-11+i],energies_vmc[-11+i],))
+ print("%5.3f & %10.5f &  %10.5f \\\\hline"%(alpha,energies_numerical[-11+i],energies_vmc[-11+i],))

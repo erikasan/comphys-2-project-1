@@ -1,5 +1,12 @@
-from numpy import log2, zeros, mean, var, sum, loadtxt, arange, array, cumsum, dot, transpose, diagonal, sqrt
+
+from numpy import log2,mean, zeros, mean, var, sum, loadtxt, arange, array, cumsum, dot, transpose, diagonal, sqrt
 from numpy.linalg import inv
+def naive(E,Esquared):
+    length=len(E)
+    exp_esquared=mean(Esquared)
+    exp_e=mean(E)
+    return sqrt(exp_esquared-exp_e**2)/sqrt(length)
+
 def block(x):
     # preliminaries
 
