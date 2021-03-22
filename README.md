@@ -25,5 +25,5 @@ where
 - sampler_type is "VMC" (Brute force) or "IMP" (Importance Sampling)
 - Filename_Blocking is the filename of the blocking data written to file (one file per thread, gets an extra number after the file name). Use "no" if no output is desired.
 - alpha is either the initial guess (for gradient descent) or the actual value (for VMC). 
-
+- For the parallel simulations, each thread gets the seed (input_seed+thread_id) to keep the process sufficiently random.
 There is a bunch of python files that automatize runs and have several runs run at once, found in the code/python folder.
