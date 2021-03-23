@@ -83,7 +83,9 @@ void MetropolisLangevin::runMetropolisSteps(int numberOfMetropolisSteps, bool de
   m_duration = duration.count();
 
   m_sampler->computeAverages();
-
+  if(m_sampler->getSamplePosition()){
+    m_sampler->printPositions();
+  }
   if (desire_output){
     m_sampler->printOutputToTerminal();
     m_sampler->printOutputToFile();

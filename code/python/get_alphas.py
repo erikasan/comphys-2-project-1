@@ -11,8 +11,8 @@ stepLengths=[0.01,0.1,1];
 alpha=0.50
 num_thread=4
 for num_part in number_particles:
-    N=int(1e3)*num_part
-    equilibration=int(N/10)
+    N=int(1e5)
+    equilibration=int(N/3)
     for stepLength in stepLengths:
         bashCommand="./gradientdescent_parallel %d %d %d   %f   %f   %d   %d   %s %s %s %d"%(3,num_part,N,alpha,stepLength,equilibration,12345,"EO","IMP","no",num_thread)
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, cwd="../cpp/build/",shell=False)

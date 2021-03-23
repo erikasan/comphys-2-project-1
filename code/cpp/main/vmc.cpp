@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
     if(filename_blocking.compare("no")==0){
       system->getSampler()->setWriteout(false);
     }
+    system->getSampler()->setSamplePosition(true); // Set this "true" if you want one-particle-densities
     system->runMetropolisSteps       (numberOfSteps,true);
 
 

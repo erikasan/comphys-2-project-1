@@ -8,13 +8,12 @@ import seaborn as sns
 
 number_particles=[1,5,10,25,50,100]
 number_dimensions=3;
-N = int(1e4)
+N = int(1e3)
 omega=1
 stepLength=1;
 alphas=linspace(0.3,0.7,11)
 totnum=len(alphas)*len(number_particles)
 number_particles_tot=np.repeat(number_particles,len(alphas),axis=0)
-alphas_tot=np.tile(alphas, len(number_particles))
 for num_part in number_particles:
     number_runs=N*num_part
     equilibration=int(0.1*number_runs)

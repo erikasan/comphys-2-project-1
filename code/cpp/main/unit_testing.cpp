@@ -124,7 +124,7 @@ TEST_CASE("Evaluate wether importance sampling works"){
   double potential_energy_expected=numberOfDimensions*numberOfParticles*(alpha+(1-4*alpha*alpha)/(8*alpha));
   REQUIRE(fabs(potential_energy_expected-potential_energy_calculated)<1e-1);
 }
-TEST_CASE("Test wether the difficult wave function, in the limit a->0, becomes a harmonic oscillator"){
+TEST_CASE("Test wether the difficult wave function, in the limit a=0, becomes a harmonic oscillator"){
   int seed = 2020;
 
   int numberOfDimensions = 3;
@@ -132,7 +132,7 @@ TEST_CASE("Test wether the difficult wave function, in the limit a->0, becomes a
   int numberOfSteps      = (int) 2e6;
   double alpha           = 1.0;          // Variational parameter.
   double beta             = 2.82843;
-  double a                = 0.00000000000000000043; //teeny tiny number
+  double a                = 0; //teeny tiny number
   double stepLength      = 0.1;          // Metropolis step length.
   double multiplicator  = (1+1+beta);
   int equilibration      = (int) 1e5;          // Amount of the total steps used

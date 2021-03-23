@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
     string filename_blocking = "default"; //no for "don't write", any other will then be written to file
-    double tol = 0.00001;
+    double tol = 0.0000001;
     int maxIter = 50;
     if (argc>=12){
           numberOfDimensions = atoi(argv[1]);

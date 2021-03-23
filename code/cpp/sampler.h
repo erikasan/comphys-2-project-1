@@ -14,12 +14,16 @@ public:
     double getEnergy()          { return m_energy; }
     double getCumulEnergy() {return m_cumulativeEnergy;}
     double getCumulEnergysquared() {return m_cumulenergysquared;}
+    bool getSamplePosition(){return m_sampleposition;}
     void setWriteout(bool samplertype){m_samplertype=samplertype;}
+    void setSamplePosition(bool sampleposition){m_sampleposition=sampleposition;}
     void initiateFile                 ();
     void writeExpectationEnergyToFile (double local_energy);
     void writeExpectationEnergyToFile ();
     void setFileNameforEnergy(std:: string filename);
+    void printPositions();
     void closeFile(){myfile.close();}
+    void sample_position();
     virtual void gdsampler(std::vector<class Particle*> particles, double localEnergy){
       (void) particles;
       (void) localEnergy;
@@ -27,7 +31,9 @@ public:
     }
 
 protected:
+
     bool    m_samplertype=true;
+    bool    m_sampleposition=false;
     int     m_numberOfMetropolisSteps = 0;
     int     m_stepNumber = 0;
     double  m_energy = 0;
@@ -39,8 +45,12 @@ protected:
     int     m_accepted=0;
     int     m_writeOutStep=1024;
     double  local_energyarray[1024]={};
+    int rho_length=200;
+    int  rho_values[200]={0};
+    int  x_values[200]={0};
     class System* m_system = nullptr;
     std::string  m_energyfile;
+    std::string  m_positionfile;
     std::ofstream myfile;
 
 };

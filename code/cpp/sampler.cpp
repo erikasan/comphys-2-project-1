@@ -23,7 +23,22 @@ Sampler::Sampler(System* system) {
 void Sampler::setNumberOfMetropolisSteps(int steps) {
     m_numberOfMetropolisSteps = steps;
 }
-
+void Sampler::sample_position(){
+  std::vector<Particle*> particles = m_system->getParticles();
+  int numberOfParticles=m_system->getNumberOfParticles();
+  double radius=0;
+  double xpos=0;
+  for (int i=0; i<numberOfParticles;i++){
+    xpos=particles[i]->getPosition()[0];
+    radius=sqrt(particles[i]->getRadiussquared()); //Oh the irony
+    if(radius<10){
+      rho_values[(int)lrint((radius*20))]++;
+    }
+    if((xpos<5) && (xpos>(-5))) {
+      x_values[(int)lrint((xpos*20)+100)]++;
+    }
+  }
+}
 void Sampler::sample(bool acceptedStep) {
 
     std::vector<Particle*> particles = m_system->getParticles();
@@ -40,9 +55,6 @@ void Sampler::sample(bool acceptedStep) {
           }
     }
 
-    /* Here you should sample all the interesting things you want to measure.
-     * Note that there are (way) more than the single one here currently.
-     */
 
     double localPotentialEnergy = m_system->getHamiltonian()->
                          computeLocalPotentialEnergy(particles);
@@ -61,6 +73,9 @@ void Sampler::sample(bool acceptedStep) {
     local_energyarray[m_stepNumber%m_writeOutStep]=localEnergy;
     if(m_stepNumber%m_writeOutStep==0 && m_samplertype==true){
       writeExpectationEnergyToFile();
+    }
+    if(m_sampleposition == true){
+      sample_position();
     }
     m_accepted+=int(acceptedStep);
 }
@@ -84,6 +99,7 @@ void Sampler::writeExpectationEnergyToFile (double local_energy){
 }
 void Sampler::setFileNameforEnergy(std::string filename){
   m_energyfile = "../../../output/energies_"+ filename+".csv";
+  m_positionfile = "../../../output/positions_"+ filename+".csv";
 }
 void Sampler::printOutputToTerminal() {
     int    np = m_system->getNumberOfParticles();
@@ -133,7 +149,14 @@ void Sampler::printOutputToFile(){
   newmyfile.close();
   return;
 }
-
+void Sampler::printPositions() {
+  myfile.open(m_positionfile,std::ios::out);
+  myfile << "xval,magnitude,radval,magnitude"<<endl;
+  for(int i=0;i<rho_length;i++){
+    myfile << -5+0.05*i<<","<<x_values[i] << ","<< 0.05*i<< ","<< rho_values[i]<<endl;
+  }
+  myfile.close();
+}
 void Sampler::computeAverages() {
     /* Compute the averages of the sampled quantities.*/
     double steps = m_stepNumber;
