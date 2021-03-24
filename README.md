@@ -16,6 +16,7 @@ cmake ../
 make -j2
 ```
 this will produce 5 executables, *test*, *vmc*, *vmc_parallel*, *gradientdescent* and *gradientdescent_parallel*.
+### IT IS NECESSARY TO RUN THE FILES DIRECTLY FROM THE build DIRECTORY, OTHERWISE THE PROGRAMS CRASH.
 These are run the following way (except for test which does not take arguments):
  ```bash
  ./filename numberOfDimensions numberOfParticles numberOfMCCycles alpha stepLength numberOfEquilibrationSteps seed wF_type sampler_type Filename_Blocking (numberOfThreads)
