@@ -81,10 +81,11 @@ int main(int argc, char *argv[]) {
     }
     system->setEquilibrationSteps (equilibration);
     system->setStepLength            (stepLength);
+    system->getSampler()->setSamplePosition(true);
     if(filename_blocking.compare("no")==0){
       system->getSampler()->setWriteout(false);
+      system->getSampler()->setSamplePosition(false); // Set this "true" if you want one-particle-densities
     }
-    system->getSampler()->setSamplePosition(false); // Set this "true" if you want one-particle-densities
     system->runMetropolisSteps       (numberOfSteps,true);
 
 

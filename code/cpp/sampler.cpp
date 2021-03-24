@@ -142,9 +142,15 @@ void Sampler::printOutputToFile(){
   double ef = m_system->getEquilibrationSteps();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream newmyfile;
+  std::ifstream infile("../../../output/sympleharmonic.csv");
+  if(infile.good()==false){
+    newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+    newmyfile<<"Type,num_part,num_dim,steps,warmup,alpha,energy,kin_en,pot_en,acceptance_rate,time\n";
+    newmyfile.close();
+  }
   newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
   newmyfile << std::setprecision(10);
-  newmyfile << "sympleharmonic,"<<np<<","<<nd<<","<<ms<<","<<ef;
+  newmyfile << "MonteCarlo,"<<np<<","<<nd<<","<<ms<<","<<ef;
   newmyfile <<","<<pa.at(0)<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;
   newmyfile.close();
   return;
