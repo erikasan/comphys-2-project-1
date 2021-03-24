@@ -1,4 +1,5 @@
-#Example runs
+
+# Example runs
 This folder contains the files that are madeafter running the following commands:
  ```bash
 ./vmc 3 10 10000 0.5 0.1 100000 100 HO IMP no
