@@ -27,5 +27,5 @@ where
 - alpha is either the initial guess (for gradient descent) or the actual value (for VMC). 
 - For the parallel simulations, each thread gets the seed (input_seed+thread_id) to keep the process sufficiently random.
 
-If any other parameter should be tuned, such as writing out the position distribution or changing other parameters, this needs to be done directly in the source code for the corresponding main files.
+If any other parameter should be tuned, such as writing out the position distribution (which can only be done in "vmc") or changing other parameters, this needs to be done directly in the source code for the corresponding main files.
 There is a bunch of python files that automatize runs and have several runs run at once, found in the code/python folder.
