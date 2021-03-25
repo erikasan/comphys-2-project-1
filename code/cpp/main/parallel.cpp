@@ -35,7 +35,8 @@ int main(int argc, char *argv[]) {
     int equilibration      = (int) 1e5;          // Amount of the total steps used
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
-    string filename_blocking = "default"; //no for "don't write", any other will then be written to file
+    string filename_blocking = "no"; //no for "don't write", any other will then be written to file
+    string path= "../../../output/";
     if (argc>=12){
           numberOfDimensions = atoi(argv[1]);
           numberOfParticles  = atoi(argv[2]);
@@ -48,6 +49,9 @@ int main(int argc, char *argv[]) {
           sampler_type       = argv[9];
           filename_blocking  = argv[10];
           num_threads        = atoi(argv[11]);
+          if(argc>=13){
+            path               = argv[12];
+          }
     }
     omp_set_num_threads(num_threads);
     double total_cumulativeEnergysquared=0;
@@ -77,6 +81,7 @@ int main(int argc, char *argv[]) {
       }
 
       system->m_energyfile=filename_blocking_parallel;
+      system->setPath(path); //Change this is you want the output somewhere else
       system->setSampler               (new Sampler(system));
       system->setOmega(1);
       if(wF_type.compare("HO")==0){

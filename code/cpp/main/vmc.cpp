@@ -33,8 +33,9 @@ int main(int argc, char *argv[]) {
     int equilibration      = (int) 1e5;          // Amount of the total steps used
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
-    string filename_blocking = "default"; //no for "don't write", any other will then be written to file
+    string filename_blocking = "no"; //no for "don't write", any other will then be written to file
     System* system;
+    string path= "../../../output/";
     if (argc>=11){
           numberOfDimensions = atoi(argv[1]);
           numberOfParticles  = atoi(argv[2]);
@@ -46,6 +47,9 @@ int main(int argc, char *argv[]) {
           wF_type            = argv[8];
           sampler_type       = argv[9];
           filename_blocking  = argv[10];
+          if(argc>=12){
+            path               = argv[11];
+          }
     }
     if (sampler_type.compare("VMC")==0){
       system = new System(seed);
@@ -57,6 +61,7 @@ int main(int argc, char *argv[]) {
       cout << "Not a legal sampler type" << endl;
       return 1;
     }
+    system->setPath(path); //Change this is you want the output somewhere else
     system->m_energyfile=filename_blocking;
     system->setSampler               (new Sampler(system));
     system->setOmega(1);

@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
     string filename_blocking = "no";  // Legacy code, nothing is written to file anywasy
     System* system;
+    string path= "../../../output/";
     if (argc>=11){
           numberOfDimensions = atoi(argv[1]);
           numberOfParticles  = atoi(argv[2]);
@@ -46,6 +47,9 @@ int main(int argc, char *argv[]) {
           wF_type            = argv[8];
           sampler_type       = argv[9];
           filename_blocking  = argv[10];
+          if(argc>=12){
+            path               = argv[11];
+          }
     }
     if (sampler_type.compare("VMC")==0){
       system = new System(seed);
@@ -58,6 +62,8 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     system->m_energyfile=filename_blocking;
+    system->setPath(path); //Change this is you want the output somewhere else
+
     system->setSampler               (new Sampler(system));
     system->setOmega(25);
     if(wF_type.compare("HO")==0){

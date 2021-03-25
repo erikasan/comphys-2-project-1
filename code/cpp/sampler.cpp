@@ -17,6 +17,7 @@ using std::endl;
 Sampler::Sampler(System* system) {
     m_system = system;
     m_stepNumber = 0;
+
     setFileNameforEnergy(system->m_energyfile);
 }
 
@@ -98,8 +99,8 @@ void Sampler::writeExpectationEnergyToFile (double local_energy){
   myfile.close();
 }
 void Sampler::setFileNameforEnergy(std::string filename){
-  m_energyfile = "../../../output/energies_"+ filename+".csv";
-  m_positionfile = "../../../output/positions_"+ filename+".csv";
+  m_energyfile = m_system->getPath()+"energies_"+ filename+".csv";
+  m_positionfile = m_system->getPath()+"positions_"+ filename+".csv";
 }
 void Sampler::printOutputToTerminal() {
     int    np = m_system->getNumberOfParticles();
@@ -142,13 +143,13 @@ void Sampler::printOutputToFile(){
   double ef = m_system->getEquilibrationSteps();
   std::vector<double> pa = m_system->getWaveFunction()->getParameters();
   std::ofstream newmyfile;
-  std::ifstream infile("../../../output/sympleharmonic.csv");
+  std::ifstream infile(m_system->getPath()+"sympleharmonic.csv");
   if(infile.good()==false){
-    newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+    newmyfile.open(m_system->getPath()+"sympleharmonic.csv",std::ofstream::app);
     newmyfile<<"Type,num_part,num_dim,steps,warmup,alpha,energy,kin_en,pot_en,acceptance_rate,time\n";
     newmyfile.close();
   }
-  newmyfile.open("../../../output/sympleharmonic.csv",std::ofstream::app);
+  newmyfile.open(m_system->getPath()+"sympleharmonic.csv",std::ofstream::app);
   newmyfile << std::setprecision(10);
   newmyfile << "MonteCarlo,"<<np<<","<<nd<<","<<ms<<","<<ef;
   newmyfile <<","<<pa.at(0)<<","<<m_energy<<","<<m_kineticenergy<<","<<m_potentialenergy<<","<<double(m_accepted)/(ms)<<","<<dur<<endl;

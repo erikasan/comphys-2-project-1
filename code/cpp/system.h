@@ -71,8 +71,14 @@ public:
     double getOmega(){
       return m_omega;
     }
+    std::string getPath(){
+      return m_path;
+    }
+    void setPath(std::string path){
+      m_path=path;
+    }
     std::string  m_energyfile="default";
-
+    std::string  m_path="../../../output/";
 protected:
     int                          m_numberOfParticles       = 0;
     int                          m_numberOfDimensions      = 0;
