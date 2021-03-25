@@ -20,8 +20,11 @@ for i,N in enumerate(Ns):
 print(times_numerical/times)
 sns.set_style("darkgrid")
 sns.set_context("talk")
-plt.plot(Ns,times,label="Analytic 2nd derivative")
-plt.plot(Ns,times_numerical,label="Numerical 2nd derivative")
+plt.plot(Ns,times,"o",label="Analytic 2nd derivative",color="red")
+plt.plot(Ns,times_numerical,"o",label="Numerical 2nd derivative",color="blue")
+
+plt.plot(Ns,times,"--",color="red")
+plt.plot(Ns,times_numerical,"--",color="blue")
 
 plt.ylabel("Time [ms]")
 plt.xlabel("Number of particles")
