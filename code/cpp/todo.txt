@@ -1,6 +1,0 @@
-I need to
-- implement the (n-particle) wave function and Laplacian(s) (in the simple Gaussian wave function)
-- implement the Initialization of particles: This is done in the randomuniform.cpp-file, where we need to create m_particles partices and
-  that need to be given their position
-- implement the metropolis Steps for the system. That means updating metropolisStep() and runMetropolisSteps.
-- Implement the calculation of the local energy for the Hamiltonian (within the harmonic oscillator function)

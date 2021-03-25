@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
     ofstream myfile;
     bool output=true;
     if (output){
-      myfile.open("../../../output/alphas.csv",std::ofstream::app);
+      myfile.open(path+"alphas.csv",std::ofstream::app);
       myfile << numberOfParticles <<","<<numberOfSteps<<"," << equilibration<<","<<num_threads<<",";
       myfile << stepLength << "," << learningRate << "," <<wF_type<<","<< alpha<<endl;
       myfile.close();
