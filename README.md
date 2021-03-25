@@ -16,11 +16,15 @@ cmake ../
 make -j2
 ```
 this will produce 5 executables, *test*, *vmc*, *vmc_parallel*, *gradientdescent* and *gradientdescent_parallel*.
-### IT IS NECESSARY TO RUN THE FILES DIRECTLY FROM THE build DIRECTORY, OTHERWISE THE PROGRAMS DO NOT WORK.
 These are run the following way (except for test which does not take arguments):
  ```bash
- ./filename numberOfDimensions numberOfParticles numberOfMCCycles alpha stepLength numberOfEquilibrationSteps seed wF_type sampler_type Filename_Blocking (numberOfThreads)
+ #Parallel files:
+ ./filename numberOfDimensions numberOfParticles numberOfMCCycles alpha stepLength numberOfEquilibrationSteps seed wF_type sampler_type Filename_Blocking numberOfThreads (path)
+ 
+# Nonparallel files:
+  ./filename numberOfDimensions numberOfParticles numberOfMCCycles alpha stepLength numberOfEquilibrationSteps seed wF_type sampler_type Filename_Blocking (path)
 ```
+### Path has a default, which is "../../../output/". If that folder does not exist, one has either to create it or use a different path!
 where
 - wF_type is either "HO" (Harmonic Oscillator), "NHO" (Numerical Harmonic Oscillator) or "EO" (Elliptic Oscillator), where only Elliptical Oscillator contains the repulsion term
 - sampler_type is "VMC" (Brute force) or "IMP" (Importance Sampling)
