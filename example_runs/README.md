@@ -2,6 +2,7 @@
 # Example runs
 This folder contains the files that are madeafter running the following commands:
  ```bash
+ mkdir example_runs
 ./vmc 3 10 10000 0.5 0.1 100000 100 HO IMP no ./example_runs/
 ./vmc 3 10 10000 0.85 0.1 100000 100 HO VMC no ./example_runs/
 ./vmc 3 10 262144 0.4975 0.1 100000 100 EO IMP energyanddistribution ./example_runs/
