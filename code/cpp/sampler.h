@@ -36,6 +36,7 @@ protected:
     bool    m_sampleposition=false;
     int     m_numberOfMetropolisSteps = 0;
     int     m_stepNumber = 0;
+    int     m_stepNumber_count =0;
     double  m_energy = 0;
     double  m_cumulativeEnergy = 0;
     double  m_kineticenergy = 0, m_cumulkinetic=0;

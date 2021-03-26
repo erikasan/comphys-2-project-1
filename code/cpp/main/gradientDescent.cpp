@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
     string filename_blocking = "no";  // Legacy code, nothing is written to file anywasy
     System* system;
     string path= "../../../output/";
+    double tol = 0.0000001;
+    int maxIter = 200;
+    double learningRate = 0.01;
     if (argc>=11){
           numberOfDimensions = atoi(argv[1]);
           numberOfParticles  = atoi(argv[2]);
@@ -49,6 +52,11 @@ int main(int argc, char *argv[]) {
           filename_blocking  = argv[10];
           if(argc>=12){
             path               = argv[11];
+          }
+          if(argc>=15){
+            maxIter=atof(argv[12]);
+            learningRate=atof(argv[13]);
+            tol=atof(argv[14]);
           }
     }
     if (sampler_type.compare("VMC")==0){
@@ -88,9 +96,7 @@ int main(int argc, char *argv[]) {
     system->setEquilibrationSteps (equilibration);
     system->setStepLength            (stepLength);
     system->setMetropolisSteps       (numberOfSteps);
-    double tol = 0.0000001;
-    int maxIter = 200;
-    double learningRate = 0.01;
+
     system->gradientDescent(tol, learningRate, maxIter);
     alpha=system->getWaveFunction()->getParameters()[0];
     cout << "The ideal value for alpha is "<<alpha << endl;

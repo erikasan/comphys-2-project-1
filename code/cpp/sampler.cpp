@@ -129,7 +129,7 @@ void Sampler::printOutputToTerminal() {
     cout << " Energy : " << m_energy << endl;
     cout << "Kinetic Energy: " << m_kineticenergy <<endl;
     cout << "Potential Energy: " << m_potentialenergy <<endl;
-    cout << "standard error: " << sqrt(m_energysquared-m_energy*m_energy)/sqrt(m_stepNumber)<<endl;
+    cout << "standard error: " << sqrt(m_energysquared-m_energy*m_energy)/sqrt(m_stepNumber_count)<<endl;
     cout << "Duration: " << dur << " ms" << endl;
     cout << endl;
 }
@@ -172,6 +172,7 @@ void Sampler::computeAverages() {
     m_potentialenergy = m_cumulpotential/steps;
     m_energysquared = m_cumulenergysquared/steps;
     m_system->getWaveFunction()->computeAverages(steps);
-    //m_stepNumber = 0;
+    m_stepNumber_count=m_stepNumber;
+    m_stepNumber = 0;
     return;
 }
