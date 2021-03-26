@@ -28,7 +28,7 @@ These are run the following way (except for test which does not take arguments):
 where
 - wF_type is either "HO" (Harmonic Oscillator), "NHO" (Numerical Harmonic Oscillator) or "EO" (Elliptic Oscillator), where only Elliptical Oscillator contains the repulsion term
 - sampler_type is "VMC" (Brute force) or "IMP" (Importance Sampling)
-- Filename_Blocking is the filename of the blocking data written to file (one file per thread, gets an extra number after the file name). Use "no" if no output is desired.
+- Filename_Blocking is the filename of the blocking data written to file (one file per thread, gets an extra number after the file name). Use "no" if no output is desired. There will still be output to "sympleharmonic.csv". 
 - alpha is either the initial guess (for gradient descent) or the actual value (for VMC). 
 - For the parallel simulations, each thread gets the seed (input_seed+thread_id) to keep the process sufficiently random.
 
