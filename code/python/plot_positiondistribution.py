@@ -12,14 +12,14 @@ def rhof(x):
 
 
 inverse_steplength=20
-filename="100_1e7_a0"
+filename="alpha_0"
 infile=np.loadtxt("../../output/positions_%s.csv"%filename,dtype="float",delimiter=",",skiprows=1)
 x=infile[:,0]
 rho=infile[:,2]
 rho_density=infile[:,3]
 x_density=infile[:,1]
 
-filename="100_1e7_a00043"
+filename="alpha_0483"
 infile=np.loadtxt("../../output/positions_%s.csv"%filename,dtype="float",delimiter=",",skiprows=1)
 x_a0043=infile[:,0]
 rho_a0043=infile[:,2]

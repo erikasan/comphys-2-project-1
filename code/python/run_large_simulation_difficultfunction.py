@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 Ns=[3,5,10,25,50,100]
 dts=[0.1,0.1,0.1,0.1,0.1,0.1]
-alphas=[0.4994,0.4988,0.4975,0.494,0.491,0.487]
+alphas=[0.4994,0.4988,0.4975,0.4939,0.489,0.483]
 num_threads=4;
 number_dimensions=3
 numberOfSteps=2**23

@@ -12,7 +12,7 @@ DATA_ID = "../../output/"
 def data_path(dat_id):
     return os.path.join(DATA_ID, dat_id)
 
-filename="energies_25_0.10_0.4950_23_"; num_threads=4
+filename="energies_100_0.10_0.4830_23_"; num_threads=4
 
 
 values=np.empty((0));

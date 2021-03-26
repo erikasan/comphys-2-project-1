@@ -39,8 +39,8 @@ int main(int argc, char *argv[]) {
     string wF_type         = "HO"; // HO for Harmonic Oscillator, EO for Elliptic Oscillator, "NHO" for numerical harmonic oscillator
     string sampler_type    = "VMC"; //VMC for Brute Force, IMP for Importance sampling
     string filename_blocking = "no"; //no for "don't write", any other will then be written to file
-    double tol = 0.0000001;
-    int maxIter = 50;
+    double tol = 0.00001;
+    int maxIter = 20;
     string path= "../../../output/";
     if (argc>=12){
           numberOfDimensions = atoi(argv[1]);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
             path               = argv[12];
           }
     }
-    double learningRate = 1.5/(numberOfParticles*numberOfParticles);
+    double learningRate = 0.1/(numberOfParticles);
     omp_set_num_threads(num_threads);
     double alphas[num_threads]={};
     if(sampler_type.compare("IMP") != 0 &&sampler_type.compare("VMC") != 0){
