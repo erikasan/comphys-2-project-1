@@ -25,8 +25,7 @@ System::System(int seed) {
 bool System::metropolisStep() {
     /* Perform the actual Metropolis step: Choose a particle at random and
      * change it's position by a random amount, and check if the step is
-     * accepted by the Metropolis test (compare the wave function evaluated
-     * at this new position with the one at the old position).
+     * accepted by the Metropolis test.
      */
 
      //Pick random Particle
@@ -59,17 +58,23 @@ bool System::metropolisStep() {
 
 
 void System::runMetropolisSteps(int numberOfMetropolisSteps, bool desire_output) {
+    //Initiate information
     m_particles                 = m_initialState->getParticles();
-
-    //m_sampler                   = new Sampler(this);
     m_numberOfMetropolisSteps   = numberOfMetropolisSteps;
     m_waveFunction->initiateDistances(m_particles);
     m_sampler->setNumberOfMetropolisSteps(numberOfMetropolisSteps);
+
+    //actually start the timer
     auto start = high_resolution_clock::now();
+
     bool acceptedStep;
+
+    //warmup
     for (int i = 0; i < m_equilibrationSteps; i++) {
         acceptedStep = metropolisStep();
     }
+
+    //run metropolis steps
     for (int i = 0; i < numberOfMetropolisSteps; i++) {
         acceptedStep = metropolisStep();
         m_sampler->sample(acceptedStep);

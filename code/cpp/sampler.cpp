@@ -25,6 +25,8 @@ void Sampler::setNumberOfMetropolisSteps(int steps) {
     m_numberOfMetropolisSteps = steps;
 }
 void Sampler::sample_position(){
+  /*Sample the position and categorize it in increments of 0.05 for
+  x between -5 and 5, radius between 0 and 10*/
   std::vector<Particle*> particles = m_system->getParticles();
   int numberOfParticles=m_system->getNumberOfParticles();
   double radius=0;
@@ -86,6 +88,7 @@ void Sampler::initiateFile                 (){
   myfile.close();
 }
 void Sampler::writeExpectationEnergyToFile (){
+  //Write the whole array to file (every m_writeOutStep time)
   myfile.open(m_energyfile,std::ios::app);
   myfile << std::setprecision(10);
   for(int i=0;i<m_writeOutStep;i++){
@@ -94,15 +97,18 @@ void Sampler::writeExpectationEnergyToFile (){
   myfile.close();
 }
 void Sampler::writeExpectationEnergyToFile (double local_energy){
+  //Write the expectation local energy to file (one value at a time)
   myfile.open(m_energyfile,std::ios::app);
   myfile << std::setprecision(10) <<local_energy <<"\n";
   myfile.close();
 }
 void Sampler::setFileNameforEnergy(std::string filename){
+  //Set filename for position and energy files for later analysis
   m_energyfile = m_system->getPath()+"energies_"+ filename+".csv";
   m_positionfile = m_system->getPath()+"positions_"+ filename+".csv";
 }
 void Sampler::printOutputToTerminal() {
+    //Print the output to terminal
     int    np = m_system->getNumberOfParticles();
     int    nd = m_system->getNumberOfDimensions();
     int    ms = m_system->getNumberOfMetropolisSteps();
@@ -134,6 +140,7 @@ void Sampler::printOutputToTerminal() {
     cout << endl;
 }
 void Sampler::printOutputToFile(){
+  //Prints output to file
   int np  = m_system->getNumberOfParticles();
   int nd  = m_system->getNumberOfDimensions();
   int ms  = m_system->getNumberOfMetropolisSteps();
@@ -157,6 +164,7 @@ void Sampler::printOutputToFile(){
   return;
 }
 void Sampler::printPositions() {
+  //Unused in the final program, but possibly useful for later
   myfile.open(m_positionfile,std::ios::out);
   myfile << "xval,magnitude,radval,magnitude"<<endl;
   for(int i=0;i<rho_length;i++){
@@ -172,7 +180,7 @@ void Sampler::computeAverages() {
     m_potentialenergy = m_cumulpotential/steps;
     m_energysquared = m_cumulenergysquared/steps;
     m_system->getWaveFunction()->computeAverages(steps);
-    m_stepNumber_count=m_stepNumber;
-    m_stepNumber = 0;
+    m_stepNumber_count=m_stepNumber; //For presenting (integer)
+    m_stepNumber = 0; //Set to zero for gradient descent (we start counting from 0)
     return;
 }

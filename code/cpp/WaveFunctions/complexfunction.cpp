@@ -196,7 +196,6 @@ double ComplexFunction::computeDoubleDerivative(std::vector<class Particle*> par
       }
       total_energy+=4*alpha*alpha*total_radius_withbeta;
       total_energy-=numberOfParticles*((2*num_dim-2)*alpha+2*alpha*beta);
-      //printf("total_energy %f\n",total_energy);
       return total_energy;
 }
 
@@ -238,7 +237,7 @@ std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> p
      return qForce;
 }
 std::vector<double> ComplexFunction::quantumForce(std::vector<class Particle*> particles){
-  //Unused, but might be useful...?
+  //Unused, but might be useful later.
   int num_dim=m_system->getNumberOfDimensions();
   int num_part=m_system->getNumberOfParticles();
   std::vector<double> qForce = std::vector<double>();
